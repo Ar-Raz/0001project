@@ -271,7 +271,7 @@ class ProductDetailView(View):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
     def post(self, request, slug, *args, **kwargs):
-        product = Product.objects.get(slug=self.slug)
+        product = Product.objects.get(slug=slug)
         content = request.POST.get('content', '').strip()
         username = request.POST.get('username', '').strip()
         if username and content:

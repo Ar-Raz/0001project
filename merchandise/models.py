@@ -8,6 +8,16 @@ ADDRESS_CHOICES = (
     ('پرداخت', 'پرداخت'),
 )
 
+class MiniOrder(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    email = models.EmailField()
+    name = models.CharField(max_length=164)
+    approvals = models.TextField()
+
+    def __str__(self):
+        return f"{self.name} has made a request for {self.product.title}"
+
+
 class OrderItem(models.Model):
     user = models.ForeignKey(Profile,
                              on_delete=models.CASCADE)
