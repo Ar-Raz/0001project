@@ -34,6 +34,12 @@ class AboutUs(models.Model):
     sell_in_damir = models.TextField(verbose_name="فروش در دمیر")
     terms_and_conditions = models.TextField(verbose_name="قوانین و مقررات")
     privacy_and_policy = models.TextField(verbose_name="شرایط خصوصی")
-    
+    sliders = models.ImageField(null=True, blank=True)
+    slider_2 = models.ImageField(null=True, blank=True)
+    slider_3 = models.ImageField(null=True, blank=True)
+    slider_4 = models.ImageField(null=True, blank=True)
+    slider_5 = models.ImageField(null=True, blank=True)
+
+
     def __str__(self):
         return f"about us for: {self.timestamp}"

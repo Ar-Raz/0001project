@@ -30,17 +30,17 @@ class Post(models.Model):
     categories = models.ManyToManyField(Category, verbose_name="دسته بندی")
     featured = models.BooleanField(default=False)
     active_post = models.BooleanField(default=True)
-    slug = models.SlugField(blank=True, null=True)
+    slug = models.SlugField(allow_unicode=True)
     hit_count_generic = GenericRelation(HitCount, object_id_field="object_pk"
                                         ,related_query_name="hit_count_generic_relation")
 
     def __str__(self):
         return self.title
 
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.title)
-            return super(Post, self).save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     if not self.slug:
+    #         self.slug = slugify(self.title)
+    #         return super(Post, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse('blog:post-detail', kwargs={'slug':self.slug})
@@ -61,6 +61,3 @@ class Post(models.Model):
     @property
     def get_comment(self):
         return self.comments.all().order_by('-timestamp')
-
-
-
