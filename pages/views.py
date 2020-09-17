@@ -50,7 +50,7 @@ class IndexView(View):
             main_categories_ser_json =json.dumps(main_categories_ser)
             post_ser_json = json.dumps(post_ser)
 
-            product_comments = ProductComment.objects.all()[:10]
+            product_comments = ProductComment.objects.all()[0:10]
             sered_comments = ProductCommentSerializer(product_comments, many=True).date
             json_comments = json.dumps(sered_comments)
 
@@ -143,3 +143,17 @@ def aboutus(request):
 
     return render(request, "aboutUs.html",
             { 'aboutUs' : json_about_us_string})
+
+
+class SearchView(View):
+    def get(self, request, *args, **kwargs):
+        queryset = Product.objects.all()
+        query = request.GET.get('q')
+        if query:
+            queryset = queryset.filter(
+                Q(title__icontains=query)
+            ).distinct()
+        context = {
+            'queryset': queryset
+        }
+        return render(request, 'search_results.html', context)
