@@ -40,7 +40,7 @@ class Product(models.Model):
     category = models.ManyToManyField(Category)
     discount_price = models.FloatField(blank=True, null=True, verbose_name="قیمت تخفیف")
     product_image = models.ImageField(null=True, blank=True)
-    slug = models.SlugField(null=True, blank=True)
+    slug = models.SlugField(null=True, blank=True, allow_unicode=True)
     stock = models.IntegerField(default=1, verbose_name='موجودی')
     description = HTMLField(verbose_name="توضیحات محصول")
     minimum_order = models.CharField(max_length=32, verbose_name='حداقل تعداد جهت سفارش', null=True, blank=True)
@@ -61,16 +61,6 @@ class Product(models.Model):
     def __str__(self):
         return f"{self.title} by {self.producer.company_name}"
 
-    def save(self, *args, **kwargs):
-        slug_1 = slugify(self.title)
-        qs = Product.objects.filter(slug=self.title)
-        exists = qs.exists()
-        if exists:
-            new_slug = "%s-%s" % (slug_1, self.id)
-            self.slug = new_slug
-        else:
-            self.slug = slug_1
-        super(Product, self).save(*args, **kwargs)
 
 
     def average_rating(self):

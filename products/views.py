@@ -13,7 +13,7 @@ from rest_framework.reverse import reverse
 from rest_framework.decorators import api_view
 
 
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from rest_framework.renderers import JSONRenderer
@@ -29,7 +29,11 @@ from .models import Product, ProductComment
 from .serializers import ProductSerializer, ProductDetailSerializer, ProductCommentSerializer
 from .permissions import IsProducer, IsOwnerOrReadOnly
 
-from categories.models import Category
+from categories.serializers import (
+        MainCategorySerializer,
+        CategoryDetailSerializer,
+        )
+from categories.models import Category, MainCategory
 from users.serializers import UserSerializer
 from users.models import ProducerProfile
 """
@@ -346,8 +350,18 @@ def product_paginated(request, page):
     return render(request, 'views/products.html', context)
 
 
+class CategoryAPI(View):
 
+    def get(self, request):
+        main_categories = MainCategory.objects.all()
+        sered_main_cats = MainCategorySerializer(main_categories, many=True).data
+        json_main_cat_string = json.dumps(sered_main_cats)
 
+        context = {
+            'mainCategories' : json_main_cat_string,
+        }
+
+        return JsonResponse(context)
 
 
 

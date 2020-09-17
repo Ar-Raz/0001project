@@ -9,7 +9,12 @@ from rest_framework import status, generics
 from rest_framework.response import Response
 
 
-from .serializers import CategorySerializer, CategoryDetailSerializer, VariationDetailSerializer, MainCategorySerializer
+from .serializers import (
+        CategorySerializer,
+        CategoryDetailSerializer,
+        VariationDetailSerializer,
+        MainCategorySerializer
+        )
 from .models import Category, Variation, CategoryVariation, MainCategory
 
 from products.models import Product
@@ -25,7 +30,7 @@ from products.serializers import ProductDetailSerializer
        ##         #     ##                   ##
       ##           #    ##                   ##
      ##             #   ##                   ##
-##################################################################      
+##################################################################
 """
 
 
@@ -39,6 +44,10 @@ class CategoryDetailView(RetrieveAPIView):
     serializer_class = CategoryDetailSerializer
     lookup_field = 'title'
     queryset = Category.objects.all()
+
+class MainCategoryListView(ListAPIView):
+    serializer_class = MainCategorySerializer
+    queryset = MainCategory.objects.all()
 """
 END OF:
 ################################################################
@@ -50,7 +59,7 @@ END OF:
        ##         #     ##                   ##
       ##           #    ##                   ##
      ##             #   ##                   ##
-##################################################################      
+##################################################################
 """
 
 def category_list_view(request):
@@ -75,5 +84,3 @@ def by_category(request, name):
         'products' : json_products,
     }
     return render(request, 'views/products.html', context)
-
-

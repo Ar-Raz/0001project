@@ -101,5 +101,3 @@ class CategoryDetailSerializer(serializers.ModelSerializer):
 
     def get_variation(self, obj):
         return VariationSerializer(obj.variation_set.all(), many=True).data
-
-

@@ -1,12 +1,12 @@
 from rest_framework import viewsets, status, permissions, authentication
 
-from .models import Order, OrderItem
-from .serializers import OrderSerializer, OrderItemSerializer, MiniOrder
+from .models import Order, OrderItem, MiniOrder
+from .serializers import OrderSerializer, OrderItemSerializer
 
 from django.views import View
 from django.contrib import messages
 
-from django.shortcuts import redirect, reverse, render
+from django.shortcuts import redirect, reverse
 
 class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
@@ -43,7 +43,7 @@ class MiniOrderView(View):
                 content=content,
             )
             messages.success(request, "درخواست شما ارسال شد")
-            return redirect(reverse("products:product_detail", kwargs={'slug': slug})))
+            return redirect(reverse("products:product_detail", kwargs={'slug': slug}))
         else:
             messages.error(request, "فرم را درست وارد کنید ")
-            return redirect(reverse("products:product_detail", kwargs={'slug': slug})))
+            return redirect(reverse("products:product_detail", kwargs={'slug': slug}))
