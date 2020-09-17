@@ -4,7 +4,7 @@
 		
 		<transition name='fade' mode='out-in'>
 			<div id="navigationWrapper" class='maxIs' v-if='checkNavigation'>
-				<div class="left">
+				<!-- <div class="left">
 					<ul>
 
 						<li><a href="/accounts/login">ورود</a></li>
@@ -12,7 +12,7 @@
 						<li><a href="/users/profile">پنل کاربری</a></li>
 
 					</ul>
-				</div>
+				</div> -->
 				<div ref='allCategories' id="allCategories">
 					<ul>
 						<li @click='toggleSubMenu();checkTop($event)'>
@@ -68,7 +68,6 @@
 			checkNavigationMethod(){
 				if(window.innerWidth>801)
 				{
-					console.log("ham")
 					const ham=document.querySelector(".hamSvg")
 					ham.style.display='none'
 					
@@ -111,8 +110,8 @@
 			{
 				this.checkNavigation=true
 			}
-			window.addEventListener("resize",this.checkNavigationMethod)
-			window.addEventListener("resize",this.closeSubMenuIfOpen)
+			// window.addEventListener("resize",this.checkNavigationMethod)
+			// window.addEventListener("resize",this.closeSubMenuIfOpen)
 		},
 		data(){
 			return{
@@ -167,7 +166,6 @@
 	}
 	#allCategories{
 		color:black;
-		display: none;
 	}
 	#allCategories ul li{
 		position: relative;

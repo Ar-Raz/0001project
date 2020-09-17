@@ -112,5 +112,14 @@
 </style>
 
 <script>
-
+	import axios from 'axios'
+export default{
+	async mounted(){
+		axios.get("/categories-api")
+		.then(res=>{
+			this.$store.commit("fillCatsWithSubs",res.data)
+		})
+			
+	}
+}
 </script>

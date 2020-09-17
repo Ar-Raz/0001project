@@ -74,10 +74,8 @@ img.normal{
     export default{
         props:['products',"pagination"],
         mounted(){
-            console.log(JSON.parse(this.products),this.pagination)
             const allImages=document.querySelectorAll(".normal")
             allImages.forEach(img=>{
-                console.log(img)
                 img.style.width='100%'
                 img.style.height="300px"
                 const zoom=img.nextElementSibling

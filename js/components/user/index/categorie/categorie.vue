@@ -1,15 +1,15 @@
 <template>
     <div id="sideSliderCats">
         <div id="sideSlidesCatsWrapper">
-            <div id="hamCats">
+            <!-- <div id="hamCats">
                 <ham></ham>
                 دسته بندی
-            </div>
+            </div> -->
             <div id="allCats">
                 <ul>
                     <template v-for="(c,i) in mainCats">
-                        <li v-if="i<8"  class="parentLi"><arrow></arrow>  {{c.title}} 
-                            <div class="subMenu">
+                        <li v-if="i<11"  class="parentLi"><arrow></arrow>  {{c.title}} 
+                            <div class="sideSliderSubmenu">
                                 <div class="subTitleWrapper">
                                     <div class="SubTitle"><p>{{c.title}}</p></div>
                                     <ul>
@@ -18,68 +18,7 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="parentLi seeMore" v-if="i==9"><a href="#">دیدن همه موارد</a></li>
                     </template>
-                    <!-- <li class="parentLi"> <arrow></arrow>دست1 
-                    <div class="subMenu">
-                            <div class="subTitleWrapper">
-                                <div class="SubTitle"><p>دسته 1</p></div>
-                                <ul>
-                                    <li><a href="#">زیردسته 1</a></li>
-                                    <li><a href="#">زیردسته 2</a></li>
-                                    <li><a href="#">زیردسته 3</a></li>
-                                    <li><a href="#">زیردسته4</a></li>
-                                    <li><a href="#">زیردسته 5</a></li>
-                                    <li><a href="#">مشاهده همه</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="parentLi"><arrow></arrow> دست1
-                    <div class="subMenu">
-                            <div class="subTitleWrapper">
-                                <div class="SubTitle"><p>دسته 1</p></div>
-                                <ul>
-                                    <li><a href="#">زیردسته 1</a></li>
-                                    <li><a href="#">زیردسته 2</a></li>
-                                    <li><a href="#">زیردسته 3</a></li>
-                                    <li><a href="#">زیردسته4</a></li>
-                                    <li><a href="#">زیردسته 5</a></li>
-                                    <li><a href="#">مشاهده همه</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="parentLi"><arrow></arrow> دست1 
-                    <div class="subMenu">
-                            <div class="subTitleWrapper">
-                                <div class="SubTitle"><p>دسته 1</p></div>
-                                <ul>
-                                    <li><a href="#">زیردسته 1</a></li>
-                                    <li><a href="#">زیردسته 2</a></li>
-                                    <li><a href="#">زیردسته 3</a></li>
-                                    <li><a href="#">زیردسته4</a></li>
-                                    <li><a href="#">زیردسته 5</a></li>
-                                    <li><a href="#">مشاهده همه</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="parentLi"><arrow></arrow> دست1 
-                    <div class="subMenu">
-                            <div class="subTitleWrapper">
-                                <div class="SubTitle"><p>دسته 1</p></div>
-                                <ul>
-                                    <li><a href="#">زیردسته 1</a></li>
-                                    <li><a href="#">زیردسته 2</a></li>
-                                    <li><a href="#">زیردسته 3</a></li>
-                                    <li><a href="#">زیردسته4</a></li>
-                                    <li><a href="#">زیردسته 5</a></li>
-                                    <li><a href="#">مشاهده همه</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </li> -->
                     
                 </ul>
             </div>
@@ -109,7 +48,7 @@
 
 
 <style scoped>
-    ul li:hover .subMenu{
+    ul li:hover .sideSliderSubmenu{
         display:block;
         animation:fadeIn 0.2s linear
     }
@@ -128,7 +67,7 @@
     ul li{
         text-align: right;
     }
-    .subMenu{
+    .sideSliderSubmenu{
         position: absolute;
         display:none;
         right:100%;
@@ -137,7 +76,8 @@
         height:max-content;
         top:-20px;
         width:300px;
-        border-left:1px solid rgb(223, 223, 223)
+        border-left:1px solid rgb(223, 223, 223);
+        background: #ffffff
     }
     .subTitleWrapper{
         display:flex;
@@ -148,7 +88,7 @@
     .subtitle{
         font-size:20pt;
     }
-    .subMenu ul li a{
+    .sideSliderSubmenu ul li a{
         font-size:12pt;
         color:rgb(71, 71, 245) !important
     }
@@ -175,7 +115,7 @@
         display:flex;
         justify-content: space-between;
     }
-    .subMenu li{
+    .sideSliderSubmenu li{
         display:flex;
         justify-content:flex-end
     }
@@ -185,7 +125,7 @@
         cursor: pointer;
         text-align: right;
     }
-    .parentLi:hover .subMenu{
+    .parentLi:hover .sideSliderSubmenu{
         display:block
     }
     #hamCats{

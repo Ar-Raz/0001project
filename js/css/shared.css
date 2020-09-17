@@ -181,3 +181,34 @@ label.stay {
 ul li{
 	font-size:;
 }
+
+
+
+.nineThreePercent{
+	width:90% !important
+}
+
+@media (max-width: 1000px){
+	.nineThreePercent{
+		width:100% !important;
+	}
+}
+
+
+
+
+
+
+
+#app {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: fit-content(1000rem) auto auto auto fit-content(1000rem);
+  grid-template-areas:
+    "header header"
+    "slicer slicer"
+    "navigation navigation"
+    "main main"
+    "footer footer";
+}

@@ -2,69 +2,22 @@
 	<div id="flatMenu" @click="toggleSubMenu(),toggleOverFlow()">
 		<div id="flatMenuWrapper" @click='prevent'>
 			<ul>
-			    <li class="parentLi">	
+			    <li class="parentLi" v-for="item in getCats">
+
+
 			    	<div class="link" @click="openMySubMenu($event)">
 			    		
-			    		<svg viewBox="0 0 100 100"><path d="M 50,0 L 60,10 L 20,50 L 60,90 L 50,100 L 0,50 Z" class="arrow" transform="translate(85,100) rotate(180deg)"></path></svg>
-			    		<p>خط تولید پنیر پیتزا</p>
+			    		<svg viewBox="0 0 100 100"><path d="M 50,0 L 60,10 L 20,50 L 60,90 L 50,100 L 0,50 Z" class="arrow" transform="rotate(180deg)"></path></svg>
+			    		<p>{{item.title}}</p>
 			    	</div>
 			    	
 
 			    	<ul class="subMenu">
-			    		<li>زیر دسته یک</li>
-			    		<li>زیر دسته یک</li>
-			    		<li>زیر دسته یک</li>
-			    		<li>زیر دسته یک</li>
-			    		<li>زیر دسته یک</li>
+			    		<li v-for="subs in item.subs"><a :href="getHref(subs.title)">{{subs.title}}</a></li>
 			    	</ul>
+
+
 			    </li>
-			    <li class="parentLi">
-			    	<div class="link" @click="openMySubMenu($event)">
-			    		
-			    		<svg viewBox="0 0 100 100"><path d="M 50,0 L 60,10 L 20,50 L 60,90 L 50,100 L 0,50 Z" class="arrow" transform="translate(85,100) rotate(270deg)"></path></svg>
-			    		<p >دسته 1</p>
-			    	</div>
-			    	<ul class="subMenu">
-			    		<li>زیر دسته یک</li>
-			    		<li>زیر دسته یک</li>
-			    		<li>زیر دسته یک</li>
-			    		<li>زیر دسته یک</li>
-			    		<li>زیر دسته یک</li>
-			    	</ul>
-				</li>
-			    <li class="parentLi">
-			    	<div class="link" @click="openMySubMenu($event)">
-			    		
-			    		<svg viewBox="0 0 100 100"><path d="M 50,0 L 60,10 L 20,50 L 60,90 L 50,100 L 0,50 Z" class="arrow" transform="translate(85,100) rotate(270deg)"></path></svg>
-			    		<p >دسته 1</p>
-			    	</div>
-			    	<ul class="subMenu">
-			    		<li>زیر دسته یک</li>
-			    		<li>زیر دسته یک</li>
-			    		<li>زیر دسته یک</li>
-			    		<li>زیر دسته یک</li>
-			    		<li>زیر دسته یک</li>
-			    	</ul>
-				</li>
-			    <li class="parentLi">
-			    	<div class="link" @click="openMySubMenu($event)">
-			    		
-			    		<svg viewBox="0 0 100 100"><path d="M 50,0 L 60,10 L 20,50 L 60,90 L 50,100 L 0,50 Z" class="arrow" transform="translate(85,100) rotate(270deg)"></path></svg>
-			    		<p >دسته 1</p>
-			    	</div>
-			    	<ul class="subMenu">
-			    		<li>زیر دسته یک</li>
-			    		<li>زیر دسته یک</li>
-			    		<li>زیر دسته یک</li>
-			    		<li>زیر دسته یک</li>
-			    		<li>زیر دسته یک</li>
-			    		<li>زیر دسته یک</li>
-			    		<li>زیر دسته یک</li>
-			    		<li>زیر دسته یک</li>
-			    		<li>زیر دسته یک</li>
-			    		<li>زیر دسته یک</li>
-			    	</ul>
-				</li>
 				
 			</ul>
 		</div>
@@ -91,6 +44,9 @@
 		width:max-content;
 		transition: all 1s;
 		overflow: auto;
+
+	}
+	.openWrapper{
 
 	}
 	ul{
@@ -136,6 +92,7 @@
 	import {mapActions} from "vuex"
 	import {toggleBodyOverFlow} from "../../mixIns/toggleBodyOverFlow.js"
 	import {adjustElFromTop} from '../../mixIns/adjustElFromTop.js'
+	import axios from "axios"
 	export default{
 		mixins:[toggleBodyOverFlow,adjustElFromTop],
 		methods:{
@@ -172,7 +129,7 @@
 					sub.style.height='0px'
 				});
 				if(height=="0px"){
-					next.style.height  =`${(next.querySelectorAll('li').length+1)*42}px`
+					next.style.height  =`${(next.querySelectorAll('li').length)*42}px`
 				}else{
 					next.style.height = '0px'
 				}
@@ -182,21 +139,31 @@
 			rotateArrow(el){
 				el.style.transition = 'all 0.5s ease-in-out'
 				el.style.transform="rotate(180deg)"
+			},
+			getHref(title){
+				return `/categories/${title}`
 			}
 
 		},
-		mounted(){
+		async mounted(){
 			const menuWrapper=document.querySelector("#flatMenuWrapper")
 			this.adjustFromTop(menuWrapper,false)
 			this.toggleBodyOverFlow('hidden')
 			menuWrapper.style.right="0"
-			window.addEventListener("resize",()=>{
-				if(window.innerWidth>801)
-				{
-					this.toggleBodyOverFlow()
-				}
-			})
+			this.cats=this.$store.getters.getCatsWithSubs
 
+			
+
+		},
+		data(){
+			return {
+				cats:null
+			}
+		},
+		computed:{
+			getCats(){
+				return this.cats
+			}
 		}
 		
 		
