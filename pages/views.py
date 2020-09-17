@@ -14,8 +14,11 @@ from django.core.files.uploadhandler import FileUploadHandler
 # from django.
 
 #COMPONENTS
-from products.models import Product
-from products.serializers import ProductDetailSerializer, ProductSerializer
+from products.models import Product, ProductComment
+from products.serializers import (
+        ProductDetailSerializer, ProductSerializer,
+        ProductCommentSerializer
+        )
 
 from categories.models import Category, MainCategory
 from categories.serializers import CategorySerializer, MainCategorySerializer
@@ -24,7 +27,8 @@ from blog.models import  Post
 from blog.serializers import PostSerializer
 
 from .forms import SubscriptionForm, DocumentForm, DocumentSerializer
-from .models import NewsTellerEmails, Document
+from .models import NewsTellerEmails, Document, AboutUs
+from .serializers import AboutUsSerializer
 
 class FrontendRenderView(View):
     def get(self, request, *args, **kwargs):
@@ -45,6 +49,11 @@ class IndexView(View):
             categories_ser_json = json.dumps(categories_ser)
             main_categories_ser_json =json.dumps(main_categories_ser)
             post_ser_json = json.dumps(post_ser)
+
+            product_comments = ProductComment.objects.all()[:10]
+            sered_comments = ProductCommentSerializer(product_comments, many=True).date
+            json_comments = json.dumps(sered_comments)
+
 
             paginator = Paginator(products_list, 12)
             page = self.request.GET.get('page')
@@ -78,6 +87,7 @@ class IndexView(View):
                 'page' : page,
                 'new_products' : new_products_json_string,
                 'best_sellers' : best_sellers_json_string,
+                'comments' : json_comments,
             }
             return render(self.request, "views/index.html", context)
         except ObjectDoesNotExist:
@@ -123,3 +133,13 @@ def test(request):
         render(request, 'views/userPanel.html',json_context)
         return HttpResponse('Done')
     return HttpResponse("this is get")
+
+
+
+def aboutus(request):
+    obj = AboutUs.objects.all()[0]
+    sered_qs = AboutUsSerializer(obj).date
+    json_about_us_string =json.dumps(sered_qs)
+
+    return render(request, "aboutUs.html",
+            { 'aboutUs' : json_about_us_string})

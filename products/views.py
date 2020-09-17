@@ -338,43 +338,15 @@ def product_paginated(request, page):
 
     page_products = products[first_obj:last_obj]
     serialized_products = ProductDetailSerializer(page_products, many=True).data
-    json_products_data = json.dumps(serialized_products)
+    json_products_data = json.dumps(
+        serialized_products
+        )
     previous_page = page - 1
     next_page = page + 1
-    json_page_data = f'[{{ "previous_page" : {previous_page}, "next_page" : {next_page} }}]'
+    json_page_data = f'[{{ "previous_page":{previous_page}, "next_page":{next_page}}}]'
 
     context = {
-        'products' : json_products_data,
-        'pageData' : json_page_data,
+        'products': json_products_data,
+        'pageData': json_page_data,
     }
     return render(request, 'views/products.html', context)
-
-
-class CategoryAPI(View):
-
-    def get(self, request):
-        main_categories = MainCategory.objects.all()
-        sered_main_cats = MainCategorySerializer(main_categories, many=True).data
-        json_main_cat_string = json.dumps(sered_main_cats)
-
-        context = {
-            'mainCategories' : json_main_cat_string,
-        }
-
-        return JsonResponse(context)
-
-
-
-#create comment with form
-# def post(self, request, slug, *args, **kwargs):
-#         form = ProductCommentForm(request.POST or None)
-#         if form.is_valid():
-#             product = Product.objects.get(slug=slug)
-#             form.instance.user = self.request.user
-#             form.instance.product = product
-#             # form.instance.content = json.loads(request.POST['content'])
-#             form.instance.content = request.POST['content']
-#             form.save()
-#             return redirect(reverse("products:product_detail", kwargs={'slug': slug}))
-#         else:
-#             return Response(status=status.HTTP_400_BAD_REQUEST)
