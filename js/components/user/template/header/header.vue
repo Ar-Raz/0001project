@@ -112,14 +112,14 @@
 </style>
 
 <script>
-	import axios from 'axios'
-export default{
-	async mounted(){
-		axios.get("/categories-api")
-		.then(res=>{
-			this.$store.commit("fillCatsWithSubs",res.data)
-		})
-			
+	import axios from "axios"
+	export default{
+		created(){
+			axios.get("/categories-api/categories-list")
+			.then(res=>{
+				this.$store.commit("fillCatsWithSubs",res.data)
+				console.log(res.data)
+			})
+		}
 	}
-}
 </script>

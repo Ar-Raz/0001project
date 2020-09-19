@@ -4,6 +4,6 @@
 {% include "views/template/navigation.html" %}			
 {% include "views/template/mainwrapper.html" %}
 <done-message></done-message>
-<products products="{{ products }}"></products>
+{% comment %} <products products="{{ products }}"></products> {% endcomment %}
 <products products="{{ products }}" pagination="{{pagination}}"></products>
 {% include "views/template/footer.html" %}

@@ -1,96 +1,64 @@
 <template>
-	<div id="mega">
-		<div id="megaWrapper">
-						<ul class="singleMega item1">
-							<li class="headMega">بسته بندی</li>
-							<li class="megaLink">شیرینگ پم</li>
-							<li class="megaLink">شیرینگ پک</li>
-							<li class="megaLink">درب بند</li>
-							<li class="megaLink">شیرینگ پن</li>
-							<li class="megaLink">درب بند</li>
-						</ul>
-						<ul class="singleMega item1">
-							<li class="headMega">بسته بندی</li>
-							<li class="megaLink">شیرینگ پم</li>
-							<li class="megaLink">شیرینگ پک</li>
-							<li class="megaLink">درب بند</li>
-							<li class="megaLink">شیرینگ پن</li>
-							<li class="megaLink">درب بند</li>
-						</ul>
-						<ul class="singleMega item2">
-							<li class="headMega">بسته بندی</li>
-							<li class="megaLink">شیرینگ پم</li>
-							<li class="megaLink">شیرینگ پک</li>
-							<li class="megaLink">درب بند</li>
-							<li class="megaLink">شیرینگ پن</li>
-							<li class="megaLink">درب بند</li>
-						</ul>
-						<ul class="singleMega item2">
-							<li class="headMega">بسته بندی</li>
-							<li class="megaLink">شیرینگ پم</li>
-							<li class="megaLink">شیرینگ پک</li>
-							<li class="megaLink">درب بند</li>
-							<li class="megaLink">شیرینگ پن</li>
-							<li class="megaLink">درب بند</li>
-						</ul>
-						<ul class="singleMega item2">
-							<li class="headMega">بسته بندی</li>
-							<li class="megaLink">شیرینگ پم</li>
-							<li class="megaLink">شیرینگ پک</li>
-							<li class="megaLink">درب بند</li>
-							<li class="megaLink">شیرینگ پن</li>
-							<li class="megaLink">درب بند</li>
-						</ul>
-						<ul class="singleMega item1">
-							<li class="headMega">بسته بندی</li>
-							<li class="megaLink">شیرینگ پم</li>
-							<li class="megaLink">شیرینگ پک</li>
-							<li class="megaLink">درب بند</li>
-							<li class="megaLink">شیرینگ پن</li>
-							<li class="megaLink">درب بند</li>
-						</ul>
-						<ul class="singleMega item1">
-							<li class="headMega">بسته بندی</li>
-							<li class="megaLink">شیرینگ پم</li>
-							<li class="megaLink">شیرینگ پک</li>
-							<li class="megaLink">درب بند</li>
-							<li class="megaLink">شیرینگ پن</li>
-							<li class="megaLink">درب بند</li>
-						</ul>
-					
-
-		</div>
-	</div>
+  <div id="mega">
+    <div id="megaWrapper">
+      <!-- <ul class="singleMega ">
+							<li class="headMega" v-for="(cat,ind) in getCats" :key="ind" v-if='ind<6'><a :href="getHref(cat)">{{cat.title}}</a></li>
+      </ul>-->
+      <ul>
+        <li>دسته 1</li>
+        <li>دسته 2</li>
+        <li>خط تولید </li>
+      </ul>
+      <ul>
+        <li>دسته 1</li>
+        <li>دسته 2</li>
+        <li>خط تولید </li>
+      </ul>
+      <ul>
+        <li>دسته 1</li>
+        <li>دسته 2</li>
+        <li>خط تولید </li>
+      </ul>
+    </div>
+  </div>
 </template>
 
 <style scoped>
-	#mega{
-		width:100%;
-		background: #f6f6f4
-	}
-	.singleMega{
-		margin:10px;
-	}
-	.headMega{
-		font-weight: bold;
-		font-size: 18px
-	}
-	li{
-		line-height: 1.5rem;
-		color:#4a4a4a;
-		text-align: right;
-		width: 100%;
-		font-size:16px;
-	}
-	ul{
-		display: flex;
-		align-items: center;
-		flex-direction: column;
-		width: max-content
-	}
-	#megaWrapper{
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: space-between;
-	}
-</style>>
+#megaWrapper{
+	display:flex;
+	justify-content: space-between;
+}
+#mega {
+  margin-top: 50px;
+}
+ul {
+  display: flex;
+  flex-direction:column;
+  padding: 5px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+li a {
+  font-size: 18px;
+  font-weight: bold;
+}
+li {
+  margin: 15px;
+  text-align: right;
+}
+</style>
+
+<script>
+export default {
+  computed: {
+    getCats() {
+      return this.$store.getters.getCatsWithSubs;
+    },
+  },
+  methods: {
+    getHref(cat) {
+      return `/${cat.title}`;
+    },
+  },
+};
+</script>

@@ -110,7 +110,7 @@
 			{
 				this.checkNavigation=true
 			}
-			// window.addEventListener("resize",this.checkNavigationMethod)
+			window.addEventListener("resize",this.checkNavigationMethod)
 			// window.addEventListener("resize",this.closeSubMenuIfOpen)
 		},
 		data(){

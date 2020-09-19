@@ -4,20 +4,22 @@
       <div id="topOfIndexWrapper">
         <slider></slider>
         <categorie :mainCats="JSON.parse(main_categories)"></categorie>
+        <!-- <categorie></categorie> -->
       </div>
+    </div>
+    <div class="shouldCollapse">
+      <flip-card></flip-card>
     </div>
     <div style="width: 100%;overflow:hidden;">
       <comments></comments>
     </div>
-	<div class="shouldCollapse">
-		<flip-card></flip-card>
-	</div>
+	
 
 
 
-    <!-- <expanding-card></expanding-card> -->
+    <!-- <expanding-card></expanding-card> 
 
-    <!-- <extra-sign-up></extra-sign-up> -->
+    <extra-sign-up></extra-sign-up>  -->
      <div class="allCards shouldCollapse maxIs">
       <card
         cardTitle="پر فروش ترین ها"
@@ -56,8 +58,8 @@ import flipCard from "./flipCard/flipCard.vue";
 import categorie from "./categorie/categorie.vue";
 import expandingCard from "./expandingCard/expandingCard.vue";
 import extraSignUp from "./extraSignUp/extraSignUp.vue";
-import customers from "./customers/customers.vue"
-import comments from "./comments/comments.vue"
+import customers from "./customers/customers.vue";
+import comments from "./comments/comments.vue";
 export default {
   components: {
     slider,
@@ -68,18 +70,24 @@ export default {
     extraSignUp,
     expandingCard,
     customers,
-    comments
+    comments,
   },
-  props: ["products", "main_categories", "posts","best_sellers","new_products"],
-  mounted(){
+  props: [
+    "products",
+    "main_categories",
+    "posts",
+    "best_sellers",
+    "new_products",
+  ],
+  mounted() {
     console.log(JSON.parse(this.best_sellers));
   },
 };
 </script>
 
 <style>
-.shouldCollapse{
-	width:90% !important;
+.shouldCollapse {
+  width: 90% !important;
 }
 .digiCardIndex {
   margin-top: 50px;
@@ -114,7 +122,6 @@ export default {
   grid-area: new;
 }
 
-
 .titleCard {
   display: flex;
   width: 100%;
@@ -148,9 +155,9 @@ export default {
   #sideSliderCats {
     display: none;
   }
-  .shouldCollapse{
-	width:100% !important
-}
+  .shouldCollapse {
+    width: 100% !important;
+  }
 }
 @media (max-width: 800px) {
   #topOfIndexWrapper {

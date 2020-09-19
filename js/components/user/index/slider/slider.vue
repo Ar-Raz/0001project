@@ -2,31 +2,41 @@
 	<div id="slider">
 		<div id="sliderWrapper">
 			<div class="active slide">
-				<img src="/images/ec1.png" alt="">
+				<img src="/images/slider1.jpg" alt="">
 				<div class="container">
 					<div class="containerWrapper">
-						<p>شرینگ پک</p>
+						<p>خط تولیند سیم و کابل</p>
 						<!-- <p>انواع شرینگ پک فلان فلان فلانف فلان</p> -->
 						<button class='submit'>مشاهده</button>
 					</div>
 				</div>
 			</div>
 			<div class="slide">
-				<img src="/images/ec2.png" alt="">
+				<img src="/images/slider2.jpg" alt="">
 				<div class="container">
 					<div class="containerWrapper">
-						<p>شرینگ پک</p>
+						<p>خط تولید لنت</p>
+						<!-- <p>انواع شرینگ پک فلان فلان فلانف فلان</p> -->
+						<button class='submit'>مشاهده</button>
+					</div>
+				</div>
+			</div>
+			<div class="slide">
+				<img src="/images/slider3.jpg" alt="">
+				<div class="container">
+					<div class="containerWrapper">
+						<p>شیرینگ پک</p>
 						<!-- <p>انواع شرینگ پک فلان فلان فلانف فلان</p> -->
 						<button class='submit'>مشاهده</button>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="indicators" >
+		<!-- <div class="indicators" >
 			<div :id='index+1' v-for="(item,index) in slides" v-if='index==0' class='active' :key="index" @click='indicateSlide($event)'>{{index+1}}</div>
 			<div :id='index+1' v-else @click='indicateSlide($event)'>{{index+1}}</div>
 
-		</div>
+		</div> -->
 		<div class="controlls">
 			<div class="pre" @click="pre()"><svg viewBox="0 0 100 100"><path d="M 50,0 L 60,10 L 20,50 L 60,90 L 50,100 L 0,50 Z" class="arrow" transform="translate(85,100) rotate(180)"></path></svg></div>
 			<div class="next" @click='next()'><svg viewBox="0 0 100 100"><path d="M 50,0 L 60,10 L 20,50 L 60,90 L 50,100 L 0,50 Z" class="arrow" transform="translate(85,100) rotate(180)"></path></svg></div>
@@ -132,7 +142,7 @@
 	}
 	
 	img{
-		width:100%
+		width:100%;
 	}
 	#sliderWrapper{
 		display:flex;
@@ -141,17 +151,14 @@
 	}
 	.slide{
 		position: relative;
-		
 		display:none;
 		animation: slide 2s ease;
 	}
-	.slide,#slider{
+	/*.slide,#slider{
 		max-height: max-content;
-	}
+	}*/
 	#slider{
 		position:relative;
-		width:800px;
-		max-height:max-content;
 		background-color: #ffffff
 	}
 	.container{
@@ -217,11 +224,11 @@
 		}
 	@keyframes slide{
 		0%{
-			opacity:0.2;
+			/* opacity:0.2; */
 			transform: scale(1.2);
 		}
 		100%{
-			opacity:1;
+			/* opacity:1; */
 			transform:scale(1)
 		}
 	}

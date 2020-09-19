@@ -2,7 +2,7 @@
 	<div id="flatMenu" @click="toggleSubMenu(),toggleOverFlow()">
 		<div id="flatMenuWrapper" @click='prevent'>
 			<ul>
-			    <li class="parentLi" v-for="item in getCats">
+			    <li class="parentLi" v-for="(item,i) in getCats" :key="i">
 
 
 			    	<div class="link" @click="openMySubMenu($event)">
@@ -13,7 +13,7 @@
 			    	
 
 			    	<ul class="subMenu">
-			    		<li v-for="subs in item.subs"><a :href="getHref(subs.title)">{{subs.title}}</a></li>
+			    		<li v-for="(subs,ind) in item.sub_category_of" :key="ind" class="prog"><a class="prog" :href="getHref(sub_category_of.title)">{{sub_category_of.title}}</a></li>
 			    	</ul>
 
 
@@ -100,8 +100,12 @@
 				'toggleSubMenu'
 			]),
 			prevent(e){
-				e.stopPropagation();
-				e.preventDefault();
+				// if(!e.target.classList.contains("prog"))
+				// {
+					e.stopPropagation();
+					e.preventDefault();
+				//}
+				
 				
 				
 			},
@@ -129,7 +133,7 @@
 					sub.style.height='0px'
 				});
 				if(height=="0px"){
-					next.style.height  =`${(next.querySelectorAll('li').length)*42}px`
+					next.style.height  =`${(next.querySelectorAll('li').length)*52}px`
 				}else{
 					next.style.height = '0px'
 				}
@@ -151,6 +155,7 @@
 			this.toggleBodyOverFlow('hidden')
 			menuWrapper.style.right="0"
 			this.cats=this.$store.getters.getCatsWithSubs
+			console.log(this.cats)
 
 			
 
@@ -162,7 +167,9 @@
 		},
 		computed:{
 			getCats(){
-				return this.cats
+				// return this.cats
+				console.log(this.$store.getters.getCatsWithSubs)
+				return this.$store.getters.getCatsWithSubs
 			}
 		}
 		

@@ -18,7 +18,64 @@
                                 </div>
                             </div>
                         </li>
+
                     </template>
+                    <!-- <li class="parentLi"><arrow></arrow>  دسته 1
+                            <div class="sideSliderSubmenu">
+                                <div class="subTitleWrapper">
+                                    <div class="SubTitle"><p>دسته 1</p></div>
+                                    <ul>
+                                        <li><a href="#">زیر دسته 1</a></li>
+                                        <li><a href="#">زیر دسته 1</a></li>
+                                        <li><a href="#">زیر دسته 1</a></li>
+                                        <li><a href="#">زیر دسته 1</a></li>
+                                        <li><a href="#">زیر دسته 1</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="parentLi"><arrow></arrow>  دسته 1
+                            <div class="sideSliderSubmenu">
+                                <div class="subTitleWrapper">
+                                    <div class="SubTitle"><p>دسته 1</p></div>
+                                    <ul>
+                                        <li><a href="#">زیر دسته 1</a></li>
+                                        <li><a href="#">زیر دسته 1</a></li>
+                                        <li><a href="#">زیر دسته 1</a></li>
+                                        <li><a href="#">زیر دسته 1</a></li>
+                                        <li><a href="#">زیر دسته 1</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="parentLi"><arrow></arrow>  دسته 1
+                            <div class="sideSliderSubmenu">
+                                <div class="subTitleWrapper">
+                                    <div class="SubTitle"><p>دسته 1</p></div>
+                                    <ul>
+                                        <li><a href="#">زیر دسته 1</a></li>
+                                        <li><a href="#">زیر دسته 1</a></li>
+                                        <li><a href="#">زیر دسته 1</a></li>
+                                        <li><a href="#">زیر دسته 1</a></li>
+                                        <li><a href="#">زیر دسته 1</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="parentLi"><arrow></arrow>  دسته 1
+                            <div class="sideSliderSubmenu">
+                                <div class="subTitleWrapper">
+                                    <div class="SubTitle"><p>دسته 1</p></div>
+                                    <ul>
+                                        <li><a href="#">زیر دسته 1</a></li>
+                                        <li><a href="#">زیر دسته 1</a></li>
+                                        <li><a href="#">زیر دسته 1</a></li>
+                                        <li><a href="#">زیر دسته 1</a></li>
+                                        <li><a href="#">زیر دسته 1</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li> -->
                     
                 </ul>
             </div>
