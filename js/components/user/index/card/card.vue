@@ -70,7 +70,7 @@
 				return desc.length>130 ? desc.substring(0,130)+"...." : desc
 			},
 			getSlug(slug){
-				return `/products/${slug}`
+				return `/products/product-detial/${slug}`
 			},
 			reCalculatePer(){
 				let per=2
