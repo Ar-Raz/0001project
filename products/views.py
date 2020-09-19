@@ -248,10 +248,20 @@ def products_list_view(request):
     best_sellers_json_string = json.dumps(sered_best_seller_products)
 
 
+    products_quantity = queryset.count()
+    number_of_pages = products_quantity/12
+    current_page = 1
+
+    page_data = { "current_page" : current_page, "number_of_pages" : number_of_pages }
+    json_page_data = json.dumps(page_data)
+
+
+
     context = {
         'products': json_string,
         'new_products' : new_products_json_string,
         'best_sellers' : best_sellers_json_string,
+        'pageData' : json_page_data,
     }
 
     return render(request, 'views/products.html', context)
@@ -328,25 +338,23 @@ def user_panel_view(request):
 
 
 
-def product_paginated(request, page):
-    page_number = page
-    products = Product.objects.all()
-    products_quantity = Product.objects.all().count()
-    products_pages = products_quantity/12
-    first_obj = 12*(page_number-1)
-    last_obj = 12*(page)
+def paginated_products(request, page):
 
-    page_products = products[first_obj:last_obj]
-    serialized_products = ProductDetailSerializer(page_products, many=True).data
-    json_products_data = json.dumps(
-        serialized_products
-        )
-    previous_page = page - 1
-    next_page = page + 1
-    json_page_data = f'[{{ "previous_page":{previous_page}, "next_page":{next_page}}}]'
+    products = Product.objects.all()
+    products_quantity = products.count()
+    number_of_pages = products_quantity/12
+    current_page = int(page)
+    next_page = int(page) + 1
+    previous_page = int(page) - 1
+    current_page_products = products[(current_page-1)*12 : current_page*12]
+    sered_product = ProductDetailSerializer(current_page_products, many=True).data
+    json_product_string = json.dumps(sered_product)
+
+    page_data = { "current_page" : current_page, "number_of_pages" : number_of_pages }
+    json_page_data = json.dumps(page_data)
 
     context = {
-        'products': json_products_data,
-        'pageData': json_page_data,
+        "products" : current_page_products,
+        "pageData" : json_page_data,
     }
     return render(request, 'views/products.html', context)

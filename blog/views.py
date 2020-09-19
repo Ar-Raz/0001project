@@ -91,10 +91,22 @@ def post_list_view(request):
 
 def post_list(request):
     posts = Post.objects.all()
-    serialized = PostSerializer(posts, many=True).data
+    posts_quantity = posts.count()
+    if type(posts_quantity/12) == type(1.6):
+        page_numbers = int(posts_quantity/12)  + 1
+    else:
+        page_numbers = int(posts_quantity/12)
+
+    
+    current_posts = posts[0:12]
+    serialized = PostSerializer(current_posts, many=True).data
     post_json_string = json.dumps(serialized)
+
+    page_data = {"number_of_pages" : page_numbers, "current_page" : 1}
+    json_page_data = json.dumps(page_data)
     context = {
         'posts' : post_json_string,
+        'pageData' : json_page_data,
     }
     return render(request, 'views/blog.html', context)
 
@@ -109,3 +121,28 @@ def post_detail(request, slug):
         'post' : post_json_string
     }
     return render(request, 'views/singleBlogPost.html', context)
+
+
+def paginated_post(request, slug):
+    posts = Post.objects.all()
+    
+    posts_quantity = posts.count()
+    if type(posts_quantity/12) == type(1.6):
+        page_numbers = int(posts_quantity/12)  + 1
+    else:
+        page_numbers = int(posts_quantity/12)
+
+    current_posts = posts[(page-1)*12 : page*12]
+    sered_post = PostDetailSerializer(current_posts, many=True).data 
+    json_posts_string = json.dumps(sered_post)
+
+    current_page = page 
+    page_data = {"current_page" : current_page, "number_of_pages" : page_numbers}
+    json_page_data = json.dumps(page_data)
+
+    context == {
+        'posts' : json_posts_string,
+        'pageData' : json_page_data, 
+    }
+
+    return render(request, 'views/blog.html', context)

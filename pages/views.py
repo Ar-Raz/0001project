@@ -40,31 +40,25 @@ class IndexView(View):
     def get(self, *args, **kwargs):
         try:
             products_list = Product.objects.all()
+
             categories = Category.objects.all()
-            main_categories = MainCategory.objects.all()
-            posts = Post.objects.all()[:3]
             categories_ser = CategorySerializer(categories, many=True).data
-            main_categories_ser = MainCategorySerializer(main_categories, many=True).data
-            post_ser = PostSerializer(posts, many=True).data
             categories_ser_json = json.dumps(categories_ser)
+
+
+            main_categories = MainCategory.objects.all()
+            main_categories_ser = MainCategorySerializer(main_categories, many=True).data
             main_categories_ser_json =json.dumps(main_categories_ser)
+
+
+
+            posts = Post.objects.all()[:3]
+            post_ser = PostSerializer(posts, many=True).data
             post_ser_json = json.dumps(post_ser)
 
             product_comments = ProductComment.objects.all()[0:10]
-            sered_comments = ProductCommentSerializer(product_comments, many=True).date
+            sered_comments = ProductCommentSerializer(product_comments, many=True).data
             json_comments = json.dumps(sered_comments)
-
-
-            paginator = Paginator(products_list, 12)
-            page = self.request.GET.get('page')
-
-            # try:
-            #     products = paginator.page(page)
-            # except PageNotAnInteger:
-            #     products = paginator.page(1)
-            #
-            # except EmptyPage:
-            #     products = paginator.page(paginator.num_pages)
 
             products_ser = ProductDetailSerializer(products_list, many=True).data
             products_ser_json = json.dumps(products_ser)
@@ -84,7 +78,6 @@ class IndexView(View):
                 'categories' : categories_ser_json,
                 'main_categories' : main_categories_ser_json,
                 'posts' : post_ser_json,
-                'page' : page,
                 'new_products' : new_products_json_string,
                 'best_sellers' : best_sellers_json_string,
                 'comments' : json_comments,
@@ -138,7 +131,7 @@ def test(request):
 
 def aboutus(request):
     obj = AboutUs.objects.all()[0]
-    sered_qs = AboutUsSerializer(obj).date
+    sered_qs = AboutUsSerializer(obj).data
     json_about_us_string =json.dumps(sered_qs)
 
     return render(request, "aboutUs.html",
@@ -148,7 +141,7 @@ def aboutus(request):
 class SearchView(View):
     def get(self, request, *args, **kwargs):
         queryset = Product.objects.all()
-        query = request.GET.get('q')
+        query = json.loads(request.GET.get('q'))
         if query:
             queryset = queryset.filter(
                 Q(title__icontains=query)
