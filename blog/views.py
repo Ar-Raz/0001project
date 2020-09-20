@@ -123,7 +123,7 @@ def post_detail(request, slug):
     return render(request, 'views/singleBlogPost.html', context)
 
 
-def paginated_post(request, slug):
+def paginated_post(request, page):
     posts = Post.objects.all()
     
     posts_quantity = posts.count()

@@ -6,4 +6,5 @@ urlpatterns = [
     path('', views.post_list_view),
     path('posts/', views.post_list),
     path('post/<slug>/', views.post_detail),
+    path('post/<int:page>', views.paginated_post),
 ]

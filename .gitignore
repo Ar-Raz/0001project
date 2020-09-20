@@ -5,6 +5,7 @@ backup
 .idea
 .env
 env
+envv
 static
 frontend/node_modules
 node_modules
