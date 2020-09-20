@@ -64,9 +64,9 @@ class MiniOrderView(View):
 class MiniOrderCreation(APIView):
 
     def post(self, request, format=None):
-        email = request.POST.get("email", "")
-        approval = request.POST.get("approval", "")
-        username = request.POST.get("username", "")
+        email = request.data.get("email")
+        approval = request.data.get("approval")
+        username = request.data.get("username")
 
         if email and approval and username:
             order = MiniOrder.objects.create(
@@ -78,7 +78,7 @@ class MiniOrderCreation(APIView):
             return Response({
                     "message" : "درخواست شما با موفقیت ثبت شد"
                 },
-                serializer.data, status=status.HTTP_201_CREATED)
+                 status=status.HTTP_201_CREATED)
             
         return Response({
                 "message" : "فیلد را درست وارد کن"
