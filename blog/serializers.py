@@ -79,14 +79,14 @@ class PostDetailSerializer(serializers.ModelSerializer):
             'slug',
             'author',
             'comments',
-            'get_comment',
+            
         )
 
     def get_author(self, obj):
         return UserSerializer(obj.author).data
 
     def get_comments(self, obj):
-        return CommentSerializer(obj.comment_set.all(), many=True).data
+        return CommentSerializer(obj.get_comment, many=True).data
 
 
 class CommentsUndetailedSerializer(serializers.ModelSerializer):

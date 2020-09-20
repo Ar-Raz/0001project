@@ -140,7 +140,7 @@ def paginated_post(request, page):
     page_data = {"current_page" : current_page, "number_of_pages" : page_numbers}
     json_page_data = json.dumps(page_data)
 
-    context == {
+    context = {
         'posts' : json_posts_string,
         'pageData' : json_page_data, 
     }

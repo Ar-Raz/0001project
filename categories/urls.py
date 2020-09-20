@@ -6,5 +6,5 @@ from . import views
 
 urlpatterns = [
     path('', views.category_list_view, name="categories-list"),
-    path('<name>/', views.by_category, name="by_category"),
+    path('<name>', views.by_category, name="by_category"),
 ]
