@@ -132,7 +132,7 @@ def paginated_post(request, page):
     else:
         page_numbers = int(posts_quantity/12)
 
-    current_posts = posts[(page-1)*12 : page*12]
+    current_posts = posts[(page-1)*3 : page*3]
     sered_post = PostDetailSerializer(current_posts, many=True).data 
     json_posts_string = json.dumps(sered_post)
 

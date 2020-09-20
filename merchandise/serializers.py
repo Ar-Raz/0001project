@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import OrderItem, Order
+from .models import OrderItem, Order, MiniOrder
 
 from products.serializers import ProductDetailSerializer
 from users.serializers import UserSerializer, ProducerProfileDetailSerializer
@@ -45,3 +45,20 @@ class OrderSerializer(serializers.ModelSerializer):
         return OrderItemSerializer(obj.items.all(), many=True).data
 
 
+
+class MiniOrderSerializer(serializers.ModelSerializer):
+    product = serializers.SerializerMethodField()
+
+    class Meta:
+        model = MiniOrder
+        fields = (
+            'id',
+            'email',
+            'name',
+            'approvals',
+            'product',
+        )
+
+
+    def get_product(self, obj):
+        return ProductSerailizer(obj.product).data

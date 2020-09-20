@@ -1,12 +1,24 @@
 from rest_framework import viewsets, status, permissions, authentication
+from rest_framework.generics import CreateAPIView
+from rest_framework.permissions import AllowAny
+from rest_framework.views import APIView
 
 from .models import Order, OrderItem, MiniOrder
-from .serializers import OrderSerializer, OrderItemSerializer
+from .serializers import (
+    OrderSerializer, 
+    OrderItemSerializer, 
+    MiniOrderSerializer
+    )
 
 from django.views import View
 from django.contrib import messages
 
 from django.shortcuts import redirect, reverse
+
+class MiniOrderCreateAPIView(CreateAPIView):
+    permission_classes = (AllowAny,)
+    serializer_class = MiniOrderSerializer
+    queryset = MiniOrder.objects.all()
 
 class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
@@ -47,3 +59,28 @@ class MiniOrderView(View):
         else:
             messages.error(request, "فرم را درست وارد کنید ")
             return redirect(reverse("products:product_detail", kwargs={'slug': slug}))
+
+
+class MiniOrderCreation(APIView):
+
+    def post(self, request, format=None):
+        email = request.POST.get("email", "")
+        approval = request.POST.get("approval", "")
+        username = request.POST.get("username", "")
+
+        if email and approval and username:
+            order = MiniOrder.objects.create(
+                    email=email,
+                    approval=approval,
+                    username=username,
+                )
+            order.save()
+            return Response({
+                    "message" : "درخواست شما با موفقیت ثبت شد"
+                },
+                serializer.data, status=status.HTTP_201_CREATED)
+            
+        return Response({
+                "message" : "فیلد را درست وارد کن"
+            },
+            serializer.errors, status=status.HTTP_400_BAD_REQUEST)

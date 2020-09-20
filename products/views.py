@@ -338,11 +338,12 @@ def user_panel_view(request):
 
 
 
-def paginated_products(request, page):
+def paginated_products(request):
 
     products = Product.objects.all()
     products_quantity = products.count()
     number_of_pages = products_quantity/12
+    page = request.GET.get("page","number")
     current_page = int(page)
     next_page = int(page) + 1
     previous_page = int(page) - 1
@@ -357,4 +358,4 @@ def paginated_products(request, page):
         "products" : current_page_products,
         "pagination" : json_page_data,
     }
-    return render(request, 'views/products.html', context)
+    return render(request, 'products.html', context)
