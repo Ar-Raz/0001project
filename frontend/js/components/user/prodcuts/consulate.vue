@@ -136,4 +136,7 @@
     {
         direction: ltr;
     }
+    .inputs{
+        margin-top:5px
+    }
 </style>

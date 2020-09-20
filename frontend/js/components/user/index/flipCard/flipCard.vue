@@ -1,30 +1,25 @@
 <template>
     <div id="fliped" class='lax' data-lax-preset="spin fadeInOut">
-        <div id="flipedWrapper">
+        <div id="flipedWrapper" class="flipCardGlider">
             <card
-                class='cardInFlipcCard'
-                title="تضمین کیفیت"
-                img="/images/cup.png"
-                descs="تضمین کیفیت تمامی محصولات"
+                title="مرجوعی کالا"
+                svg='/images/svg/box.svg'
             ></card>
             <card 
-                class='cardInFlipcCard'
-                title="گارانتی تضمینی"
-                img="/images/shield.png"
-                descs="گارانتی تمام محصولا 10 ساله"
+                title="تایید و کنترل کیفیت"
+                svg='/images/svg/confirm.svg'
             ></card>
-            <card
-                class='cardInFlipcCard'
-                title="گارانتی تضمینی"
-                img="/images/shield.png"
-                descs="گارانتی تمام محصولا 10 ساله"
+            <card 
+                title="دسترسی به تامین کنندگان"
+                svg='/images/svg/networking.svg'
             ></card>
-            <card
-                class='cardInFlipcCard'
-                title="گارانتی تضمینی"
-                img="/images/cup.png"
-                descs="گارانتی تمام محصولا 10 ساله"
+            <card 
+                title="گارانتی"
+                svg='/images/svg/shield(1).svg'
             ></card>
+
+
+            
         </div>
     </div>
 
@@ -44,16 +39,24 @@
     #flipedWrapper{
         width:100%;
         display:flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        padding:50px;
+        justify-content: space-between;
+        overflow-x:auto
     }
     #fliped{
         width:100%;
         display:flex;
         justify-content: center;
-        /* margin:50px 0; */
+    
         margin-top:50px;
         background: #ffffff;
+    }
+    #flipedWrapper::-webkit-scrollbar {
+  display: none;
+    }
+
+
+    #flipedWrapper {
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
     }
 </style>

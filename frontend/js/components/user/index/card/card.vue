@@ -1,7 +1,7 @@
 <template>
 	<div class="card maxIs">
 		
-		<div class="splide">
+		<div :id="id" :class="getClass()">
 			<div class="titleCard"><p>{{cardTitle}}</p></div>
 			<div class="splide__track">
 				<ul class="splide__list">
@@ -28,114 +28,6 @@
 						</div>
 					
 					</li>
-					
-					<!-- <li class="splide__slide">
-						<div class="singleSlide">
-							<div class="singleSlideWrapper">
-								<div class="img">
-									<img src="/images/abchasb.png" alt="">
-								</div>
-								<div class="descs">
-									<div class="title">
-										<a class="link" href="#">اب چسب</a>
-									</div>
-									<div class="descsP">
-										<p>فلان لان فلان لان للللللللان فلانل الن انل نفنلفننفئ لئفنئ لئنفثنئل </p>
-									</div>
-									<div class="link">
-										<a class="submit">مشاهده</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					
-					</li>
-
-					<li class="splide__slide">
-						<div class="singleSlide">
-							<div class="singleSlideWrapper">
-								<div class="img">
-									<img src="/images/htest2.jpg" alt="">
-								</div>
-								<div class="descs">
-									<div class="title">
-										<a class="link" href="#">اب چسب</a>
-									</div>
-									<div class="descsP">
-										<p>فلان لان فلان لان للللللللان فلانل الن انل نفنلفننفئ لئفنئ لئنفثنئل </p>
-									</div>
-									<div class="link">
-										<a class="submit">مشاهده</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					
-					</li><li class="splide__slide">
-						<div class="singleSlide">
-							<div class="singleSlideWrapper">
-								<div class="img">
-									<img src="/images/bandRole.png" alt="">
-								</div>
-								<div class="descs">
-									<div class="title">
-										<a class="link" href="#">اب چسب</a>
-									</div>
-									<div class="descsP">
-										<p>فلان لان فلان لان للللللللان فلانل الن انل نفنلفننفئ لئفنئ لئنفثنئل </p>
-									</div>
-									<div class="link">
-										<a class="submit">مشاهده</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					
-					</li>
-					
-					<li class="splide__slide">
-						<div class="singleSlide">
-							<div class="singleSlideWrapper">
-								<div class="img">
-									<img src="/images/abchasb.png" alt="">
-								</div>
-								<div class="descs">
-									<div class="title">
-										<a class="link" href="#">اب چسب</a>
-									</div>
-									<div class="descsP">
-										<p>فلان لان فلان لان للللللللان فلانل الن انل نفنلفننفئ لئفنئ لئنفثنئل </p>
-									</div>
-									<div class="link">
-										<a class="submit">مشاهده</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					
-					</li>
-
-					<li class="splide__slide">
-						<div class="singleSlide">
-							<div class="singleSlideWrapper">
-								<div class="img">
-									<img src="/images/htest2.jpg" alt="">
-								</div>
-								<div class="descs">
-									<div class="title">
-										<a class="link" href="#"><p>اب چسب</p></a>
-									</div>
-									<div class="descsP">
-										<p>فلان لان فلان لان للللللللان فلانل الن انل نفنلفننفئ لئفنئ لئنفثنئل </p>
-									</div>
-									<div class="link">
-										<a class="submit">مشاهده</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					
-					</li> -->
 				</ul>
 			</div>
 		</div>
@@ -143,7 +35,7 @@
 </template>
 <script>	
     export default{
-		props:['products','cardTitle'],
+		props:['products','cardTitle',"id"],
 		data(){
 			return{
 				container:null,
@@ -161,7 +53,7 @@
 		mounted(){
 			this.container=document.querySelector('.cardWrapper');
 			let per=this.reCalculatePer()
-			const glide=new Splide( '.splide',{
+			const glide=new Splide( `#${this.id}`,{
 					type   : 'loop',
 					perPage: per,
 					perMove: 1,
@@ -172,22 +64,13 @@
 					glide.options.perPage=pper
 				})
 				console.log('from card',this.products)
-				
-				// glide.on('resize',()=>{
-				// 	let per=this.reCalculatePer()
-					
-				// 	glide.options.perPage=per
-				// })
-			
-			
-			
 		},
         methods:{
 			getDescription(desc){
 				return desc.length>130 ? desc.substring(0,130)+"...." : desc
 			},
 			getSlug(slug){
-				return `/products/${slug}`
+				return `/products/product-detial/${slug}`
 			},
 			reCalculatePer(){
 				let per=2
@@ -273,6 +156,9 @@
 			getImage(img){
 				console.log(img)
 				return '/images/کیسه-پر-کنCBE-NWB-300x300.png'
+			},
+			getClass(){
+				return `splide ${this.id}`
 			}
 		}
     }
@@ -325,6 +211,7 @@
 	}
 	.singleSlide{
 		width:280px;
+		padding:5px;
 		margin-top:10px;
 	}
 	.link{

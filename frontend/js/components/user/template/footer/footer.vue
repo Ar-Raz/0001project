@@ -60,6 +60,7 @@
     margin: auto;
     height: 3px;
     background-color: #9f9f9f;
+	margin-top:50px
 	}
 	input{
 		border:1px solid rgb(184, 184, 184);

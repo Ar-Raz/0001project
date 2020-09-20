@@ -22,11 +22,20 @@ import productZoom from './components/user/product/productZoom.vue'
 import signup from "./components/user/signup/signup.vue"
 import products from "./components/user/prodcuts/products.vue"
 import filtering from "./components/user/prodcuts/filtering.vue"
-// import userPanel from "./components/user/userPanel/userPanel.vue"
+import userPanel from "./components/user/userPanel/userPanel.vue"
 import category from "./components/user/category/category.vue"
 import doneMessage from './components/user/template/doneMessage/doneMessage.vue'
 import blog from "./components/blog/blog/blog.vue"
 import singleBlogPost from './components/blog/blogPost/blogPost.vue'
+import sellInDamir from "./components/abouts/sellInDamir.vue"
+import buyIndamir from "./components/abouts/buyInDamir.vue"
+import aboutUs from "./components/abouts/aboutUs.vue"
+import aboutDamir from "./components/abouts/aboutDamirco.vue"
+import rulesToUse from "./components/abouts/rulesToUse.vue"
+import privacy from "./components/abouts/privacy.vue"
+
+
+
 import {routes} from "./routes.js"
 import ZoomOnHover from "vue-zoom-on-hover";
 vue.use(ZoomOnHover);
@@ -53,7 +62,13 @@ const app=new vue({
 		category,
 		doneMessage,
 		blog,
-		singleBlogPost
+		singleBlogPost,
+		sellInDamir,
+		buyIndamir,
+		aboutUs,
+		aboutDamir,
+		rulesToUse,
+		privacy
 	},
 	store,
 	// router,

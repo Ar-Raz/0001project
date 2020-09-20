@@ -11,9 +11,6 @@
 
 
 <style scoped>
-	#mission{
-		margin:20px;
-	}
 	img{
 		width:80px;
 	}

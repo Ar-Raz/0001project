@@ -2,7 +2,7 @@ from django.db import models
 from categories.models import Category
 from users.models import User
 from django.contrib.contenttypes.fields import GenericRelation
-from django.utils.encoding import python_2_unicode_compatible
+# from django.utils.encoding import python_2_unicode_compatible
 from hitcount.models import HitCount, HitCountMixin
 from django.template.defaultfilters import slugify
 from django.shortcuts import reverse
@@ -19,7 +19,7 @@ class Comment(models.Model):
     def __str__(self):
         return self.user.username
 
-@python_2_unicode_compatible
+# @python_2_unicode_compatible
 class Post(models.Model):
     title = models.CharField(max_length=1024, verbose_name="نام پست")
     short_description = models.TextField(verbose_name="توضیح پیش نمایش")

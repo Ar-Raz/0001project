@@ -18,6 +18,10 @@ module.exports = {
         loader: 'vue-loader'
       },
       {
+        test: /\.svg$/,
+        loader: 'svg-inline-loader'
+      },
+      {
         test: /\.js$/,
         loader: 'babel-loader'
       },

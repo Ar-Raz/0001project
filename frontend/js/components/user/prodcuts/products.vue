@@ -72,12 +72,11 @@ img.normal{
      import {adjustElFromTop} from "../../user/mixIns/adjustElFromTop.js"
      import {toggleBodyOverFlow} from "../../user/mixIns/toggleBodyOverFlow.js"
     export default{
-        props:['products',"pagination"],
+        props:['products',"paginations"],
         mounted(){
-            console.log(JSON.parse(this.products),this.pagination)
+            console.log('paginationss',JSON.parse(this.paginations))
             const allImages=document.querySelectorAll(".normal")
             allImages.forEach(img=>{
-                console.log(img)
                 img.style.width='100%'
                 img.style.height="300px"
                 const zoom=img.nextElementSibling
@@ -85,6 +84,7 @@ img.normal{
                 zoom.style.width="200%"
             })
         },
+
         components:{
             consulate,
             filtering

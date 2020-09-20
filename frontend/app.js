@@ -43,7 +43,7 @@ app.post("/blob",(req,res)=>{
     
     res.redirect("back")
 })
-app.get("/blog",(req,res)=>{
+app.get("/blog/posts",(req,res)=>{
     return res.render("blog")
 })
 app.get("/singleBlogPost",(req,res)=>{

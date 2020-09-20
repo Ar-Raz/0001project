@@ -84,9 +84,6 @@
 	.formInputsWrapper{
 		margin-top:-15px;
 	}
-	#contactUsSection{
-		margin: 20px
-	}
 
 </style>
 

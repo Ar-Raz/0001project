@@ -7,9 +7,9 @@
                 <div class="section">
                     <p @click='currentComponent="technicalDetail",changeButtonColor($event)'>مشخصات فنی</p>
                 </div>
-                <div class="section">
+                <!-- <div class="section">
                     <p @click='currentComponent="componyDetali",changeButtonColor($event)'>مشخصات شرکت</p>
-                </div>
+                </div> -->
 
                 <div class="section">
                     <p @click='currentComponent="productDescs",changeButtonColor($event)'>توضیحات محصول</p>
@@ -17,7 +17,7 @@
             </div>
             <hr>
             <transition name="swapComp" mode="out-in">
-                <component  :is="currentComponent"></component>
+                <component :product='JSON.parse(product)'  :is="currentComponent"></component>
 
             </transition>
             <comment-section :product='JSON.parse(product)'></comment-section>

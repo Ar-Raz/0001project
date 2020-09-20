@@ -30,11 +30,6 @@
                                 <div class="glider-contain">
                                     <div class="glider">
                                         <div><img @click="changeImage($event)" :src="getImgSrc()" alt=""></div>
-                                        <div><img @click="changeImage($event)" src="/images/1.jpg" alt=""></div>
-                                        <div><img @click="changeImage($event)" src="/images/ours1.png" alt=""></div>
-                                        <div><img @click="changeImage($event)" src="/images/3.jpg" alt=""></div>
-                                        <div><img @click="changeImage($event)" src="/images/4.jpg" alt=""></div>
-                                        <div><img @click="changeImage($event)" src="/images/1.jpg" alt=""></div>
                                         <div><img @click="changeImage($event)" src="/images/2181-moon-black-and-white-wallpaper-file-hd.jpg" alt=""></div>
                                         <div><img @click="changeImage($event)" src="/images/bandRole.png" alt=""></div>
                                         <div><img @click="changeImage($event)" src="/images/signupBack2.jpg" alt=""></div>
