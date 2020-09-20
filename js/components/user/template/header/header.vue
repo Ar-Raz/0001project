@@ -92,21 +92,6 @@
 	.logo img{
 		width:100%
 	}
-	/* @media  (max-width: 833px)
-	{
-		#headerWrapper{
-			display: flex;
-			flex-direction: column;
-		}
-		#headerWrapper div
-		{
-			margin-top: 20px
-		}
-		.phone
-		{
-			margin-bottom: 20px;
-		}
-	} */
 
 </style>
 

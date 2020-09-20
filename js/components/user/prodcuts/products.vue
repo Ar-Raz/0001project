@@ -130,7 +130,7 @@ img.normal{
                 return img
             },
             gethref(slug){
-                return `/products/${slug}`
+                return `/products/product-detial/${slug}`
             }
         }
     }

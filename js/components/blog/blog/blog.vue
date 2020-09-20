@@ -80,9 +80,9 @@ export default {
     singlePost,
     consulate,
   },
-  props:['posts'],
+  props:['posts','pagination'],
   created(){
-    console.log("posts",JSON.parse(this.posts))
+    console.log("pospaginationts",JSON.parse(this.pagination))
   },
   mixins:[toggleBodyOverFlow,adjustElFromTop],
   data(){

@@ -35,6 +35,9 @@
 
 
 <style scoped>
+.firstRow{
+	width:100%
+}
 #thirdRow a{
 	font-size: 12px;
     font-weight: 800;
