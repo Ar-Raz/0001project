@@ -1,5 +1,5 @@
 <template>
-	<div id="flatMenu" @click="toggleSubMenu(),toggleOverFlow()">
+	<div id="flatMenu" v-if='isSubMenu' @click="toggleSubMenu">
 		<div id="flatMenuWrapper" @click='prevent'>
 			<ul>
 			    <li class="parentLi" v-for="(item,i) in getCats" :key="i">
@@ -13,11 +13,47 @@
 			    	
 
 			    	<ul class="subMenu">
-			    		<li v-for="(subs,ind) in item.sub_category_of" :key="ind" class="prog"><a class="prog" :href="getHref(sub_category_of.title)">{{sub_category_of.title}}</a></li>
+			    		<li v-for="(sub,ind) in item.subs" :key="ind" class="prog"><a class="prog" :href="getHref(sub.title)">{{sub.title}}</a></li>
 			    	</ul>
 
 
 			    </li>
+				<!-- <li class="parentLi">
+			    	<div class="link" @click="openMySubMenu($event)">
+			    		<svg viewBox="0 0 100 100"><path d="M 50,0 L 60,10 L 20,50 L 60,90 L 50,100 L 0,50 Z" class="arrow" transform="rotate(180deg)"></path></svg>
+			    		<p>دسته 1</p>
+			    	</div>
+			    	<ul class="subMenu">
+			    		<li class="prog"><a class="prog">زیردسته 1</a></li>
+						<li class="prog"><a class="prog">زیردسته 1</a></li>
+						<li class="prog"><a class="prog">زیردسته 1</a></li>
+						<li class="prog"><a class="prog">زیردسته 1</a></li>
+			    	</ul>
+			    </li>
+				<li class="parentLi">
+			    	<div class="link" @click="openMySubMenu($event)">
+			    		<svg viewBox="0 0 100 100"><path d="M 50,0 L 60,10 L 20,50 L 60,90 L 50,100 L 0,50 Z" class="arrow" transform="rotate(180deg)"></path></svg>
+			    		<p>دسته 1</p>
+			    	</div>
+			    	<ul class="subMenu">
+			    		<li class="prog"><a class="prog">زیردسته 1</a></li>
+						<li class="prog"><a class="prog">زیردسته 1</a></li>
+						<li class="prog"><a class="prog">زیردسته 1</a></li>
+						<li class="prog"><a class="prog">زیردسته 1</a></li>
+			    	</ul>
+			    </li>
+				<li class="parentLi">
+			    	<div class="link" @click="openMySubMenu($event)">
+			    		<svg viewBox="0 0 100 100"><path d="M 50,0 L 60,10 L 20,50 L 60,90 L 50,100 L 0,50 Z" class="arrow" transform="rotate(180deg)"></path></svg>
+			    		<p>دسته 1</p>
+			    	</div>
+			    	<ul class="subMenu">
+			    		<li class="prog"><a class="prog">زیردسته 1</a></li>
+						<li class="prog"><a class="prog">زیردسته 1</a></li>
+						<li class="prog"><a class="prog">زیردسته 1</a></li>
+						<li class="prog"><a class="prog">زیردسته 1</a></li>
+			    	</ul>
+			    </li> -->
 				
 			</ul>
 		</div>
@@ -90,28 +126,23 @@
 
 <script>
 	import {mapActions} from "vuex"
+	import { mapGetters } from 'vuex'
 	import {toggleBodyOverFlow} from "../../mixIns/toggleBodyOverFlow.js"
 	import {adjustElFromTop} from '../../mixIns/adjustElFromTop.js'
 	import axios from "axios"
 	export default{
 		mixins:[toggleBodyOverFlow,adjustElFromTop],
 		methods:{
-			...mapActions([
-				'toggleSubMenu'
-			]),
+			toggleSubMenu(){
+				this.$store.commit("toggleSubMenu")
+				document.body.style.overflow=""
+			},
 			prevent(e){
 				// if(!e.target.classList.contains("prog"))
 				// {
 					e.stopPropagation();
 					e.preventDefault();
 				//}
-				
-				
-				
-			},
-			toggleOverFlow(){
-	
-				this.toggleBodyOverFlow()
 			},
 			openMySubMenu(e){
 				let next
@@ -120,9 +151,6 @@
 				next=parentEl.childNodes[2]
 
 				next.style.transition = "all 0.5s ease-in-out";
-
-				
-				
 				const allSubs=document.querySelectorAll('.subMenu')
 				const height = getComputedStyle(next).height
 				if(height!="0px"){
@@ -139,10 +167,6 @@
 				}
 				
 				
-			},
-			rotateArrow(el){
-				el.style.transition = 'all 0.5s ease-in-out'
-				el.style.transform="rotate(180deg)"
 			},
 			getHref(title){
 				return `/categories/${title}`
@@ -166,6 +190,9 @@
 			}
 		},
 		computed:{
+			 ...mapGetters([
+		  		'isSubMenu'
+	  		]),
 			getCats(){
 				// return this.cats
 				console.log(this.$store.getters.getCatsWithSubs)

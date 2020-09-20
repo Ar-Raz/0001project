@@ -35,14 +35,13 @@
 	#headerWrapper{
 		width: 95%;
 		display: flex;
-		justify-content: space-between;
+		flex-wrap:wrap;
+		justify-content: space-evenly;
 		align-items: center;
 	}
 	#searchBarWrapper{
 		padding:5px;
 		display: flex;
-		
-		
 	}
 	
 	.magnifier img{
@@ -93,7 +92,7 @@
 	.logo img{
 		width:100%
 	}
-	@media  (max-width: 833px)
+	/* @media  (max-width: 833px)
 	{
 		#headerWrapper{
 			display: flex;
@@ -107,7 +106,7 @@
 		{
 			margin-bottom: 20px;
 		}
-	}
+	} */
 
 </style>
 
@@ -115,7 +114,7 @@
 	import axios from "axios"
 	export default{
 		created(){
-			axios.get("/categories-api/categories-list")
+			axios.get("/categories-api")
 			.then(res=>{
 				this.$store.commit("fillCatsWithSubs",res.data)
 				console.log(res.data)
