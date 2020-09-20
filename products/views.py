@@ -261,7 +261,7 @@ def products_list_view(request):
         'products': json_string,
         'new_products' : new_products_json_string,
         'best_sellers' : best_sellers_json_string,
-        'pageData' : json_page_data,
+        'pagination' : json_page_data,
     }
 
     return render(request, 'views/products.html', context)
@@ -355,6 +355,6 @@ def paginated_products(request, page):
 
     context = {
         "products" : current_page_products,
-        "pageData" : json_page_data,
+        "pagination" : json_page_data,
     }
     return render(request, 'views/products.html', context)
