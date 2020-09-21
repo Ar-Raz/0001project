@@ -39,6 +39,12 @@ class OrderItemSerializer(viewsets.ModelViewSet):
 class MiniOrderCreateAPIView(CreateAPIView):
     permission_classes = (AllowAny,)
     serializer_class = MiniOrderSerializer
+    queryset = MiniOrder.objects.all()
+
+    def perform_create(self, serializer):
+        product_name = self.request.data.get('product_name')
+        product = Product.objects.get(title=product_name)
+        serializer.save(product=product)
     
 
 
@@ -79,7 +85,7 @@ class MiniOrderView(View):
 
         if product_name and name and phone_number:
             product = Product.objects.get(title=product_name)
-            slug = product.slug
+            # slug = product.slug
             mini_order = MiniOrder.objects.create(
                 product=product,
                 email=email,
@@ -88,10 +94,10 @@ class MiniOrderView(View):
                 extra_discription=content,
             )
             messages.success(request, "درخواست شما ارسال شد")
-            return redirect(reverse("products:product_detail", kwargs={'slug': slug}))
+            return redirect('/')
         else:
             messages.error(request, "فرم را درست وارد کنید ")
-            return redirect(reverse("products:product_detail", kwargs={'slug': slug}))
+            return render(request, "<p>500</p>",{})
 
 
 

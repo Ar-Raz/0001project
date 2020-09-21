@@ -47,7 +47,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
 
 class MiniOrderSerializer(serializers.ModelSerializer):
-    product = serializers.SerializerMethodField()
+    # product_name = serializers.CharField()
 
     class Meta:
         model = MiniOrder
@@ -57,9 +57,11 @@ class MiniOrderSerializer(serializers.ModelSerializer):
             'name',
             'extra_discription',
             'phone_number',
+            # 'product_name',
             'product',
         )
+        read_only_fields = ['product']
 
 
-    def get_product(self, obj):
-        return ProductSerailizer(obj.product).data
+    # def get_product(self, obj):
+    #     return ProductSerailizer(obj.product).data
