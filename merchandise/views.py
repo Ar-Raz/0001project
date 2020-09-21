@@ -2,6 +2,7 @@ from rest_framework import viewsets, status, permissions, authentication
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
+from rest_framework.response import Response
 
 from .models import Order, OrderItem, MiniOrder
 from .serializers import (
@@ -39,12 +40,33 @@ class OrderItemSerializer(viewsets.ModelViewSet):
 class MiniOrderCreateAPIView(CreateAPIView):
     permission_classes = (AllowAny,)
     serializer_class = MiniOrderSerializer
-    queryset = MiniOrder.objects.all()
 
     def perform_create(self, serializer):
         product_name = self.request.data.get('product_name')
         product = Product.objects.get(title=product_name)
         serializer.save(product=product)
+
+    def post(self, request, *args, **kwargs):
+        name = request.data["username"]
+        email = request.data["email"]
+        product_name =  request.data["product_name"]
+        phone_number =  request.data["phone_number"] 
+        extra_discription =  request.data["extra_discription"]
+        if phone_number and name and product_name:
+            product = Product.objects.get(title=product_name)
+            mini_order = MiniOrder.objects.create(
+                    product=product,
+                    name=name,
+                    email=email,
+                    phone_number=phone_number,
+                    extra_discription=extra_discription,
+                )
+
+
+            return Response({"message" : "درخواست شما با موفقیت ثبت شد"}, status=status.HTTP_201_CREATED)
+        return Response({
+                "message" : "لطفار فرم را تصحیح کنید"
+            }, status=status.HTTP_400_BAD_REQUEST)
     
 
 
