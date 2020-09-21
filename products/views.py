@@ -362,13 +362,3 @@ def paginated_products(request):
     }
     return render(request, 'products.html', context)
 
-
-
-class CreateCommentView(View):
-
-    def post(self, request, *args, **kwargs):
-        username = request.POST.get("username", "").strip()
-        content = request.POST.get("content",'').strip()
-
-        if username and content:
-            comment = ProductComment.objects.
