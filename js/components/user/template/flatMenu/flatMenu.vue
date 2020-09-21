@@ -13,7 +13,7 @@
 			    	
 
 			    	<ul class="subMenu">
-			    		<li v-for="(sub,ind) in item.subs" :key="ind" class="prog"><a class="prog" :href="getHref(sub.title)">{{sub.title}}</a></li>
+			    		<li v-for="(sub,ind) in item.subs" :key="ind"><a class="prog" :href="getHref(sub.title)">{{sub.title}}</a></li>
 			    	</ul>
 
 
@@ -138,11 +138,13 @@
 				document.body.style.overflow=""
 			},
 			prevent(e){
-				// if(!e.target.classList.contains("prog"))
-				// {
-					e.stopPropagation();
-					e.preventDefault();
-				//}
+				e.stopPropagation();
+				e.preventDefault();
+				if(e.target.classList.contains("prog"))
+				{
+					window.location.href=e.target.getAttribute("href")
+				}
+				
 			},
 			openMySubMenu(e){
 				let next

@@ -16,7 +16,7 @@ app.use('/scripts', express.static(__dirname + '/node_modules/bootstrap/dist/'))
 app.get("/",(req,res)=>{
     res.render("index")
 })
-app.use('/users/profile',(req,res)=>{
+app.use('/userPanel',(req,res)=>{
     res.render("userPanel")
 })
 
@@ -34,14 +34,6 @@ app.get("/accounts/login",(req,res)=>{
 
 app.get("/accounts/signup",(req,res)=>{
     res.render("account/signup")
-})
-app.post('/testy',(req,res)=>{
-    console.log(req.body)
-})
-app.post("/blob",(req,res)=>{
-    console.log(req.body)
-    
-    res.redirect("back")
 })
 app.get("/blog/posts",(req,res)=>{
     return res.render("blog")

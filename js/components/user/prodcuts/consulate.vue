@@ -3,21 +3,35 @@
         <div @click='prevent($event)' class="consulateWrapper">
              <div id="email" class="inputs">
                 <div class='formInputsWrapper'>
-                        <input autocomplete="off" name="email" @blur='focusOut($event)' class='inputWithLabelThatShouldStay signupFormInputs' id='consulateUserName' type="text">
-                        <label class='comeUpLabel' for="userName">نام</label>                                                                  
+                        <input v-model="email" autocomplete="off" name="email" @blur='focusOut($event),startValidation("email",$event)' class='inputWithLabelThatShouldStay signupFormInputs' id='userEmailConsulate' type="text">
+                        <label class='comeUpLabel' for="userEmailConsulate">ایمیل</label>                                                                  
                 </div> 
+                 <p class="inputError">فرمت ایمیل اشتباه است</p>
             </div>
-             <div id="email" class="inputs">
+             <div id="name" class="inputs">
                 <div class='formInputsWrapper'>
-                        <input autocomplete="off" name="email" @blur='focusOut($event),startValidation("phone",$event)' class='inputWithLabelThatShouldStay signupFormInputs' id='consulateUserPhone' type="text">
-                        <label class='comeUpLabel' for="consulateUserPhone">شماره تلفن</label>                                                                  
+                        <input style="direction: rtl" v-model="user_name" autocomplete="off" name="username" @blur='focusOut($event)' class='inputWithLabelThatShouldStay signupFormInputs' id='userNameConsulate' type="text">
+                        <label class='comeUpLabel' for="userNameConsulate">نام</label>                                                                  
                 </div>
                 <p class="inputError">فرمت شماره اشتباه است</p> 
             </div>
-            <div>
-                <button @click='consulateRequest' class="submit">ثبت</button>
+            <div id="phone" class="inputs">
+                <div class='formInputsWrapper'>
+                        <input v-model="phone_number"  name="phone_number" @blur='focusOut($event),startValidation("phone",$event)' class='inputWithLabelThatShouldStay signupFormInputs' id='userPhoneConsulate' type="text">
+                        <label class='comeUpLabel' for="userPhoneConsulate">شماره تلفن</label>                                                                  
+                </div>
+                <p class="inputError">فرمت شماره تلفن اشتباه است</p> 
             </div>
-            <input type="hidden" :value="productName">
+             <div id="descs" class="inputs">
+                <div class='formInputsWrapper'>
+                        <textarea style="direction: rtl" v-model="extra_discription" placeholder="توضیحات اضافه"  name="extra_discription" class='inputWithLabelThatShouldStay signupFormInputs' id='userDescs'></textarea>
+                </div>
+            </div>
+
+            <div>
+                <button @click='consulateRequest' class="submit" @click.prevent="sendReq()">ثبت</button>
+            </div>
+            <input type="hidden" :value="productName" name="product_name" >
 
         </div>
     </div>
@@ -27,6 +41,7 @@
 <script>
     import {mapActions} from 'vuex'
     import {validationRules} from '../mixIns/validationMixIn.js'
+    import axios from "axios"
     import {keepStay} from "../mixIns/keepStay.js"
     export default {
         mixins:[validationRules,keepStay],
@@ -66,11 +81,29 @@
                 }
                 error.style.display="block"
                 
+            },
+            sendReq(){
+                console.log("req")
+                axios.post("/merchandise/miniorder",{
+                    name:this.user_name,
+                    email:this.email,
+                    extra_discription:this.extra_discription,
+                    phone_number:this.phone_number,
+                    product_name:this.product_name
+
+                })
+                .then(res=>{
+                    console.log(res.data)
+                })
             }
         },
         data(){
             return{
-                name:""
+                username:"",
+                email:"",
+                extra_discription:"",
+                phone_number:''
+                
             }
         },
         computed:{
@@ -138,5 +171,8 @@
     }
     .inputs{
         margin-top:5px
+    }
+    textarea{
+        width:215.31px;
     }
 </style>

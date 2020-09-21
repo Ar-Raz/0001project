@@ -1,19 +1,15 @@
 <template>
     <div id="sideSliderCats">
         <div id="sideSlidesCatsWrapper">
-            <!-- <div id="hamCats">
-                <ham></ham>
-                دسته بندی
-            </div> -->
             <div id="allCats">
                 <ul>
-                    <template v-for="(c,i) in mainCats">
-                        <li v-if="i<11"  class="parentLi"><arrow></arrow>  {{c.title}} 
+                    <template v-for="(c,i) in getAllcats">
+                        <li v-if="i<11"  class="parentLi"><arrow></arrow>  <p>{{c.title}} </p>
                             <div class="sideSliderSubmenu">
                                 <div class="subTitleWrapper">
                                     <div class="SubTitle"><p>{{c.title}}</p></div>
                                     <ul>
-                                        <li v-if="subI<=5" v-for="(sub,subI) in c.subs"><a :href="getUrl(sub.title)">{{sub.title}}</a></li>
+                                        <li v-if="subI<=5" v-for="(sub,subI) in c.subs" :key="subI"><a :href="getUrl(sub.title)">{{sub.title}}</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -89,22 +85,58 @@
     export default{
         components:{
             ham,
-            arrow
+            arrow,
+            
+        },
+        data(){
+            return {
+                catsList:null,
+                num:null
+            }  
         },
         props:['mainCats'],
-        created(){
-            console.log("cats",this.mainCats)
+        mounted(){
+            this.catsList=this.mainCats
+            window.addEventListener("resie",this.findNum)
+            
+            this.findNum()
         },
         methods:{
             getUrl(url){
                 return `/categories/${url}`
-            }
+            },
+            findNum(){
+                const wrapper=document.querySelector("#sliderWrapper")
+                const inter=setInterval(()=>{
+                    let {height}=window.getComputedStyle(wrapper)
+                    height=height.split("p")
+                    height=+height[0]
+                    if(height!==0){
+                        this.num=Math.floor(+height/26)
+                        this.sliceCats()
+                        clearInterval(inter)
+                    }
+                },500)
+            },
+            sliceCats(){
+                this.catsList=this.catsList.slice(0,this.num)
+            }  
+            
+        },
+        computed:{
+            getAllcats(){
+                return this.catsList  
+            },
+               
         }
     }
 </script>
 
 
 <style scoped>
+#allCats{
+    height: 100%;
+}
     ul li:hover .sideSliderSubmenu{
         display:block;
         animation:fadeIn 0.2s linear
@@ -155,16 +187,18 @@
     }
     #sideSlidesCatsWrapper{
         width:100%;
-        padding:10px;
     }
 
     #sideSliderCats{
         display:flex;
         justify-content: flex-start;
-        width:240px;
     }
     ul{
-        width:100%
+        width:max-content;
+        display:flex;
+        flex-direction:column;
+        justify-content:space-between;
+        height:100%;
     }
     ul>li{
         line-height: 2rem;
@@ -181,6 +215,7 @@
         font-size:14px;
         cursor: pointer;
         text-align: right;
+        padding:2px
     }
     .parentLi:hover .sideSliderSubmenu{
         display:block

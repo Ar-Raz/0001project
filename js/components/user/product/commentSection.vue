@@ -28,14 +28,14 @@
             </div>
             <div id="allComments">
                 <div id="allComentsWrapper">
-                    <div class="singleComment" v-for="(c,i) in product.comments" :key="i">
+                    <div class="singleComment" v-for="(c,i) in comments" :key="i">
                         <div class="singleCommentWrap">
                             <div class="writerDetail">
                                 <div class="date">
                                     <p>تاریخ:16/6/1399</p>
                                 </div>
                                 <div class="name">
-                                    <p>عرفان شفیعی</p>
+                                    <p>{{c.name}}</p>
                                 </div>
                                 
                             </div>
@@ -57,7 +57,7 @@
 <script>
     import {keepStay} from "../mixIns/keepStay.js"
 export default {
-    props:['product'],
+    props:['comments'],
     mixIns:['keepStay']
 }
 </script>

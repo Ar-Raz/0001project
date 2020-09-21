@@ -279,7 +279,7 @@ export default {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        min-width: 250px;
+        width: 200px;
         /*max-width: 400px;*/
         margin:8px;        
     }
@@ -298,7 +298,6 @@ export default {
     }
     .marquee{
         position: relative;
-        width: 5320px;
         /* left:100%; */
         /* animation: moveIt 300s linear infinite */
     }

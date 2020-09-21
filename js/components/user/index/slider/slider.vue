@@ -69,7 +69,7 @@
 					this.index--
 				}
 				this.changeSlide()
-				this.updateCircleIndicator()
+				// this.updateCircleIndicator()
 				this.resetAutoPlay()
 			},
 			next(){
@@ -80,7 +80,7 @@
 					this.index++
 				}
 				this.changeSlide()
-				this.updateCircleIndicator()
+				// this.updateCircleIndicator()
 				this.resetAutoPlay()
 			},
 			changeSlide(){
@@ -92,18 +92,18 @@
 			indicateSlide(e){
 				this.index=e.target.id-1
 				this.changeSlide()
-				this.updateCircleIndicator()
+				// this.updateCircleIndicator()
 				this.resetAutoPlay()
 			},
-			updateCircleIndicator(){
-				for(let i=0;i<this.ind.children.length;i++){
-					this.ind.children[i].classList.remove('active')
-				}
-				this.ind.children[this.index].classList.add("active")
-			},
+			// updateCircleIndicator(){
+			// 	for(let i=0;i<this.ind.children.length;i++){
+			// 		this.ind.children[i].classList.remove('active')
+			// 	}
+			// 	this.ind.children[this.index].classList.add("active")
+			// },
 			autoPlay(){
 				this.next()
-				this.updateCircleIndicator()
+				// this.updateCircleIndicator()
 			},
 			resetAutoPlay(){
 				clearInterval(this.inter)

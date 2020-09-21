@@ -2,10 +2,11 @@
     <div  id='userPanelNavigation' @click='toggleUserPanelNavigation(),toggleBodyOverFlow()'>
         <div id="userPanelNavigationWrapper" @click='prevent($event)'>
             <ul>
-                <li @click="toggleUserPanelNavigation(),toggleBodyOverFlow()"> <router-link to="/userPanel">پروفایل</router-link> <img class='icon' src="/images/profile.png" alt=""></li>
-                <li @click="toggleUserPanelNavigation(),toggleBodyOverFlow()"><router-link to="/userPanel/createProduct">اضافه کردن محصول برای فروش</router-link><img src="/images/sell.png" class='icon' alt=""></li>
-                <li @click="toggleUserPanelNavigation(),toggleBodyOverFlow()"><router-link to="/userPanel/usersList">لیست کاربران</router-link><img src="/images/clipboard.png" class='icon' alt=""></li>
-                <li @click="toggleUserPanelNavigation(),toggleBodyOverFlow()"><router-link to="/userPanel/createBlogPost">اضافه کردن پست بلاگ</router-link><img src="/images/sell.png" class='icon' alt=""></li>
+                <li @click="toggleUserPanelNavigation(),toggleBodyOverFlow()"> <router-link to="/userPanel">پروفایل</router-link> </li>
+                <li @click="toggleUserPanelNavigation(),toggleBodyOverFlow()"><router-link to="/userPanel/createProduct">اضافه کردن محصول برای فروش</router-link></li>
+                <li @click="toggleUserPanelNavigation(),toggleBodyOverFlow()"><router-link to="/userPanel/usersList">لیست کاربران</router-link></li>
+                <li @click="toggleUserPanelNavigation(),toggleBodyOverFlow()"><router-link to="/userPanel/createBlogPost">اضافه کردن پست بلاگ</router-link></li>
+                <li @click="toggleUserPanelNavigation(),toggleBodyOverFlow()"><router-link to="/userPanel/category">اضافه کردن دسته بندی</router-link></li>
 
             </ul>
         </div>
@@ -55,7 +56,7 @@
         background: rgba(0,0,0,0.4);
     }
     #userPanelNavigationWrapper{
-        background:rgb(74, 97, 143);
+        background:#f6f6f4;
         position:absolute;
         right:0;
         top:0;
@@ -78,8 +79,8 @@
         border-bottom:1px solid rgb(206, 187, 187)
     }
     ul li a{
-        padding:10px;
-        color:white;
+        padding:5px;
+        color:black;
     }
     .icon{
         width:30px;

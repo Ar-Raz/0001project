@@ -10,7 +10,7 @@ import './css/prettyCheckbox.css'
 
 
 import vue from 'vue'
-// import vueRouter from 'vue-router'
+import vueRouter from 'vue-router'
 import {store} from './userStore.js'
 import heading from "./components/user/template/header/header.vue"
 import index from "./components/user/index/index.vue"
@@ -39,12 +39,12 @@ import privacy from "./components/abouts/privacy.vue"
 import {routes} from "./routes.js"
 import ZoomOnHover from "vue-zoom-on-hover";
 vue.use(ZoomOnHover);
-// vue.use(vueRouter)
+vue.use(vueRouter)
 
-// const router=new vueRouter({
-// 	routes,
-// 	mode:"history"
-// })
+const router=new vueRouter({
+	routes,
+	mode:"history"
+})
 const app=new vue({
 	el:"#app",
 	components:{
@@ -58,7 +58,7 @@ const app=new vue({
 		signup,
 		products,
 		filtering,
-		// userPanel,
+		userPanel,
 		category,
 		doneMessage,
 		blog,
@@ -71,7 +71,7 @@ const app=new vue({
 		privacy
 	},
 	store,
-	// router,
+	router,
 	// Router
 })
 
