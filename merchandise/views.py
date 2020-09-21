@@ -104,10 +104,10 @@ class MiniOrderView(View):
         phone_number = request.POST.get('phone_number', '').strip()
         content = request.POST.get('extra_discription', '').strip()
         product_name = request.POST.get("product_name", "")
+        product = Product.objects.get(title=product_name)
+        slug = product.slug 
 
         if product_name and name and phone_number:
-            product = Product.objects.get(title=product_name)
-            slug = product.slug
             mini_order = MiniOrder.objects.create(
                 product=product,
                 email=email,
