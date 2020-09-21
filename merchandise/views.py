@@ -39,7 +39,7 @@ class OrderItemSerializer(viewsets.ModelViewSet):
 class MiniOrderCreateAPIView(CreateAPIView):
     permission_classes = (AllowAny,)
     serializer_class = MiniOrderSerializer
-    queryset = MiniOrder.objects.all()
+    
 
 
 class MiniOrderCreation(APIView):
@@ -70,14 +70,15 @@ class MiniOrderCreation(APIView):
 
 class MiniOrderView(View):
 
-    def post(self, request, slug, *args, **kwargs):
-        product = Product.objects.get(slug=slug)
+    def post(self, request, *args, **kwargs):
         email = request.POST.get('email', '').strip()
         name = request.POST.get('username', '').strip()
         phone_number = request.POST.get('phone_number', '').strip()
         content = request.POST.get('extra_discription', '').strip()
+        product_name = request.POST.get("product_name", "").stripe()
 
         if email and name and content:
+            product = Product.objects.get(title=product_name)
             mini_order = MiniOrder.objects.create(
                 product=product,
                 email=email,
