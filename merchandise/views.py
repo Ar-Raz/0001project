@@ -48,10 +48,10 @@ class MiniOrderCreateAPIView(CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         name = request.data["username"]
-        email = request.data["email"]
+        email = request.data["email"] or None
         product_name =  request.data["product_name"]
         phone_number =  request.data["phone_number"] 
-        extra_discription =  request.data["extra_discription"]
+        extra_discription =  request.data["extra_discription"] or None
         if phone_number and name and product_name:
             product = Product.objects.get(title=product_name)
             mini_order = MiniOrder.objects.create(
@@ -107,7 +107,7 @@ class MiniOrderView(View):
 
         if product_name and name and phone_number:
             product = Product.objects.get(title=product_name)
-            # slug = product.slug
+            slug = product.slug
             mini_order = MiniOrder.objects.create(
                 product=product,
                 email=email,
@@ -116,10 +116,10 @@ class MiniOrderView(View):
                 extra_discription=content,
             )
             messages.success(request, "درخواست شما ارسال شد")
-            return redirect('/')
+            return redirect(reverse("products:product_detail", kwargs= { "slug" : slug}))
         else:
             messages.error(request, "فرم را درست وارد کنید ")
-            return render(request, "<p>500</p>",{})
+            return redirect(reverse("products:product_detail", kwargs= { "slug" : slug}))
 
 
 
