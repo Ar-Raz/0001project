@@ -107,7 +107,7 @@ class MiniOrderView(View):
         product = Product.objects.get(slug=product_slug)
         slug = product.slug 
 
-        if product_id and name and phone_number:
+        if product_slug and name and phone_number:
             mini_order = MiniOrder.objects.create(
                 product=product,
                 email=email,

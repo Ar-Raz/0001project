@@ -296,8 +296,10 @@ class ProductDetailView(View):
                 username=username,
             )
             comment.save()
+            messages.success(request, "نظر شما ثبت و در انتظار ببررسی است")
             return redirect(reverse("products:product_detail", kwargs={'slug': slug}))
         else:
+            messages.error(request, "لطفا اطلاعات خود را کامل کنید")
             message = {'message' : "dude fill the fucking form ffs!"}
             json_messsage = json.dumps(message)
             render(request, 'views/product.html', { 'message' : json_messsage} )
@@ -359,3 +361,14 @@ def paginated_products(request):
         "pagination" : json_page_data,
     }
     return render(request, 'products.html', context)
+
+
+
+class CreateCommentView(View):
+
+    def post(self, request, *args, **kwargs):
+        username = request.POST.get("username", "").strip()
+        content = request.POST.get("content",'').strip()
+
+        if username and content:
+            comment = ProductComment.objects.
