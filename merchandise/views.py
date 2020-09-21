@@ -10,15 +10,13 @@ from .serializers import (
     MiniOrderSerializer
     )
 
+from products.models import Product
+
 from django.views import View
 from django.contrib import messages
 
-from django.shortcuts import redirect, reverse
+from django.shortcuts import redirect, reverse, render
 
-class MiniOrderCreateAPIView(CreateAPIView):
-    permission_classes = (AllowAny,)
-    serializer_class = MiniOrderSerializer
-    queryset = MiniOrder.objects.all()
 
 class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
@@ -38,27 +36,10 @@ class OrderItemSerializer(viewsets.ModelViewSet):
         user = self.request.user
         return OrderItem.objects.filter(user=user)
 
-
-class MiniOrderView(View):
-
-    def post(self, request, slug, *args, **kwargs):
-        product = Product.objects.get(slug=slug)
-        email = request.POST.get('email', '').strip()
-        name = request.POST.get('name', '').strip()
-        content = request.POST.get('content', '').strip()
-
-        if email and name and content:
-            mini_order = MiniOrder.objects.create(
-                product=product,
-                email=email,
-                name=name,
-                content=content,
-            )
-            messages.success(request, "درخواست شما ارسال شد")
-            return redirect(reverse("products:product_detail", kwargs={'slug': slug}))
-        else:
-            messages.error(request, "فرم را درست وارد کنید ")
-            return redirect(reverse("products:product_detail", kwargs={'slug': slug}))
+class MiniOrderCreateAPIView(CreateAPIView):
+    permission_classes = (AllowAny,)
+    serializer_class = MiniOrderSerializer
+    queryset = MiniOrder.objects.all()
 
 
 class MiniOrderCreation(APIView):
@@ -84,3 +65,36 @@ class MiniOrderCreation(APIView):
                 "message" : "فیلد را درست وارد کن"
             },
             serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+##########################################################################################
+
+class MiniOrderView(View):
+
+    def post(self, request, slug, *args, **kwargs):
+        product = Product.objects.get(slug=slug)
+        email = request.POST.get('email', '').strip()
+        name = request.POST.get('username', '').strip()
+        phone_number = request.POST.get('phone_number', '').strip()
+        content = request.POST.get('extra_discription', '').strip()
+
+        if email and name and content:
+            mini_order = MiniOrder.objects.create(
+                product=product,
+                email=email,
+                name=name,
+                phone_number=phone_number,
+                extra_discription=content,
+            )
+            messages.success(request, "درخواست شما ارسال شد")
+            return redirect(reverse("products:product_detail", kwargs={'slug': slug}))
+        else:
+            messages.error(request, "فرم را درست وارد کنید ")
+            return redirect(reverse("products:product_detail", kwargs={'slug': slug}))
+
+
+
+# class TestView(View):
+
+#     def get(self, request, *args, **kwargs):
+
+#         return render(request, "products.html", {})

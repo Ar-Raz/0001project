@@ -150,3 +150,8 @@ class SearchView(View):
             'queryset': queryset
         }
         return render(request, 'search_results.html', context)
+
+
+def view(request):
+
+    return render(request, "products.html", {})

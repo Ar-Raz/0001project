@@ -55,7 +55,8 @@ class MiniOrderSerializer(serializers.ModelSerializer):
             'id',
             'email',
             'name',
-            'approvals',
+            'extra_discription',
+            'phone_number',
             'product',
         )
 

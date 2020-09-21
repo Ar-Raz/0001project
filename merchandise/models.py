@@ -10,9 +10,10 @@ ADDRESS_CHOICES = (
 
 class MiniOrder(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    email = models.EmailField()
+    email = models.EmailField(blank=True)
     name = models.CharField(max_length=164)
-    approvals = models.TextField()
+    phone_number = models.CharField(max_length=15)
+    extra_discription = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.name} has made a request for {self.product.title}"
