@@ -103,8 +103,8 @@ class MiniOrderView(View):
         name = request.POST.get('username', '').strip()
         phone_number = request.POST.get('phone_number', '').strip()
         content = request.POST.get('extra_discription', '').strip()
-        product_id = request.POST.get("product_id", "")
-        product = Product.objects.get(pk=product_id)
+        product_slug = request.POST.get("product_slug", "")
+        product = Product.objects.get(slug=product_slug)
         slug = product.slug 
 
         if product_id and name and phone_number:
