@@ -10,14 +10,18 @@ from django.shortcuts import reverse
 from tinymce.models import HTMLField
 
 class Comment(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     content = models.TextField()
     post = models.ForeignKey(
         'Post', related_name='comments', on_delete=models.CASCADE)
+    username = models.CharField(max_length=164)
 
     def __str__(self):
-        return self.user.username
+        if self.user:
+            return self.user.username
+        else:
+            return f"{self.username} has commented {self.post.title} post"
 
 # @python_2_unicode_compatible
 class Post(models.Model):

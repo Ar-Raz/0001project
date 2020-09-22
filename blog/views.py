@@ -1,6 +1,8 @@
 import json
+import random
 
-from django.shortcuts import render
+from django.shortcuts import render, reverse
+from django.http import JsonResponse
 
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -18,7 +20,7 @@ from .models import Post, Comment
        ##         #     ##                   ##
       ##           #    ##                   ##
      ##             #   ##                   ##
-##################################################################      
+##################################################################
 """
 class PostCreationView(CreateAPIView):
     # permission_classes = (IsAuthenticated,)
@@ -78,7 +80,7 @@ END OF:
        ##         #     ##                   ##
       ##           #    ##                   ##
      ##             #   ##                   ##
-##################################################################      
+##################################################################
 """
 
 # #posts list
@@ -97,7 +99,7 @@ def post_list(request):
     else:
         page_numbers = int(posts_quantity/12)
 
-    
+
     current_posts = posts[0:12]
     serialized = PostSerializer(current_posts, many=True).data
     post_json_string = json.dumps(serialized)
@@ -117,15 +119,52 @@ def post_detail(request, slug):
     post = Post.objects.get(slug=slug)
     serialized_post = PostDetailSerializer(post).data
     post_json_string = json.dumps(serialized_post)
+
+    posts = Post.objects.all()
+
+    latest_posts = posts.order_by("-pk")[:5]
+    serialized_latest_post = PostDetailSerializer(latest_posts, many=True).data
+    json_latest_string = json.dumps(serialized_latest_post)
+
+    random_posts = random.sample(list(posts), 5)
+    serialized_random_post = PostDetailSerializer(random_posts, many=True).data
+    json_random_string = json.dumps(serialized_latest_post)
+
+    if request.method == "POST":
+        post = Post.objects.get(slug=slug)
+        username = request.POST.get("username", "")
+        content = request.POST.get("content", "")
+        if username and content:
+            comment = Comment.objects.create(
+                username=username,
+                content=content,
+                post=post,
+            )
+            redirect_url = reverse("blog:post-detail", kwargs={"slug" : slug})
+            data = {
+                'msg' :  "نظر شما با موفقیت ثبت شد",
+                "redirect_url" : redirect_url,
+            }
+            return JsonResponse(data, safe=False)
+        else:
+            redirect_url = reverse("blog:post-detail", kwargs={"slug" : slug})
+            data = {
+                'msg' : "لطفا فرم را درست وارد کنید",
+                "redirect_url" : redirect_url,
+            }
+            return JsonRespone(data, safe=False)
+
     context = {
-        'post' : post_json_string
+        'post' : post_json_string,
+        'random_posts' : json_random_string,
+        'latest_posts' : json_latest_string,
     }
     return render(request, 'views/singleBlogPost.html', context)
 
 
 def paginated_post(request, page):
     posts = Post.objects.all()
-    
+
     posts_quantity = posts.count()
     if type(posts_quantity/12) == type(1.6):
         page_numbers = int(posts_quantity/12)  + 1
@@ -133,16 +172,16 @@ def paginated_post(request, page):
         page_numbers = int(posts_quantity/12)
 
     current_posts = posts[(page-1)*3 : page*3]
-    sered_post = PostDetailSerializer(current_posts, many=True).data 
+    sered_post = PostDetailSerializer(current_posts, many=True).data
     json_posts_string = json.dumps(sered_post)
 
-    current_page = page 
+    current_page = page
     page_data = {"current_page" : current_page, "number_of_pages" : page_numbers}
     json_page_data = json.dumps(page_data)
 
     context = {
         'posts' : json_posts_string,
-        'pageData' : json_page_data, 
+        'pageData' : json_page_data,
     }
 
     return render(request, 'views/blog.html', context)

@@ -42,7 +42,7 @@ urlpatterns = [
     path('merchandise/', include('merchandise.urls', namespace="merchandise")),
     path('blog/', include('blog.urls', namespace="blog")),
 
-    path('search', views.SearchView.as_view()),
+    path('search', SearchView.as_view()),
 ]
 
 if settings.DEBUG:
