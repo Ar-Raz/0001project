@@ -114,7 +114,7 @@ def post_list(request):
     serialized = PostSerializer(posts, many=True).data
     post_json_string = json.dumps(serialized)
 
-    page_data = {"number_of_pages" : page_numbers, "current_page" : post}
+    page_data = {"number_of_pages" : page_numbers, "current_page" : page}
     json_page_data = json.dumps(page_data)
     context = {
         'posts' : post_json_string,
