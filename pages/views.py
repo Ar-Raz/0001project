@@ -11,6 +11,7 @@ from django.contrib import messages
 from django.http.response import HttpResponseBadRequest, HttpResponse, JsonResponse
 from website.settings.base import BASE_DIR
 from django.core.files.uploadhandler import FileUploadHandler
+from django.db.models import Q
 # from django.
 
 #COMPONENTS
@@ -141,7 +142,7 @@ def aboutus(request):
 class SearchView(View):
     def get(self, request, *args, **kwargs):
         queryset = Product.objects.all()
-        query = json.loads(request.GET.get('q'))
+        query = request.GET.get('q')
         if query:
             queryset = queryset.filter(
                 Q(title__icontains=query)
@@ -150,8 +151,3 @@ class SearchView(View):
             'queryset': queryset
         }
         return render(request, 'search_results.html', context)
-
-
-def view(request):
-
-    return render(request, "products.html", {})

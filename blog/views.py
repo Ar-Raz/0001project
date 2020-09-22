@@ -174,8 +174,8 @@ def post_detail(request, slug):
     return render(request, 'views/singleBlogPost.html', context)
 
 
-def post_by_category(self, name):
-    posts = Post.objects.filter(category__title=name)
+def post_by_category(request, name):
+    posts = Post.objects.filter(categories__title=name)
     sered_post = PostDetailSerializer(posts, many=True).data
     json_post = json.dumps(sered_post)
 
