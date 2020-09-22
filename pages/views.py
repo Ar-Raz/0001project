@@ -147,7 +147,10 @@ class SearchView(View):
             queryset = queryset.filter(
                 Q(title__icontains=query)
             ).distinct()
+        sered_queryset = ProductDetailSerializer(queryset, many=True).data
+        json_string = json.dumps(sered_queryset)
+
         context = {
-            'queryset': queryset
+            'queryset': json_string
         }
-        return render(request, 'search_results.html', context)
+        return render(request, 'views/products.html', context)
