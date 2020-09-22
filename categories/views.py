@@ -78,9 +78,27 @@ def category_list_view(request):
 def by_category(request, name):
     category = Category.objects.get(title=name)
     products = Product.objects.filter(category=category)
+
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(products, 12)
+    number_of_pages = paginator.num_pages
+
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        products = paginator.page(1)
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)
+
     serialized_products = ProductDetailSerializer(products, many=True).data
     json_products = json.dumps(serialized_products)
+
+    page_data = { "current_page" : page , "number_of_pages" : number_of_pages }
+    json_page_data = json.dumps(page_data)
+
     context = {
         'products' : json_products,
+        "page_data" : json_page_data,
     }
     return render(request, 'views/products.html', context)

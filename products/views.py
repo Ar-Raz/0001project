@@ -20,6 +20,7 @@ from django.db.models import Q
 from django.views import View
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .forms import ProductCommentForm
 from .models import Product, ProductComment, Rating
@@ -239,8 +240,6 @@ END OF:
 
 def products_list_view(request):
     queryset = Product.objects.all()
-    sered_data = ProductDetailSerializer(queryset, many=True).data
-    json_string = json.dumps(sered_data)
 
     new_products = queryset.order_by('-date_addded')
     sered_new_products = ProductDetailSerializer(new_products, many=True).data
@@ -250,12 +249,24 @@ def products_list_view(request):
     sered_best_seller_products = ProductDetailSerializer(best_sellers, many=True).data
     best_sellers_json_string = json.dumps(sered_best_seller_products)
 
+    page = request.GET.get('page', 1)
 
-    products_quantity = queryset.count()
-    number_of_pages = products_quantity/12
-    current_page = 1
+    paginator = Paginator(queryset, 12)
+    number_of_pages = paginator.num_pages
 
-    page_data = { "current_page" : current_page, "number_of_pages" : number_of_pages }
+    try:
+        queryset = paginator.page(page)
+    except PageNotAnInteger:
+        queryset = paginator.page(1)
+    except EmptyPage:
+        queryset = paginator.page(paginator.num_pages)
+
+    sered_data = ProductDetailSerializer(queryset, many=True).data
+    json_string = json.dumps(sered_data)
+
+
+
+    page_data = { "current_page" : page , "number_of_pages" : number_of_pages }
     json_page_data = json.dumps(page_data)
 
 

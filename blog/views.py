@@ -3,6 +3,7 @@ import random
 
 from django.shortcuts import render, reverse
 from django.http import JsonResponse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -100,11 +101,20 @@ def post_list(request):
         page_numbers = int(posts_quantity/12)
 
 
-    current_posts = posts[0:12]
-    serialized = PostSerializer(current_posts, many=True).data
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(posts, 12)
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+
+    serialized = PostSerializer(posts, many=True).data
     post_json_string = json.dumps(serialized)
 
-    page_data = {"number_of_pages" : page_numbers, "current_page" : 1}
+    page_data = {"number_of_pages" : page_numbers, "current_page" : post}
     json_page_data = json.dumps(page_data)
     context = {
         'posts' : post_json_string,
@@ -129,6 +139,8 @@ def post_detail(request, slug):
     random_posts = random.sample(list(posts), 5)
     serialized_random_post = PostDetailSerializer(random_posts, many=True).data
     json_random_string = json.dumps(serialized_latest_post)
+
+
 
     if request.method == "POST":
         post = Post.objects.get(slug=slug)
@@ -162,26 +174,23 @@ def post_detail(request, slug):
     return render(request, 'views/singleBlogPost.html', context)
 
 
-def paginated_post(request, page):
-    posts = Post.objects.all()
+def post_by_category(self, name):
+    posts = Post.objects.filter(category__title=name)
+    sered_post = PostDetailSerializer(posts, many=True).data
+    json_post = json.dumps(sered_post)
 
-    posts_quantity = posts.count()
-    if type(posts_quantity/12) == type(1.6):
-        page_numbers = int(posts_quantity/12)  + 1
-    else:
-        page_numbers = int(posts_quantity/12)
+    page = request.GET.get('page', 1)
 
-    current_posts = posts[(page-1)*3 : page*3]
-    sered_post = PostDetailSerializer(current_posts, many=True).data
-    json_posts_string = json.dumps(sered_post)
-
-    current_page = page
-    page_data = {"current_page" : current_page, "number_of_pages" : page_numbers}
-    json_page_data = json.dumps(page_data)
+    paginator = Paginator(posts, 12)
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
 
     context = {
-        'posts' : json_posts_string,
-        'pageData' : json_page_data,
+        "posts" : json_post,
     }
 
-    return render(request, 'views/blog.html', context)
+    return render(request, "views/blog.html", context)
