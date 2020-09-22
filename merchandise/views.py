@@ -6,8 +6,8 @@ from rest_framework.response import Response
 
 from .models import Order, OrderItem, MiniOrder
 from .serializers import (
-    OrderSerializer, 
-    OrderItemSerializer, 
+    OrderSerializer,
+    OrderItemSerializer,
     MiniOrderSerializer
     )
 
@@ -50,7 +50,7 @@ class MiniOrderCreateAPIView(CreateAPIView):
         name = request.data["username"]
         email = request.data["email"] or None
         product_name =  request.data["product_name"]
-        phone_number =  request.data["phone_number"] 
+        phone_number =  request.data["phone_number"]
         extra_discription =  request.data["extra_discription"] or None
         if phone_number and name and product_name:
             product = Product.objects.get(title=product_name)
@@ -67,7 +67,7 @@ class MiniOrderCreateAPIView(CreateAPIView):
         return Response({
                 "message" : "لطفار فرم را تصحیح کنید"
             }, status=status.HTTP_400_BAD_REQUEST)
-    
+
 
 
 class MiniOrderCreation(APIView):
@@ -88,7 +88,7 @@ class MiniOrderCreation(APIView):
                     "message" : "درخواست شما با موفقیت ثبت شد"
                 },
                  status=status.HTTP_201_CREATED)
-            
+
         return Response({
                 "message" : "فیلد را درست وارد کن"
             },
@@ -99,13 +99,13 @@ class MiniOrderCreation(APIView):
 class MiniOrderView(View):
 
     def post(self, request, *args, **kwargs):
-        email = request.POST.get('email', '').strip()
+        email = request.POST.get('email', '').strip() or None
         name = request.POST.get('username', '').strip()
         phone_number = request.POST.get('phone_number', '').strip()
-        content = request.POST.get('extra_discription', '').strip()
+        content = request.POST.get('extra_discription', '').strip() or None
         product_slug = request.POST.get("product_slug", "")
         product = Product.objects.get(slug=product_slug)
-        slug = product.slug 
+        slug = product.slug
 
         if product_slug and name and phone_number:
             mini_order = MiniOrder.objects.create(

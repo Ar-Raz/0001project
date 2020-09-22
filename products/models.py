@@ -114,7 +114,10 @@ class ProductComment(models.Model):
     username = models.CharField(max_length=132, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.user.username} comment for {self.product.title}"
+        if self.user:
+            return f"{self.user.username} comment for {self.product.title}"
+        else:
+            return f"{self.username}comment for {self.product.title}" 
 
 class Rating(models.Model):
   product = models.ForeignKey(Product, on_delete=models.CASCADE)

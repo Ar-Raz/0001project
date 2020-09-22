@@ -1,33 +1,36 @@
 import json
 
+from rest_framework import viewsets, status, generics, mixins
 from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.views import APIView
-from rest_framework import viewsets, status, generics, mixins
-from .models import Product, Rating, ProductComment
-from .serializers import ProductSerializer, ProductCommentSerializer, ProductDetailSerializer, RatingSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.reverse import reverse
 from rest_framework.decorators import api_view
+from rest_framework.renderers import JSONRenderer
+
 
 
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-
-from rest_framework.renderers import JSONRenderer
-
 from django.shortcuts import render, redirect, reverse
 from django.db.models import Q
 from django.views import View
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib import messages
 
 from .forms import ProductCommentForm
-
-from .models import Product, ProductComment
+from .models import Product, ProductComment, Rating
 from .serializers import ProductSerializer, ProductDetailSerializer, ProductCommentSerializer
 from .permissions import IsProducer, IsOwnerOrReadOnly
+from .serializers import (ProductSerializer,
+            ProductCommentSerializer,
+            ProductDetailSerializer,
+            RatingSerializer
+            )
+
 
 from categories.serializers import (
         MainCategorySerializer,
@@ -287,7 +290,7 @@ class ProductDetailView(View):
     def post(self, request, slug, *args, **kwargs):
         product = Product.objects.get(slug=slug)
         content = request.POST.get('content', '').strip()
-        username = request.POST.get('username', '').strip()
+        username = request.POST.get('email', '').strip()
         if username and content:
             comment = ProductComment.objects.create(
                 product=product,
@@ -300,9 +303,9 @@ class ProductDetailView(View):
             return redirect(reverse("products:product_detail", kwargs={'slug': slug}))
         else:
             messages.error(request, "لطفا اطلاعات خود را کامل کنید")
-            message = {'message' : "dude fill the fucking form ffs!"}
-            json_messsage = json.dumps(message)
-            render(request, 'views/product.html', { 'message' : json_messsage} )
+            # message = {'message' : "dude fill the fucking form ffs!"}
+            # json_messsage = json.dumps(message)
+            # render(request, 'views/product.html', { 'message' : json_messsage} )
             return redirect(reverse("products:product_detail", kwargs={'slug': slug}))
 
         # form = ProductCommentForm(request.POST or None)
@@ -361,4 +364,3 @@ def paginated_products(request):
         "pagination" : json_page_data,
     }
     return render(request, 'products.html', context)
-

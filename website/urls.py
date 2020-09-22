@@ -18,6 +18,7 @@ from django.urls import path, include, re_path
 from rest_framework.authtoken.views import obtain_auth_token
 from django.conf import settings
 from django.conf.urls.static import static
+from pages.views import SearchView
 
 
 urlpatterns = [
@@ -40,6 +41,8 @@ urlpatterns = [
     path('products/', include('products.urls', namespace="products")),
     path('merchandise/', include('merchandise.urls', namespace="merchandise")),
     path('blog/', include('blog.urls', namespace="blog")),
+
+    path('search', views.SearchView.as_view()),
 ]
 
 if settings.DEBUG:
