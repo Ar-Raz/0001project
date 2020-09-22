@@ -39,12 +39,14 @@
 				let templateLiteral=
 				`
 					<div class="singleVar">
-							<input type="text" placeholder="عنان مشخصه" :name="">
-							<select>
-								<option value="number">عددی</option>
-								<option value="text">متنی</option>
-							</select>
-							<button class='submit' @click="register">ثبت دسته بندی</button>
+						<button class='submit' @click="register">ثبت دسته بندی</button>
+						<select>
+							<option value="number">عددی</option>
+							<option value="text">متنی</option>
+						</select>
+						<input type="text" placeholder="عنان مشخصه" :name="">
+						
+							
 						</div>	
 				`
 				this.vars.insertAdjacentHTML("beforeend", templateLiteral)
@@ -56,3 +58,11 @@
 		}
 	}
 </script>
+
+<style>
+	
+	#vars{
+		display: flex;
+		justify-content: center;
+	}
+</style>

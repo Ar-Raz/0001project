@@ -1,7 +1,8 @@
 <template>
     <div class="consulate" @click='closeConsulate($event)'>
         <div @click='prevent($event)' class="consulateWrapper">
-             <div id="email" class="inputs">
+             <form class="consulateForm" action="/merchandise/miniorder" method="post">
+                 <div id="email" class="inputs">
                 <div class='formInputsWrapper'>
                         <input v-model="email" autocomplete="off" name="email" @blur='focusOut($event),startValidation("email",$event)' class='inputWithLabelThatShouldStay signupFormInputs' id='userEmailConsulate' type="text">
                         <label class='comeUpLabel' for="userEmailConsulate">ایمیل</label>                                                                  
@@ -29,9 +30,10 @@
             </div>
 
             <div>
-                <button @click='consulateRequest' class="submit" @click.prevent="sendReq()">ثبت</button>
+                <button id="submitConsulate" type="submit" class="submit" >ثبت</button>
             </div>
-            <input type="hidden" :value="productName" name="product_name" >
+            <input type="hidden" :value="productId" name="product_slug" >
+             </form>
 
         </div>
     </div>
@@ -45,7 +47,7 @@
     import {keepStay} from "../mixIns/keepStay.js"
     export default {
         mixins:[validationRules,keepStay],
-        props:['productName'],
+        props:['productId'],
         methods:{
             ...mapActions([
                 'toggleConsulate'
@@ -53,6 +55,10 @@
             prevent(e){
                 e.preventDefault();
                 e.stopPropagation()
+                if(e.target.id=="submitConsulate"){
+                    const form=document.querySelector('.consulateForm')
+                    form.submit()
+                }
             },
             closeConsulate(e){
                     e.target.style.display="none"
@@ -111,7 +117,10 @@
                 return this.$store.state.isShowConsulate
                 
             }            
-        }        
+        },
+        mounted(){
+            console.log("consulateisijdsij",this.productId)
+        }  
     }
 </script>
 

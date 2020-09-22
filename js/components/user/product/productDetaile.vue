@@ -91,7 +91,7 @@
                 </div>
             </div>
             <done-message></done-message>
-            <consulate></consulate>
+            <consulate :productId="productDet.slug"></consulate>
         </div>
 </template>
 
@@ -110,6 +110,9 @@ import {adjustElFromTop} from "../../user/mixIns/adjustElFromTop.js"
                 slidesToScroll:'auto',
                 draggable: true
             });
+        },
+        mounted(){
+            console.log(this.productDet)
         },
         mixins:[keepStay,adjustElFromTop],
         components:{

@@ -12,7 +12,7 @@
 
                             <div id="email" class="inputs">
                                 <div class='formInputsWrapper'>
-                                        <input autocomplete="off" name="email" @blur='focusOut($event)' class='inputWithLabelThatShouldStay signupFormInputs' id='userEmail' type="text">
+                                        <input autocomplete="off" name="username" @blur='focusOut($event)' class='inputWithLabelThatShouldStay signupFormInputs' id='userEmail' type="text">
                                         <label class='comeUpLabel' for="userEmail">نام</label>                                                                  
                                 </div>
                                 <p class="inputError">فرمت ایمیل اشتباه است</p> 
