@@ -1,10 +1,17 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-  </head>
-  <body>
-    WHAT THE FUCK 
-  </body>
-</html>
+{% load static %}
+
+{% include "views/template/header.html" %}
+{% include "views/template/heading.html" %}
+{% include "views/template/slicer.html" %}
+{% include "views/template/navigation.html" %}
+{% include "views/template/mainwrapper.html" %}
+
+
+
+<index  products="{{products}}"
+	    categories="{{categories}}"
+		main_categories="{{main_categories}}"
+		posts="{{ posts }}"></index>
+
+
+{% include "views/template/footer.html" %}

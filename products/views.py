@@ -301,7 +301,9 @@ class ProductDetailView(View):
     def post(self, request, slug, *args, **kwargs):
         product = Product.objects.get(slug=slug)
         content = request.POST.get('content', '').strip()
-        username = request.POST.get('email', '').strip()
+        username = request.POST.get('username', '').strip()
+        serialized_q_set = ProductDetailSerializer(product).data
+        json_product = json.dumps(serialized_q_set)
         if username and content:
             comment = ProductComment.objects.create(
                 product=product,
@@ -310,23 +312,22 @@ class ProductDetailView(View):
                 username=username,
             )
             comment.save()
-
+            message = '{ "msg" : "نظر شما با موفقیت ثبت شد و در انتظار بررسی است" }'
+            json_msg = json.dumps(message)
             context = {
                 'product': json_product,
-                'object' : queryset,
-                'message' : '{ "msg" : "نظر شما با موفقیت ثبت شد و در انتظار بررسی است" }'
+                'message' : json_msg,
             }
 
-            return render(requets, 'views/product.html', context)
+            return render(request, 'views/product.html', context)
         else:
 
             context = {
                 'product': json_product,
-                'object' : queryset,
                 'message' : '{ "msg" : "لطفا اطلاعات خود را کامل کنید" }'
             }
 
-            return render(requets, 'views/product.html', context)
+            return render(request, 'views/product.html', context)
 
         # form = ProductCommentForm(request.POST or None)
         # if form.is_valid():
