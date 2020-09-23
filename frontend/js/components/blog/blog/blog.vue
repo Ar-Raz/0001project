@@ -1,58 +1,6 @@
 <template>
   <div id="blog">
-      <!-- <div class="allCatsForBlog" @click='closeMenu(),toggleBodyOverFlow()'>
-          <div class="allBlogCatsWrapper" @click='preventDef($event)'>
-              <ul>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">درب بند</a></li>
-                  <li><a href="#">خط تولید پنیر پیتزا</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-              </ul>
-          </div>
-      </div> -->
     <div id="blogWrapper">
-
-        <!-- <div class="openCatsBtn">
-            <button class='submit' @click.prevent='showCats=true,adjustation()'>دسته بندی موضوعات</button>
-        </div> -->
-
-
-
-
-
-
-
-
-
-
-      <!-- <consulate></consulate> -->
-
       <div class="blogPostWrapper">
         <div v-for="(p,i) in JSON.parse(posts)" :key="i">
           <a :href="getSlugn(p)">

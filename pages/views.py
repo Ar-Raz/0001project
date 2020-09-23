@@ -18,7 +18,7 @@ from django.db.models import Q
 from products.models import Product, ProductComment
 from products.serializers import (
         ProductDetailSerializer, ProductSerializer,
-        ProductCommentSerializer
+        ProductCommentSerializer, ProductCommentDetailSerializer
         )
 
 from categories.models import Category, MainCategory
@@ -58,7 +58,7 @@ class IndexView(View):
             post_ser_json = json.dumps(post_ser)
 
             product_comments = ProductComment.objects.all()[0:10]
-            sered_comments = ProductCommentSerializer(product_comments, many=True).data
+            sered_comments = ProductCommentDetailSerializer(product_comments, many=True).data
             json_comments = json.dumps(sered_comments)
 
             products_ser = ProductDetailSerializer(products_list, many=True).data

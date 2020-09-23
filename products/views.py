@@ -40,6 +40,8 @@ from categories.serializers import (
 from categories.models import Category, MainCategory
 from users.serializers import UserSerializer
 from users.models import ProducerProfile
+from blog.models import Post
+from blog.serializers import PostDetailSerializer
 """
 ################################################################
             ##          ############         ##
@@ -290,9 +292,16 @@ class ProductDetailView(View):
             queryset = Product.objects.get(slug=slug)
             serialized_q_set = ProductDetailSerializer(queryset).data
             json_product = json.dumps(serialized_q_set)
+
+            cat = queryset.categories.distinct()[0].title
+            posts = Post.objects.filter(categories__title=cat)
+            sered_posts = PostDetailSerializer(posts, many=True).data
+            json_posts = json.dumps(sered_posts)
+
             context = {
                 'product': json_product,
                 'object' : queryset,
+                'posts' : json_posts
             }
             return render(request, 'views/product.html', context)
         except ObjectDoesNotExist:

@@ -168,3 +168,30 @@ class RatingSerializer(serializers.ModelSerializer):
 #
 #     def get_comments(self, obj):
 #         return ProductCommentSerializer(obj.productcomment_set.all(), many=True).data
+
+class ProductTitleSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Product
+        fields = (
+            'id',
+            'title',
+            'slug'
+        )
+
+class ProductCommentDetailSerializer(serializers.ModelSerializer):
+    item = serializers.SerializerMethodField()
+
+    class Meta:
+        model = ProductComment
+        fields = (
+            'id',
+            'is_confirmed',
+            'content',
+            'user',
+            'username',
+            'item'
+        )
+
+    def get_item(self, obj):
+        return ProductTitleSerializer(obj.product).data
