@@ -325,7 +325,7 @@ class ProductDetailView(View):
                 'object' : queryset,
                 'message' : '{ "msg" : "لطفا اطلاعات خود را کامل کنید" }'
             }
-            
+
             return render(requets, 'views/product.html', context)
 
         # form = ProductCommentForm(request.POST or None)
