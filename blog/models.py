@@ -37,6 +37,7 @@ class Post(models.Model):
     slug = models.SlugField(allow_unicode=True)
     hit_count_generic = GenericRelation(HitCount, object_id_field="object_pk"
                                         ,related_query_name="hit_count_generic_relation")
+    avg_read = models.FloatField(null=True, blank=True)
 
     def __str__(self):
         return self.title

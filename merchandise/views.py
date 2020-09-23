@@ -105,7 +105,6 @@ class MiniOrderView(View):
         content = request.POST.get('extra_discription', '').strip() or None
         product_slug = request.POST.get("product_slug", "")
         product = Product.objects.get(slug=product_slug)
-        slug = product.slug
 
         if product_slug and name and phone_number:
             mini_order = MiniOrder.objects.create(
@@ -116,10 +115,10 @@ class MiniOrderView(View):
                 extra_discription=content,
             )
             messages.success(request, "درخواست شما ارسال شد")
-            return redirect(reverse("products:product_detail", kwargs= { "slug" : slug}))
+            return redirect(reverse("products:product_detail", kwargs= { "slug" : product_slug}))
         else:
             messages.error(request, "فرم را درست وارد کنید ")
-            return redirect(reverse("products:product_detail", kwargs= { "slug" : slug}))
+            return redirect(reverse("products:product_detail", kwargs= { "slug" : product_slug}))
 
 
 

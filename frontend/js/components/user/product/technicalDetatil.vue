@@ -2,32 +2,25 @@
     <div id="technicalDetail">
         <table>
             <tbody>
-                <tr>
-                    
-                    <td>فولاد</td>
-                    <th>:جنس</th>
-                    
-                    
-                </tr>
-                <tr>
-                    
-                    <td>150 کیلو</td>
-                    <th>:وزن</th>
-                    
-                    
-                </tr>
-                <tr>
-                    
-                    <td>1000 در دقیقه</td>
-                    <th>:سرعت</th>
-                    
-                    
+                <tr v-for="p in product.detail">
+
+                    <td>{{p.value}}</td>
+                    <th>:{{p.variation.name}}</th>
+
+
                 </tr>
             </tbody>
         </table>
     </div>
-    
+
 </template>
+
+<script>
+  export default{
+    props:["product"]
+  }
+
+</script>
 
 <style scoped>
 #technicalDetail{

@@ -61,9 +61,10 @@
               :descs="p.short_description"
               :author="p.author"
               :img="p.thumbnail"
-            ></single-post> 
-          </a>          
-          
+              :avg_read="p.avg_read"
+            ></single-post>
+          </a>
+
         </div>
       </div>
     </div>
@@ -81,6 +82,9 @@ export default {
     consulate,
   },
   props:['posts','pagination'],
+  mounted(){
+    console.log("blogs",JSON.parse(this.posts))
+  },
   created(){
     console.log("pospaginationts",JSON.parse(this.pagination))
   },
@@ -121,7 +125,7 @@ export default {
         console.log("docdoc",el)
         this.toggleBodyOverFlow("hidden")
         this.adjustFromTop(el)
-        
+
     },
     closeMenu(){
         const all=document.querySelector(".allCatsForBlog")
@@ -132,7 +136,7 @@ export default {
       return `/blog/post/${p.slug}`
     }
   },
-  
+
 };
 </script>
 

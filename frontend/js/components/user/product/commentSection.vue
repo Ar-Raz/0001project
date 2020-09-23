@@ -13,9 +13,9 @@
                             <div id="email" class="inputs">
                                 <div class='formInputsWrapper'>
                                         <input autocomplete="off" name="username" @blur='focusOut($event)' class='inputWithLabelThatShouldStay signupFormInputs' id='userEmail' type="text">
-                                        <label class='comeUpLabel' for="userEmail">نام</label>                                                                  
+                                        <label class='comeUpLabel' for="userEmail">نام</label>
                                 </div>
-                                <p class="inputError">فرمت ایمیل اشتباه است</p> 
+                                <p class="inputError">فرمت ایمیل اشتباه است</p>
                             </div>
 
 
@@ -35,9 +35,9 @@
                                     <p>تاریخ:16/6/1399</p>
                                 </div>
                                 <div class="name">
-                                    <p>{{c.name}}</p>
+                                    <p>{{c.username}}</p>
                                 </div>
-                                
+
                             </div>
                             <div class="comment">
                                 <p>{{c.content}}</p>
@@ -68,7 +68,7 @@ export default {
     margin-bottom: 15px
 }
 .commentUserName{
-    width: 
+    width:
 }
 #allComments{
     display: flex;
@@ -109,7 +109,7 @@ export default {
         font-size:15pt;
         box-shadow:0px 5px 20px;
         padding:5px;
-        
+
     }
     .singleCommentWrap{
         padding:20px;
@@ -165,7 +165,7 @@ export default {
         #allComentsWrapper .singleComment:not(first-child)
         {
             padding-bottom:10px
-        }   
+        }
     }
 
 </style>

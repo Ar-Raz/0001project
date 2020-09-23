@@ -48,18 +48,19 @@
     }
     #singleBlogPostItem{
         display:flex;
-        margin-top:50px;    
+        margin-top:50px;
+        width:100%;  
         justify-content: center;
     }
     .signleBlogPostItemWrapper{
         width: 90%;
     }
-    
-    
+
+
     p{
         text-align: justify;
     }
-   
+
 </style>
 
 <script>

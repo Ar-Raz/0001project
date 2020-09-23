@@ -6,8 +6,8 @@
 			</div>
 			<div class="searchBar">
 				<div id="searchBarWrapper">
-						<form action="" method="post">
-							<input type="" placeholder="جست و جو ..." name="">
+						<form action="/search" method="get">
+							<input type="" placeholder="جست و جو ..." name="q">
 							<button class='magnifier'>
 								<img src="/images/mag.png" alt="">
 							</button>
@@ -43,7 +43,7 @@
 		padding:5px;
 		display: flex;
 	}
-	
+
 	.magnifier img{
 		height: 20px;
 		width: 20px;
@@ -53,10 +53,10 @@
 		align-items: center;
 		border:2px solid rgb(9,111,211);
 		border-radius:28px;
-		
+
 	}
 	input{
-		
+
 		border: 0;
 		min-width: 0;
 		flex: 1;
@@ -70,7 +70,7 @@
 	}
 	::placeholder {
   		color: black;
-  		opacity: 1; 
+  		opacity: 1;
 	}
 	.magnifier{
 		border: 0;

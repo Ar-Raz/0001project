@@ -18,14 +18,14 @@
                 <div class="contactUs">
                     <button class="stelam" @click.prevent='showConsulate($event)'>استعلام قیمت</button>
                 </div>
-                <consulate :productName="p.title"></consulate>
+                <consulate :productId="p.slug"></consulate>
             </div>
 
 
 
 
-            
-            
+
+
         </div>
 
     </div>
@@ -48,7 +48,7 @@
 img{
     height:300px;
     width:300px;
-    
+
 }
 .title{
     height:100px
@@ -121,7 +121,7 @@ img.normal{
                 consulate.style.display="flex"
                 this.adjustFromTop(wrap,false,true)
                 this.toggleBodyOverFlow("hidden")
-                
+
             },
             getImage(img){
                 if(img==null){

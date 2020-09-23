@@ -151,6 +151,6 @@ class SearchView(View):
         json_string = json.dumps(sered_queryset)
 
         context = {
-            'queryset': json_string
+            'products': json_string
         }
         return render(request, 'views/products.html', context)

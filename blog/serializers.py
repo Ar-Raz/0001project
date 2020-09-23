@@ -28,6 +28,7 @@ class PostSerializer(serializers.ModelSerializer):
             'active_post',
             'slug',
             'author',
+            'avg_read',
         )
         read_only_fields = ['pk', 'featured']
 
@@ -48,6 +49,7 @@ class CommentSerializer(serializers.ModelSerializer):
             'content',
             'user',
             'post',
+            'username'
         )
         read_only_fields = ['pk', 'user']
 
@@ -79,7 +81,8 @@ class PostDetailSerializer(serializers.ModelSerializer):
             'slug',
             'author',
             'comments',
-            
+            'avg_read',
+
         )
 
     def get_author(self, obj):
