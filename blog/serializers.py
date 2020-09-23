@@ -3,6 +3,7 @@ from rest_framework import serializers
 from .models import Post, Comment
 
 from users.serializers import UserSerializer
+from jalali_date import date2jalali
 
 
 class StringSerializer(serializers.StringRelatedField):
@@ -13,6 +14,7 @@ class StringSerializer(serializers.StringRelatedField):
 class PostSerializer(serializers.ModelSerializer):
     categories = StringSerializer(many=True)
     author = serializers.SerializerMethodField()
+    date = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
@@ -29,13 +31,17 @@ class PostSerializer(serializers.ModelSerializer):
             'slug',
             'author',
             'avg_read',
+            'date',
         )
         read_only_fields = ['pk', 'featured']
 
     def get_author(self, obj):
         return UserSerializer(obj.author).data
 
-#COMMENTS
+    def get_date(self, obj):
+        return str(date2jalali(obj.timestamp))
+
+#COMMENTS)
 
 class CommentSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
@@ -65,6 +71,7 @@ class PostDetailSerializer(serializers.ModelSerializer):
     categories = StringSerializer(many=True)
     author = serializers.SerializerMethodField()
     comments = serializers.SerializerMethodField()
+    date = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
@@ -82,6 +89,7 @@ class PostDetailSerializer(serializers.ModelSerializer):
             'author',
             'comments',
             'avg_read',
+            'date',
 
         )
 
@@ -90,6 +98,9 @@ class PostDetailSerializer(serializers.ModelSerializer):
 
     def get_comments(self, obj):
         return CommentSerializer(obj.get_comment, many=True).data
+
+    def get_date(self, obj):
+        return str(date2jalali(obj.timestamp))
 
 
 class CommentsUndetailedSerializer(serializers.ModelSerializer):
