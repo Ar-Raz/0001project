@@ -310,14 +310,23 @@ class ProductDetailView(View):
                 username=username,
             )
             comment.save()
-            messages.success(request, "نظر شما ثبت و در انتظار ببررسی است")
-            return redirect(reverse("products:product_detail", kwargs={'slug': slug}))
+
+            context = {
+                'product': json_product,
+                'object' : queryset,
+                'message' : '{ "msg" : "نظر شما با موفقیت ثبت شد و در انتظار بررسی است" }'
+            }
+
+            return render(requets, 'views/product.html', context)
         else:
-            messages.error(request, "لطفا اطلاعات خود را کامل کنید")
-            # message = {'message' : "dude fill the fucking form ffs!"}
-            # json_messsage = json.dumps(message)
-            # render(request, 'views/product.html', { 'message' : json_messsage} )
-            return redirect(reverse("products:product_detail", kwargs={'slug': slug}))
+
+            context = {
+                'product': json_product,
+                'object' : queryset,
+                'message' : '{ "msg" : "لطفا اطلاعات خود را کامل کنید" }'
+            }
+            
+            return render(requets, 'views/product.html', context)
 
         # form = ProductCommentForm(request.POST or None)
         # if form.is_valid():

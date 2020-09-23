@@ -1,9 +1,10 @@
 import json
 import random
 
-from django.shortcuts import render, reverse
+from django.shortcuts import render, reverse, redirect
 from django.http import JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib import messages
 
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -147,24 +148,31 @@ def post_detail(request, slug):
         username = request.POST.get("username", "")
         content = request.POST.get("content", "")
         if username and content:
+
             comment = Comment.objects.create(
                 username=username,
                 content=content,
                 post=post,
             )
-            redirect_url = reverse("blog:post-detail", kwargs={"slug" : slug})
-            data = {
-                'msg' :  "نظر شما با موفقیت ثبت شد",
-                "redirect_url" : redirect_url,
+
+            context = {
+                'post' : post_json_string,
+                'random_posts' : json_random_string,
+                'latest_posts' : json_latest_string,
+                'message' :  '{"msg" : "نظر شما با موفقیت ثبت شد"}"',
             }
-            return JsonResponse(data, safe=False)
+
+            return render(request, "views/singleBlogPost.html", context)
         else:
             redirect_url = reverse("blog:post-detail", kwargs={"slug" : slug})
-            data = {
-                'msg' : "لطفا فرم را درست وارد کنید",
-                "redirect_url" : redirect_url,
+            context = {
+                'post' : post_json_string,
+                'random_posts' : json_random_string,
+                'latest_posts' : json_latest_string,
+                'message' :  '{"msg" : "لطفا اطلاعات خود را تکمیل کنید "}"',
             }
-            return JsonRespone(data, safe=False)
+            
+            return render(request,"views/singleBlogPost.html", context)
 
     context = {
         'post' : post_json_string,
