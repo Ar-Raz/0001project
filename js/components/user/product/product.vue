@@ -20,7 +20,7 @@
                 <component :product='JSON.parse(product)'  :is="currentComponent"></component>
 
             </transition>
-            <comment-section :comments='JSON.parse(product).comments'></comment-section>
+            <comment-section :action="''" :comments='JSON.parse(product).comments'></comment-section>
         </div>
 
 

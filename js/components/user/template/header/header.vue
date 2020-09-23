@@ -6,7 +6,7 @@
 			</div>
 			<div class="searchBar">
 				<div id="searchBarWrapper">
-						<form>
+						<form action="" method="post">
 							<input type="" placeholder="جست و جو ..." name="">
 							<button class='magnifier'>
 								<img src="/images/mag.png" alt="">

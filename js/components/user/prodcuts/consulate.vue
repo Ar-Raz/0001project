@@ -184,4 +184,9 @@
     textarea{
         width:215.31px;
     }
+    form{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 </style>
