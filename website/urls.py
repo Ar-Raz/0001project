@@ -43,6 +43,9 @@ urlpatterns = [
     path('blog/', include('blog.urls', namespace="blog")),
 
     path('search', SearchView.as_view()),
+
+    path('ckeditor/', include('ckeditor_uploader.urls')),
+
 ]
 
 if settings.DEBUG:

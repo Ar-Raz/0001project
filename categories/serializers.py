@@ -1,6 +1,18 @@
 from rest_framework import serializers
 from .models import Category, CategoryVariation, Variation, MainCategory
 
+class MainCategoryStringSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = MainCategory
+        fields = (
+            'id',
+            'title',
+            'seo_post',
+            'slug',
+        )
+
+
 class MainCategorySerializer(serializers.ModelSerializer):
     subs = serializers.SerializerMethodField()
 
@@ -10,11 +22,24 @@ class MainCategorySerializer(serializers.ModelSerializer):
             'id',
             'title',
             'subs',
+            'seo_post',
+            'slug',
         )
 
     def get_subs(self, obj):
         categories = Category.objects.filter(sub_category_of=obj)
         return CategoryDetailSerializer(categories, many=True).data
+
+class CategoryStringSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Category
+        fields = (
+            'id',
+            'title',
+            'seo_post',
+            'slug',
+        )
 
 class CategorySerializer(serializers.ModelSerializer):
 
@@ -23,6 +48,8 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'title',
+            'seo_post',
+            'slug',
             'sub_category_of',
         )
 

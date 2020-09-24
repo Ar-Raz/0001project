@@ -294,12 +294,12 @@ class ProductDetailView(View):
             serialized_q_set = ProductDetailSerializer(queryset).data
             json_product = json.dumps(serialized_q_set)
 
-            cat = queryset.categories.distinct()[0].title
+            cat = queryset.category.distinct()[0].title
             posts = Post.objects.filter(categories__title=cat)
             sered_posts = PostDetailSerializer(posts, many=True).data
             json_posts = json.dumps(sered_posts)
 
-            related_products = Product.objects.filter(categories__title=cat)
+            related_products = Product.objects.filter(category__title=cat)
             sered_related = ProductSerializer(related_products, many=True).data
             json_related = json.dumps(sered_related)
 
