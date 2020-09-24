@@ -29,7 +29,8 @@ from .permissions import IsProducer, IsOwnerOrReadOnly
 from .serializers import (ProductSerializer,
             ProductCommentSerializer,
             ProductDetailSerializer,
-            RatingSerializer
+            RatingSerializer,
+            ProductSerializer
             )
 
 
@@ -298,10 +299,17 @@ class ProductDetailView(View):
             sered_posts = PostDetailSerializer(posts, many=True).data
             json_posts = json.dumps(sered_posts)
 
+            related_products = Product.objects.filter(categories__title=cat)
+            sered_related = ProductSerializer(related_products, many=True).data
+            json_related = json.dumps(sered_related)
+
+
+
             context = {
                 'product': json_product,
                 'object' : queryset,
-                'posts' : json_posts
+                'posts' : json_posts,
+                'related_products' : json_related,
             }
             return render(request, 'views/product.html', context)
         except ObjectDoesNotExist:

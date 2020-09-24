@@ -1,7 +1,10 @@
 from django.db import models
 
+from ckeditor_uploader.fields import RichTextUploadingField
+
 class MainCategory(models.Model):
     title = models.CharField(max_length=64)
+    seo_post = RichTextUploadingField()
 
     def __str__(self):
         return self.title
@@ -9,6 +12,8 @@ class MainCategory(models.Model):
 class Category(models.Model):
     title = models.CharField(max_length=64)
     sub_category_of = models.ForeignKey(MainCategory, on_delete=models.CASCADE)
+    seo_post = RichTextUploadingField()
+
     def __str__(self):
         return self.title
 
@@ -42,3 +47,19 @@ class CategoryVariation(models.Model):
 
     def __str__(self):
         return self.value
+
+class FAQMainCategory(models.Model):
+    question = models.CharField(max_length=2048)
+    text = models.TextField()
+    main_category = models.ForeignKey(MainCategory, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.question} for :{self.main_category.title} main category"
+
+class FAQCategory(models.Model):
+    question = models.CharField(max_length=2048)
+    text = models.TextField()
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.question} for :{self.category.title} category"
