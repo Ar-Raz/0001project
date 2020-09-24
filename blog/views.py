@@ -182,6 +182,7 @@ def post_detail(request, slug):
         'post' : post_json_string,
         'random_posts' : json_random_string,
         'latest_posts' : json_latest_string,
+        'message' : None,
     }
     return render(request, 'views/singleBlogPost.html', context)
 

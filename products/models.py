@@ -56,6 +56,7 @@ class Product(models.Model):
     label = models.CharField(max_length=32, choices=LABEL_CHOICES, null=True, blank=True)
     date_addded = models.DateTimeField(auto_now_add=True, null=True)
     orderd_times = models.IntegerField(default=1, null=True)
+    short_discription = models.TextField(verbose_name="توضیحات")
 
 
     def __str__(self):
@@ -117,7 +118,7 @@ class ProductComment(models.Model):
         if self.user:
             return f"{self.user.username} comment for {self.product.title}"
         else:
-            return f"{self.username}comment for {self.product.title}" 
+            return f"{self.username}comment for {self.product.title}"
 
 class Rating(models.Model):
   product = models.ForeignKey(Product, on_delete=models.CASCADE)
