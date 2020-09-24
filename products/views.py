@@ -329,7 +329,7 @@ class ProductDetailView(View):
                 username=username,
             )
             comment.save()
-            message = '{ "msg" : "نظر شما با موفقیت ثبت شد و در انتظار بررسی است" }'
+            message = { "msg" : "نظر شما با موفقیت ثبت شد و در انتظار بررسی است" }
             json_msg = json.dumps(message)
             context = {
                 'product': json_product,
@@ -338,10 +338,11 @@ class ProductDetailView(View):
 
             return render(request, 'views/product.html', context)
         else:
-
+            message = {'msg' : "نظر شما با موفقیت ثبت شد و در انتظار بررسی است" }
+            json_msg = json.dumps(message)
             context = {
                 'product': json_product,
-                'message' : '{ "msg" : "لطفا اطلاعات خود را کامل کنید" }'
+                'message' : json_msg,
             }
 
             return render(request, 'views/product.html', context)

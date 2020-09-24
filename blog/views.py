@@ -155,23 +155,27 @@ def post_detail(request, slug):
                 post=post,
             )
 
+            message = {'msg': 'نظر شما با موفقیت ثبت شد'}
+            json_msg = json.dumps(message)
             context = {
                 'post' : post_json_string,
                 'random_posts' : json_random_string,
                 'latest_posts' : json_latest_string,
-                'message' :  '{"msg" : "نظر شما با موفقیت ثبت شد"}"',
+                'message' : json_msg,
             }
 
             return render(request, "views/singleBlogPost.html", context)
         else:
-            redirect_url = reverse("blog:post-detail", kwargs={"slug" : slug})
+            message = {'msg': 'لطفا اطلاعات خود را کامل کنید'}
+            json_msg = json.dumps(message)
+
             context = {
                 'post' : post_json_string,
                 'random_posts' : json_random_string,
                 'latest_posts' : json_latest_string,
-                'message' :  '{"msg" : "لطفا اطلاعات خود را تکمیل کنید "}"',
+                'message' :  json_msg,
             }
-            
+
             return render(request,"views/singleBlogPost.html", context)
 
     context = {
