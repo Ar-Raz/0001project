@@ -57,7 +57,7 @@ class IndexView(View):
             post_ser = PostSerializer(posts, many=True).data
             post_ser_json = json.dumps(post_ser)
 
-            product_comments = ProductComment.objects.all()[0:10]
+            product_comments = ProductComment.objects.all()[0:20]
             sered_comments = ProductCommentDetailSerializer(product_comments, many=True).data
             json_comments = json.dumps(sered_comments)
 
@@ -65,11 +65,11 @@ class IndexView(View):
             products_ser_json = json.dumps(products_ser)
 
 
-            new_products = Product.objects.all().order_by('-date_addded')
+            new_products = Product.objects.all().order_by('-date_addded')[:20]
             sered_new_products = ProductDetailSerializer(new_products, many=True).data
             new_products_json_string =  json.dumps(sered_new_products)
 
-            best_sellers = Product.objects.filter(label='پرفروش')
+            best_sellers = Product.objects.filter(label='پرفروش')[:20]
             sered_best_seller_products = ProductDetailSerializer(best_sellers, many=True).data
             best_sellers_json_string = json.dumps(sered_best_seller_products)
 
