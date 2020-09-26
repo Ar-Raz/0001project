@@ -87,20 +87,6 @@
                 }
                 error.style.display="block"
                 
-            },
-            sendReq(){
-                console.log("req")
-                axios.post("/merchandise/miniorder",{
-                    name:this.user_name,
-                    email:this.email,
-                    extra_discription:this.extra_discription,
-                    phone_number:this.phone_number,
-                    product_name:this.product_name
-
-                })
-                .then(res=>{
-                    console.log(res.data)
-                })
             }
         },
         data(){

@@ -5,6 +5,17 @@ from .models import Product, ProductVariation, Variation , ProductComment, Ratin
 from users.serializers import UserSerializer,ProducerProfileDetailSerializer
 from categories.serializers import CategorySerializer, VariationDetailSerializer
 
+class ProductTechDetailSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ProductDetail
+        fields = (
+            'id',
+            'value',
+            'variation',
+            'products',
+        )
+
 class ProductDetailsSerializer(serializers.ModelSerializer):
     variation = serializers.SerializerMethodField()
 
@@ -49,6 +60,7 @@ class ProductSerializer(serializers.ModelSerializer):
             'date_addded',
             'orderd_times',
         )
+        read_only_fields = ('slug',)
 
     def get_sample(self, obj):
         return obj.get_samples_display()
@@ -137,39 +149,6 @@ class RatingSerializer(serializers.ModelSerializer):
         model = Rating
         fields = ('id', 'starts', 'user', 'product')
 
-
-#
-# class ProductDetailSerializer(serializers.ModelSerializer):
-#     comments = serializers.SerializerMethodField()
-#
-#     class Meta:
-#         model = Product
-#         fields = (
-#             'title',
-#             'price',
-#             'discount_price',
-#             'product_image',
-#             'slug',
-#             'stock',
-#             'description',
-#             'minimum_order',
-#             'payment_type',
-#             'packing',
-#             'shipping',
-#             'origin',
-#             'made_in',
-#             'delivery',
-#             'samples',
-#             'remarks',
-#             'category',
-#             'average_rating',
-#             'producer',
-#             'comments',
-#         )
-#         read_only_fields = [ 'producer' ,]
-#
-#     def get_comments(self, obj):
-#         return ProductCommentSerializer(obj.productcomment_set.all(), many=True).data
 
 class ProductTitleSerializer(serializers.ModelSerializer):
 

@@ -213,3 +213,46 @@ ul li{
     "main main"
     "footer footer";
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ul.pagination{
+  display:flex;
+  justify-content: center;
+}
+ul.pagination li{
+  margin:10px !important;
+}
+ul.pagination li{
+  margin:10px;
+}
+ul.pagination li.active{
+	border:0;
+}
+ul.pagination li.active a{
+  color:white;
+  padding:5px;
+  border:0;
+  background: rgb(9,111,211);
+}
+ul.pagination li.active:focus, ul.pagination li.active:focus{
+    outline: none;
+}

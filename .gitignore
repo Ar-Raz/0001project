@@ -3,7 +3,6 @@ media
 backup
 .vscode
 .idea
-.env
 env
 envv
 static

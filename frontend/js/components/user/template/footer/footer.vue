@@ -8,7 +8,7 @@
 			<div class="secondRow">
 				<mission></mission>
 				<abouts></abouts>
-				<sign-up></sign-up>
+				<!-- <sign-up></sign-up> -->
 				<cont></cont>
 
 

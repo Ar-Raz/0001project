@@ -14,7 +14,9 @@ from .serializers import (
         CategorySerializer,
         CategoryDetailSerializer,
         VariationDetailSerializer,
-        MainCategorySerializer
+        MainCategorySerializer,
+        MainCategoryQuickSerializer,
+        VarationCreatSerializer
         )
 from .models import Category, Variation, CategoryVariation, MainCategory
 
@@ -34,6 +36,11 @@ from products.serializers import ProductDetailSerializer
 ##################################################################
 """
 
+class QuickCategoriesList(ListAPIView):
+    permission_classes = (AllowAny,)
+    serializer_class = MainCategoryQuickSerializer
+    queryset = MainCategory.objects.all()
+
 
 class CategoryListView(ListAPIView):
     # permission_classes = (AllowAny,)
@@ -49,6 +56,18 @@ class CategoryDetailView(RetrieveAPIView):
 class MainCategoryListView(ListAPIView):
     serializer_class = MainCategorySerializer
     queryset = MainCategory.objects.all()
+
+class CategoryVaritionRetreiveAPIView(ListAPIView):
+    serializer_class = VarationCreatSerializer
+
+    def get_queryset(self):
+        pk = self.kwargs["pk"]
+        category = Category.objects.get(pk=pk)
+        varitions = Variation.objects.filter(category=category)
+        return varitions
+
+
+
 """
 END OF:
 ################################################################

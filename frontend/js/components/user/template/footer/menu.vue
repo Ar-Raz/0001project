@@ -1,74 +1,27 @@
 <template>
   <div id="mega">
     <div id="megaWrapper">
-      <!-- <ul class="singleMega ">
-							<li class="headMega" v-for="(cat,ind) in getCats" :key="ind" v-if='ind<6'><a :href="getHref(cat)">{{cat.title}}</a></li>
-      </ul>-->
+
       <div class="headWrapper">
-        <div class="headMenuWrapper">
-          <div class="singleMenu">
-            <div class="title">عنوان دسته بندی</div>
-              <ul>
-                <li><a href='#'>دسته 1</a></li>
-                <li><a href="#">خط تولید پنیر</a></li>
-                <li><a href="#">دسته 1</a></li>
-                <li><a href="#">دسته</a> </li>
-                <li><a href="#">دسته</a></li>
-              </ul>
-          </div>
-          <div class="singleMenu">
-            <div class="title">عنوان دسته بندی</div>
-              <ul>
-                <li><a href='#'>دسته 1</a></li>
-                <li><a href="#">خط تولید پنیر</a></li>
-                <li><a href="#">دسته 1</a></li>
-                <li><a href="#">دسته</a> </li>
-                <li><a href="#">دسته</a></li>
-              </ul>
-          </div>
-          <div class="singleMenu">
-            <div class="title">عنوان دسته بندی</div>
-              <ul>
-                <li><a href='#'>دسته 1</a></li>
-                <li><a href="#">خط تولید پنیر</a></li>
-                <li><a href="#">دسته 1</a></li>
-                <li><a href="#">دسته</a> </li>
-                <li><a href="#">دسته</a></li>
-              </ul>
-          </div>
-        </div>
-        <div class="headMenuWrapper">
-          <div class="singleMenu">
-            <div class="title">عنوان دسته بندی</div>
-              <ul>
-                <li><a href='#'>دسته 1</a></li>
-                <li><a href="#">خط تولید پنیر</a></li>
-                <li><a href="#">دسته 1</a></li>
-                <li><a href="#">دسته</a> </li>
-                <li><a href="#">دسته</a></li>
-              </ul>
-          </div>
-          <div class="singleMenu">
-            <div class="title">عنوان دسته بندی</div>
-              <ul>
-                <li><a href='#'>دسته 1</a></li>
-                <li><a href="#">خط تولید پنیر</a></li>
-                <li><a href="#">دسته 1</a></li>
-                <li><a href="#">دسته</a> </li>
-                <li><a href="#">دسته</a></li>
-              </ul>
-          </div>
-          <div class="singleMenu">
-            <div class="title">عنوان دسته بندی</div>
-              <ul>
-                <li><a href='#'>دسته 1</a></li>
-                <li><a href="#">خط تولید پنیر</a></li>
-                <li><a href="#">دسته 1</a></li>
-                <li><a href="#">دسته</a> </li>
-                <li><a href="#">دسته</a></li>
-              </ul>
-          </div>
-        </div>
+                <div  class="headMenuWrapper">
+                  <div  v-for="(cat,ind) in getCats" class="singleMenu"  v-if="ind<3">
+                    <div class="title">{{cat.title}}</div>
+                      <ul >
+                        <li v-for="(sub,index) in cat.subs" v-if="index<5"><a :href='getHref(sub.title)'>{{sub.title}}</a></li>
+                      </ul>
+                  </div>
+                </div>
+
+
+                <div  class="headMenuWrapper" >
+                  <div v-for="(cat,ind) in getCats" class="singleMenu" v-if="ind>=3 && ind<6">
+                    <div class="title">{{cat.title}}</div>
+                      <ul>
+                        <li v-for="(sub,index) in cat.subs" v-if="index<5"><a :href='getHref(sub.title)'>{{sub.title}}</a></li>
+                      </ul>
+                  </div>
+                </div>
+
 
       </div>
 	  
@@ -111,20 +64,28 @@ li {
 .title{
   text-align:right;
   font-weight:bold;
-  font-size:20px;
+  font-size:18px;
 }
-@media (min-width:500px) and (max-width:1000px){
+@media (min-width:550px) and (max-width:1000px){
   .headWrapper{
-    flex-direction:column
+    flex-direction:row
+  }
+  .headMenuWrapper{
+    flex-direction:column;
+    margin-right: 10px;
+    align-items:space-between
+  }
+  .singleMenu{
+    width: 100%
   }
 }
-@media (max-width:500px){
+@media (max-width:550px){
   .headWrapper{
     flex-direction:column
   }
   .headMenuWrapper{
     flex-direction:column;
-    align-items:flex-end
+    align-items:space-between
   }
   .singleMenu{
     margin-right:10px;
@@ -142,12 +103,17 @@ export default {
   },
   methods: {
     getHref(cat) {
-      return `/${cat.title}`;
+      return `/categories/${cat}`;
     }
+  },
+  mounted(){
+
   },
   computed:{
     getCats(){
+      console.log(this.$store.getters.getCatsWithSubs)
       return this.$store.getters.getCatsWithSubs
+      
     }
   }
 };

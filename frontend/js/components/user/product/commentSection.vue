@@ -12,7 +12,7 @@
 
                             <div id="email" class="inputs">
                                 <div class='formInputsWrapper'>
-                                        <input autocomplete="off" name="username" @blur='focusOut($event)' class='inputWithLabelThatShouldStay signupFormInputs' id='userEmail' type="text">
+                                        <input style="direction: rtl;" autocomplete="off" name="username" @blur='focusOut($event)' class='inputWithLabelThatShouldStay signupFormInputs' id='userEmail' type="text">
                                         <label class='comeUpLabel' for="userEmail">نام</label>
                                 </div>
                                 <p class="inputError">فرمت ایمیل اشتباه است</p>
@@ -48,7 +48,7 @@
                         </div>
                     </div>
                 </div>
-                <button class="submit">مشاهده کامنت بیشتر</button>
+                <!-- <button class="submit">مشاهده کامنت بیشتر</button> -->
             </div>
         </div>
     </div>

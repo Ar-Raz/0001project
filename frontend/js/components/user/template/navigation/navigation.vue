@@ -2,10 +2,10 @@
   <div id="navigation">
     <div class="naviagtionWrapper">
 		<div class="hamIcon">
-			<div class="sikhWrapper">
-				<div @click="toggleNavigation" class="sikh1 sikh"></div>
-				<div @click="toggleNavigation" class="sikh2 sikh"></div>
-				<div @click="toggleNavigation" class="sikh3 sikh"></div>
+			<div class="sikhWrapper" @click="toggleNavigation($event)">
+				<div @click="toggleNavigation($event)" class="sikh1 sikh"></div>
+				<div @click="toggleNavigation($event)" class="sikh2 sikh"></div>
+				<div @click="toggleNavigation($event)" class="sikh3 sikh"></div>
 			</div>
 			<transition name="fade" mode="out-in">
 				<ul v-if="showNavigation">
@@ -57,6 +57,7 @@ export default {
   },
   methods:{
 	  checkNavigation(){
+
 		if(window.innerWidth>450){
 		  this.showNavigation=true
 		}else{
@@ -68,7 +69,9 @@ export default {
 		this.$store.dispatch("toggleSubMenu")
 		console.log(this.$store.state.catsWithSubs,"hey")
 	},
-	toggleNavigation(){
+	toggleNavigation(e){
+		e.stopPropagation()
+	  	e.preventDefault()
 		this.showNavigation=!this.showNavigation
 		this.changeSikhStyles()
 	},
@@ -78,12 +81,12 @@ export default {
 		const sikh3=document.querySelector(".sikh3")
 		const wrapper=document.querySelector(".sikhWrapper")
 		if(this.showNavigation){
-			sikh2.style.transform="rotate(135deg) translate(-6px, 8px)"
-			sikh1.style.transform="rotate(-135deg)"
-			sikh2.style.webkitTransform ="rotate(135deg) translate(-6px, 8px)"
-			sikh1.style.webkitTransform ="rotate(-135deg)"
+			sikh2.style.transform="rotate(135deg) translate(-6px, 7px)"
+			sikh1.style.transform="rotate(-135deg) translate(-4px,-4px)"
+			sikh2.style.webkitTransform ="rotate(135deg) translate(-6px, 7px)"
+			sikh1.style.webkitTransform ="rotate(-135deg)translate(-4px,-4px)"
 			sikh3.style.display="none"
-			wrapper.style.marginTop="5px"
+			// wrapper.style.marginTop="5px"
 		}else{
 			wrapper.style.marginTop="0"
 			sikh3.style.display="block"
@@ -100,10 +103,12 @@ export default {
 .hamIcon{
 	position: relative;
 	height:50px;
-	border-bottom:1px solid #d9d9d8
+	border-bottom:1px solid #d9d9d8;
+	border-top:1px solid #d9d9d8;
 }
 .sikhWrapper{
-	display:none
+	display:none;
+	
 }
 ul{
 	background:#f6f6f4;
@@ -119,7 +124,6 @@ li{
 	height:4px;
 	border-radius:5px;
 	position:relative;
-	bottom:5px;
 	transition:all 0.4s
 }
 .sikh2{
@@ -133,7 +137,6 @@ li{
 	height:4px;
 	border-radius:5px;
 	position:relative;
-	top:5px
 }
 .sikh{
 	background:#096fd3;
@@ -153,16 +156,19 @@ li{
 		flex-direction:column;
 		align-items:center;
 		background:#251f1f;
-		z-index:6
+		z-index:6;
 	}
 	li{
-		color:white
+		color:white;
 	}
 	a{
-		color:white
+		color:white;
 	}
 	.sikhWrapper{
-		display:block
+		display: flex;
+		flex-direction: column;
+		justify-content: space-evenly;
+		height:40px;
 	}
 }
 </style>

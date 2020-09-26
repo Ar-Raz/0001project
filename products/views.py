@@ -23,8 +23,17 @@ from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .forms import ProductCommentForm
-from .models import Product, ProductComment, Rating
-from .serializers import ProductSerializer, ProductDetailSerializer, ProductCommentSerializer
+from .models import (Product,
+                ProductComment,
+                Rating,
+                ProductDetail
+                )
+from .serializers import ( ProductSerializer,
+                    ProductDetailSerializer,
+                    ProductCommentSerializer,
+                    ProductDetailsSerializer,
+                    ProductTechDetailSerializer,
+                    )
 from .permissions import IsProducer, IsOwnerOrReadOnly
 from .serializers import (ProductSerializer,
             ProductCommentSerializer,
@@ -38,7 +47,8 @@ from categories.serializers import (
         MainCategorySerializer,
         CategoryDetailSerializer,
         )
-from categories.models import Category, MainCategory
+from categories.models import Category, MainCategory, Variation
+from categories.serializers import VarationCreatSerializer
 from users.serializers import UserSerializer
 from users.models import ProducerProfile
 from blog.models import Post
@@ -227,6 +237,17 @@ class VueFilterView(generics.ListAPIView):
     def get_queryset(self):
         qs = filter(self.request)
         return qs
+
+
+class ProductVariation(generics.ListAPIView):
+    serializer_class = ProductDetailsSerializer
+
+    def get_queryset(self):
+        category = self.kwargs['slug']
+        queryset = ProductDetail.objects.filter(variation__category__slug=category)
+        return queryset
+
+
 """
 END OF:
 ################################################################

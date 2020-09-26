@@ -155,7 +155,7 @@
 			},
 			getImage(img){
 				console.log(img)
-				return '/images/کیسه-پر-کنCBE-NWB-300x300.png'
+				return img
 			},
 			getClass(){
 				return `splide ${this.id}`

@@ -116,8 +116,6 @@
 
 <style scoped>
 	.controlls .pre,.controlls .next{
-		position: absolute;
-		top:50%;
 		height:50px;
 		width:50px;
 		cursor:pointer;
@@ -129,6 +127,15 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+	}
+	.controlls{
+		position: absolute;
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		top:50%;
+		transform: translateY(-50%);
 	}
 	.pre{
 		transform:rotateY(180deg)
@@ -233,9 +240,12 @@
 		}
 	}
 	@media (max-width:650px){
-		.container p,.container button{
-			font-size:12pt;
+		.container button{
+			font-size:11pt;
 			font-weight: lighter;
+		}
+		.container p{
+			font-size: 11pt
 		}
 	}
 	@media (max-width:924px)

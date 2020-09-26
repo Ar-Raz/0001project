@@ -5,6 +5,7 @@
         <div v-for="(p,i) in JSON.parse(posts)" :key="i">
           <a :href="getSlugn(p)">
               <single-post
+              
               :title="p.title"
               :descs="p.short_description"
               :author="p.author"
@@ -15,6 +16,19 @@
 
         </div>
       </div>
+      <div class="paginationWrapper">
+        <paginate
+          :value="getPage"
+          :page-count="20"
+          :page-range="3"
+          :margin-pages="2"
+          :click-handler="handleMargins"
+          :prev-text="'قبل'"
+          :next-text="'بعد'"
+          :container-class="'pagination'"
+
+        ></paginate>
+      </div>
     </div>
   </div>
 </template>
@@ -24,14 +38,24 @@ import singlePost from "./singlePost.vue";
 import consulate from "../consulate/consulate.vue";
 import {adjustElFromTop} from '../../user/mixIns/adjustElFromTop.js'
 import {toggleBodyOverFlow} from '../../user/mixIns/toggleBodyOverFlow.js'
+import Paginate from 'vuejs-paginate'
 export default {
   components: {
     singlePost,
     consulate,
+    Paginate
   },
-  props:['posts','pagination'],
+  props:['posts','pagination',],
   mounted(){
+    const href=window.location.href.split("/")
+    console.log()
+    this.page=+href[href.length-1]
     console.log("blogs",JSON.parse(this.posts))
+  },
+  computed:{
+    getPage(){
+      return this.page
+    }
   },
   created(){
     console.log("pospaginationts",JSON.parse(this.pagination))
@@ -39,13 +63,18 @@ export default {
   mixins:[toggleBodyOverFlow,adjustElFromTop],
   data(){
       return{
-          showCats:false
+          showCats:false,
+          page:2
       }
   },
   methods: {
+    handleMargins(pageNum){
+      window.location.href="/blog/posts/"+pageNum
+      console.log(pageNum)
+
+    },
     startValidation(type, e) {
       const el = e.target;
-      const parentNode = e.target.parentElement;
 
       const error = parentNode.nextElementSibling;
       if (el.id == "userPassword" && el.value.length < 8) {
@@ -146,4 +175,5 @@ export default {
     right:0
   }
 }
+
 </style>

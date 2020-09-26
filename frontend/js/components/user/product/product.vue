@@ -20,13 +20,12 @@
                 <component :product='JSON.parse(product)'  :is="currentComponent"></component>
 
             </transition>
+            <div class="related">
+                <related :related='JSON.parse(related_products)'></related>
+            </div>
             <comment-section :action="''" :comments='JSON.parse(product).comments'></comment-section>
         </div>
-
-
     </div>
-
-
 </template>
 
 <script>
@@ -35,16 +34,17 @@
     import productDescs from './productDescs.vue'
     import componyDetali from "./componyDetail.vue"
     import technicalDetail from "./technicalDetatil.vue"
+    import related from "./related.vue"
     import axios from 'axios'
     export default{
-        props:["product"],
+        props:["product",'related_products'],
         data(){
             return{
                 currentComponent:'productDescs'
             }
         },
         mounted(){
-            console.log(JSON.parse(this.product))
+            console.log("related",JSON.parse(this.related_products))
         },
         name:"product",
         components:{
@@ -52,7 +52,8 @@
             commentSection,
             productDescs,
             componyDetali,
-            technicalDetail
+            technicalDetail,
+            related
         },
         methods:{
             changeButtonColor(e){

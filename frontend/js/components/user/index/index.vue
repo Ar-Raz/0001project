@@ -11,7 +11,7 @@
       <flip-card></flip-card>
     </div>
     <div style="width: 100%;overflow:hidden;">
-      <comments></comments>
+      <comments :comments="comments"></comments>
     </div>
 	
 
@@ -29,12 +29,12 @@
     </div>
 
 
-    <div class="digiCardIndex shouldCollapse maxIs">
+    <!-- <div class="digiCardIndex shouldCollapse maxIs">
       <digi-card
         :imgs='JSON.stringify(["/images/shrink.png","/images/shrink2.png","/images/digi1.jpg","/images/digi2.jpg"])'
       ></digi-card>
       
-    </div>
+    </div> -->
 
     <div class="allCards shouldCollapse maxIs">
       <card
@@ -78,9 +78,10 @@ export default {
     "posts",
     "best_sellers",
     "new_products",
+    "comments"
   ],
   mounted() {
-    console.log(JSON.parse(this.best_sellers));
+    console.log("comment",JSON.parse(this.comments));
   },
 };
 </script>

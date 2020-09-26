@@ -1,19 +1,12 @@
 <template>
     <div id="singleBlogPostItem">
+        <feed-back :msgs="msg"></feed-back>
             <div class="signleBlogPostItemWrapper maxIs">
                 <div v-html="JSON.parse(post).content" class="postText">
                 </div>
-                <suggestin></suggestin>
+                <suggestin :latests="JSON.parse(latest_posts)"></suggestin>
 
                 <comment-section :comments='JSON.parse(post).comments'></comment-section>
-                <!-- <div class="comments">
-                    <div class="commentsWrapper">
-                        <div class="writeComment">
-                            <textarea placeholder="نظر شما چیست؟" name="" id="" cols="30" rows="10"></textarea>
-                            <button class='submit'>ثبت نظر</button>
-                        </div>
-                    </div>
-                </div> -->
             </div>
     </div>
 </template>
@@ -48,9 +41,10 @@
     }
     #singleBlogPostItem{
         display:flex;
+        flex-direction: column;
         margin-top:50px;
         width:100%;  
-        justify-content: center;
+        align-items: center;
     }
     .signleBlogPostItemWrapper{
         width: 90%;
@@ -67,15 +61,17 @@
     import consulate from "../consulate/consulate.vue"
     import suggestin from "./suggestin.vue"
     import commentSection from "../../user/product/commentSection.vue"
+    import feedBack from "../../user/template/feedback/feddback.vue"
     export default {
         components:{
             consulate,
             suggestin,
-            commentSection
+            commentSection,
+            feedBack
         },
-        props:['post'],
+        props:['post',"msg","latest_posts"],
         created(){
-            console.log('blog',JSON.parse(this.post))
+            console.log('msg',JSON.parse(this.msg))
         }
     }
 </script>

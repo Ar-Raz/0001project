@@ -13,9 +13,6 @@
 
 
 <style scoped>
-	#abouts{
-		margin:20px;
-	}
 	li{
 		text-align: right;
 		line-height: 2rem

@@ -5,7 +5,7 @@
                 <img :src="img">
             </div>
             <div class="descs">
-                <p>{{getTitle(title)}}</p>
+                <p class="title">{{getTitle(title)}}</p>
                 <p>{{getTitle(descs)}}</p>
 
                 <div class="extraDetail">
@@ -23,6 +23,9 @@
     display:flex;
     flex-direction:column;
     align-items:flex-end
+}
+.title{
+    color:rgb(9,111,211)
 }
 
 
@@ -72,14 +75,18 @@ img{
 
 <script>
 export default {
-    props:['title','img','descs','author',"avg_read"],
+    props:['title','img','descs','author',"avg_read","msg"],
     methods:{
         getDescs(txt){
             return txt.length>100 ? `${txt.slice(0,100)}...` : txt
         },
         getTitle(title){
         return title.length>70 ? title.substring(0,70)+"..." : title
-        }
+        },
+
+    },
+    mounted(){
+        console.log("MSG",this.msg)
     }
 }
 </script>

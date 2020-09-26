@@ -1,10 +1,3 @@
-import './css/reset.css'
-import './css/buttons.css'
-import './css/shared.css'
-import './css/leaflet.css'
-import './css/prettyCheckbox.css'
-
-
 
 
 
@@ -33,7 +26,7 @@ import aboutUs from "./components/abouts/aboutUs.vue"
 import aboutDamir from "./components/abouts/aboutDamirco.vue"
 import rulesToUse from "./components/abouts/rulesToUse.vue"
 import privacy from "./components/abouts/privacy.vue"
-
+import feedBack from "./components/user/template/feedback/feddback.vue"
 
 
 import {routes} from "./routes.js"
@@ -68,6 +61,7 @@ const app=new vue({
 		aboutUs,
 		aboutDamir,
 		rulesToUse,
+		feedBack,
 		privacy
 	},
 	store,
@@ -78,3 +72,18 @@ const app=new vue({
 
 
 export const eventBus=new vue()
+
+
+
+
+
+
+
+
+
+
+import './css/reset.css'
+import './css/buttons.css'
+import './css/shared.css'
+import './css/leaflet.css'
+import './css/prettyCheckbox.css'

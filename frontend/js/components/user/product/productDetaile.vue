@@ -27,15 +27,15 @@
 
 
 
-                                <div class="glider-contain">
+                                <!-- <div class="glider-contain">
                                     <div class="glider">
                                         <div><img @click="changeImage($event)" :src="getImgSrc()" alt=""></div>
                                         <div><img @click="changeImage($event)" src="/images/2181-moon-black-and-white-wallpaper-file-hd.jpg" alt=""></div>
                                         <div><img @click="changeImage($event)" src="/images/bandRole.png" alt=""></div>
                                         <div><img @click="changeImage($event)" src="/images/abchasb.png" alt=""></div>
-                                        <!-- <div><img @click="changeImage($event)" src="/images/ours1.png" alt=""></div> -->
+                                        <div><img @click="changeImage($event)" src="/images/ours1.png" alt=""></div>
                                     </div>
-                                </div>
+                                </div> -->
 
 
 
@@ -54,7 +54,11 @@
                             <div class="justReadableDetailWrapper">
                                 <div class="price singleDetail">
                                     <div class='order1'><p>قیمت:</p></div>
-                                    <div class='order2'><p>{{productDet.price}}</p></div>
+                                    <div class='order2'><p>{{productDet.price.toLocaleString()}}
+                                        <br>
+                                     تا  
+                                     <br>
+                                 {{productDet.second_price.toLocaleString()}}</p></div>
                                 </div>
                                 <div class="price singleDetail">
                                     <div class='order1'><p>حداقل تعداد قابل خرید:</p></div>
@@ -62,21 +66,21 @@
                                 </div>
                                 <div class="price singleDetail">
                                     <div class='order1'><p>ارائه نمونه:</p></div>
-                                    <div class='order2'><p>{{productDet.samples}}</p></div>
+                                    <div class='order2'><p>{{productDet.sample}}</p></div>
                                 </div>
                                 <div class="price singleDetail">
                                     <div class='order1'><p>امتیاز:</p></div>
-                                    <div class='order2'><p>4.5</p></div>
+                                    <div class='order2'><p>{{productDet.average_rating}}</p></div>
                                 </div>
                                 <div class="price singleDetail">
                                     <div class='order1'><p>ساخت:</p></div>
                                     <div class='order2'><p>{{productDet.made_in}}</p></div>
                                 </div>
-                                <div class="rating">
+                                <!-- <div class="rating">
                                     <div class="star">
                                         <star-rating :fixed-points="2" :increment="0.01"></star-rating>
                                     </div>
-                                </div>
+                                </div> -->
                                 <input type="hidden" :value="payWay">
                                 <input type="hidden" :value="packetType">
                                 <input type="hidden" :value="sendWay">
@@ -487,5 +491,7 @@ import {adjustElFromTop} from "../../user/mixIns/adjustElFromTop.js"
         }
     
     }
-
+.price .order2 p{
+    text-align: center;
+}
 </style>

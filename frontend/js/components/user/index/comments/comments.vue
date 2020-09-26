@@ -1,259 +1,71 @@
 <template>
     <div id="comments">
         <div id="commentsWrapper">
-            <marquee-text :paused="isStop" :duration='300'>
-                <div class="marquee" @mouseover="stop" @mouseleave="cont">
-                <div class="singleTwinComment">
-                    <div class="singleComment">
-                        <div class="singleCommentWrapper">
-                            <p class="name">عرفان</p>
-                            <p class="categorie">شیرینگ چپکمل L30</p>
-                            <p>کامن کامن تزول دمیرکو شیشه شییرنک پک فرش دستگاه کشتارپک فرش دستگاه کشاه کشنتار گوسفدت خوبه خوبه فلان هی هی هو کامنت بشتر </p>
-                        </div>
-                    </div>
-                    <div class="singleComment">
-                        <div class="singleCommentWrapper">
-                            <p class="name">عرفان</p>
-                            <p class="categorie">شیرینگ چپکمل L30</p>
-                            <p>کامن کامنت خوب فلان دم خوبه فلان هی هی هو کامنت بامن کامن تزول دمیرکو شیشه شییرنک پک فرش دستگاه کشتار مرغ دستگاه کشنتشتر </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="singleTwinComment">
-                    <div class="singleComment">
-                        <div class="singleCommentWrapper">
-                            <p class="name">عرفان</p>
-                            <p class="categorie">شیرینگ چپکمل L30</p>
-                            <p>کامن کامن تزول دمیرکو شیشه شییرنک پک فرش دستگاه کشتار مرغ دستگاه کشنتامن کامن رغ دستگاه کشنتامن ککشتار مرغ دستگشتر </p>
-                        </div>
-                    </div>
-                    <div class="singleComment">
-                        <div class="singleCommentWrapper">
-                            <p class="name">عرفان</p>
-                            <p class="categorie">شیرینگ چپکمل L30</p>
-                            <p>کامن کامنت خودم خوبه فلان هی هی هو کامنت بامن کامن تزول دمیرکو شیشه شییرنک پک فرش دستگاه کشتار مرغ دستگاه کشنتشتر </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="singleTwinComment">
-                    <div class="singleComment">
-                        <div class="singleCommentWrapper">
-                            <p class="name">عرفان</p>
-                            <p class="categorie">شیرینگ چپکمل L30</p>
-                            <p>کامن کامن تزول درنک پک فرش دستگاه کشتار مرغ دستگاه کشنگاه کشنتار گوسفدت خوبه خوبه فلان هی هی هو کامنت بشتر </p>
-                        </div>
-                    </div>
-                    <div class="singleComment">
-                        <div class="singleCommentWrapper">
-                            <p class="name">عرفان</p>
-                            <p class="categorie">شیرینگ چپکمل L30</p>
-                            <p>کامن کامنت خوب فلان دم خوبه فلان هی هی هو کامنت بامن کاتگاه کشتار مرغ دستگاه کشنتشتر </p>
-                        </div>
-                    </div>
-                </div>
 
 
+                <marquee-text :paused="isStop" :duration='60'>
+                    <div class="marquee" >
+                        <template v-for="(comment,index) in getComments">
+                            <div class="singleTwinComment">
+                                <div @mouseover="stop" @mouseleave="cont" class="singleComment"  v-for="subC in comment">
+                                    <div class="singleCommentWrapper">
+                                        <p class="name">{{subC.username}}</p>
+                                        <a :href="getHref(subC)"><p class="categorie">{{subC.item.title}}</p></a>
+                                        <p>{{subC.content}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
 
-                <div class="singleTwinComment">
-                    <div class="singleComment">
-                        <div class="singleCommentWrapper">
-                            <p class="name">عرفان</p>
-                            <p class="categorie">شیرینگ چپکمل L30</p>
-                            <p>کامن کامنت خوبه خوبه فلان هی هی هو کامنت بشتر </p>
-                        </div>
-                    </div>
-                    <div class="singleComment">
-                        <div class="singleCommentWrapper">
-                            <p class="name">عرفان</p>
-                            <p class="categorie">شیرینگ چپکمل L30</p>
-                            <p>کامن کامنت خوب فلان دمیرکو تزول مایکروسافت گرون ارزونهه خبه بده پنج امتیازه خوبه فلان هی هی هو کامنت بشتر </p>
-                        </div>
-                    </div>
-                </div>
-
-
-
-                <div class="singleTwinComment">
-                    <div class="singleComment">
-                        <div class="singleCommentWrapper">
-                            <p class="name">عرفان</p>
-                            <p class="categorie">شیرینگ چپکمل L30</p>
-                            <p>کامن کامن تزول دمیرکو شیشه شییرنک پک فرش دستگاه کشتار  کشنتار گوسفدت خوبه خوبه فلان هی هی هو کامنت بشتر </p>
-                        </div>
-                    </div>
-                    <div class="singleComment">
-                        <div class="singleCommentWrapper">
-                            <p class="name">عرفان</p>
-                            <p class="categorie">شیرینگ چپکمل L30</p>
-                            <p>کامن کامنت خوب فلان دم خوبه فلان هی هی هو کامنت بشتر </p>
-                        </div>
-                    </div>
-                </div>
-
-
-
-                <div class="singleTwinComment">
-                    <div class="singleComment">
-                        <div class="singleCommentWrapper">
-                            <p class="name">عرفان</p>
-                            <p class="categorie">شیرینگ چپکمل L30</p>
-                            <p>کامن کامن تزول دمیرکو شیشه شییرنک پک فرش دستگاه کشتارپک فرش دستگاه کشاه کشنتار گوسفدت خوبه خوبه فلان هی هی هو کامنت بشتر </p>
-                        </div>
-                    </div>
-                    <div class="singleComment">
-                        <div class="singleCommentWrapper">
-                            <p class="name">عرفان</p>
-                            <p class="categorie">شیرینگ چپکمل L30</p>
-                            <p>کامن کامنت خوب فلان دم خوبه فلان هی هی هو کامنت بامن کامن تزول دمیرکو شیشه شییرنک پک فرش دستگاه کشتار مرغ دستگاه کشنتشتر </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="singleTwinComment">
-                    <div class="singleComment">
-                        <div class="singleCommentWrapper">
-                            <p class="name">عرفان</p>
-                            <p class="categorie">شیرینگ چپکمل L30</p>
-                            <p>کامن کامن تزول دمیرکو شیشه شییرنک پک فرش دستگاه کشتار مرغ دستگاه کشنتامن کامن رغ دستگاه کشنتامن ککشتار مرغ دستگشتر </p>
-                        </div>
-                    </div>
-                    <div class="singleComment">
-                        <div class="singleCommentWrapper">
-                            <p class="name">عرفان</p>
-                            <p class="categorie">شیرینگ چپکمل L30</p>
-                            <p>کامن کامنت خودم خوبه فلان هی هی هو کامنت بامن کامن تزول دمیرکو شیشه شییرنک پک فرش دستگاه کشتار مرغ دستگاه کشنتشتر </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="singleTwinComment">
-                    <div class="singleComment">
-                        <div class="singleCommentWrapper">
-                            <p class="name">عرفان</p>
-                            <p class="categorie">شیرینگ چپکمل L30</p>
-                            <p>کامن کامن تزول درنک پک فرش دستگاه کشتار مرغ دستگاه کشنگاه کشنتار گوسفدت خوبه خوبه فلان هی هی هو کامنت بشتر </p>
-                        </div>
-                    </div>
-                    <div class="singleComment">
-                        <div class="singleCommentWrapper">
-                            <p class="name">عرفان</p>
-                            <p class="categorie">شیرینگ چپکمل L30</p>
-                            <p>کامن کامنت خوب فلان دم خوبه فلان هی هی هو کامنت بامن کاتگاه کشتار مرغ دستگاه کشنتشتر </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="singleTwinComment">
-                    <div class="singleComment">
-                        <div class="singleCommentWrapper">
-                            <p class="name">عرفان</p>
-                            <p class="categorie">شیرینگ چپکمل L30</p>
-                            <p>کامن کامنت خوبه خوبه فلان هی هی هو کامنت بشتر </p>
-                        </div>
-                    </div>
-                    <div class="singleComment">
-                        <div class="singleCommentWrapper">
-                            <p class="name">عرفان</p>
-                            <p class="categorie">شیرینگ چپکمل L30</p>
-                            <p>کامن کامنت خوب فلان دمیرکو تزول مایکروسافت گرون ارزونهه خبه بده پنج امتیازه خوبه فلان هی هی هو کامنت بشتر </p>
-                        </div>
-                    </div>
-                </div>
-
-
-
-                <div class="singleTwinComment">
-                    <div class="singleComment">
-                        <div class="singleCommentWrapper">
-                            <p class="name">عرفان</p>
-                            <p class="categorie">شیرینگ چپکمل L30</p>
-                            <p>کامن کامن تزول دمیرکو شیشه شییرنک پک فرش دستگاه کشتار  کشنتار گوسفدت خوبه خوبه فلان هی هی هو کامنت بشتر </p>
-                        </div>
-                    </div>
-                    <div class="singleComment">
-                        <div class="singleCommentWrapper">
-                            <p class="name">عرفان</p>
-                            <p class="categorie">شیرینگ چپکمل L30</p>
-                            <p>کامن کامنت خوب فلان دم خوبه فلان هی هی هو کامنت بشتر </p>
-                        </div>
-                    </div>
-                </div>
-
-
-
-                <div class="singleTwinComment">
-                    <div class="singleComment">
-                        <div class="singleCommentWrapper">
-                            <p class="name">عرفان</p>
-                            <p class="categorie">شیرینگ چپکمل L30</p>
-                            <p>کامن کامن تزول دمیرکو شیشه شییرنک پک فرش دستگاه کشتارپک فرش دستگاه کشاه کشنتار گوسفدت خوبه خوبه فلان هی هی هو کامنت بشتر </p>
-                        </div>
-                    </div>
-                    <div class="singleComment">
-                        <div class="singleCommentWrapper">
-                            <p class="name">عرفان</p>
-                            <p class="categorie">شیرینگ چپکمل L30</p>
-                            <p>کامن کامنت خوب فلان دم خوبه فلان هی هی هو کامنت بامن کامن تزول دمیرکو شیشه شییرنک پک فرش دستگاه کشتار مرغ دستگاه کشنتشتر </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="singleTwinComment">
-                    <div class="singleComment">
-                        <div class="singleCommentWrapper">
-                            <p class="name">عرفان</p>
-                            <p class="categorie">شیرینگ چپکمل L30</p>
-                            <p>کامن کامن تزول دمیرکو شیشه شییرنک پک فرش دستگاه کشتار مرغ دستگاه کشنتامن کامن رغ دستگاه کشنتامن ککشتار مرغ دستگشتر </p>
-                        </div>
-                    </div>
-                    <div class="singleComment">
-                        <div class="singleCommentWrapper">
-                            <p class="name">عرفان</p>
-                            <p class="categorie">شیرینگ چپکمل L30</p>
-                            <p>کامن کامنت خودم خوبه فلان هی هی هو کامنت بامن کامن تزول دمیرکو شیشه شییرنک پک فرش دستگاه کشتار مرغ دستگاه کشنتشتر </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="singleTwinComment">
-                    <div class="singleComment">
-                        <div class="singleCommentWrapper">
-                            <p class="name">عرفان</p>
-                            <p class="categorie">شیرینگ چپکمل L30</p>
-                            <p>کامن کامن تزول درنک پک فرش دستگاه کشتار مرغ دستگاه کشنگاه کشنتار گوسفدت خوبه خوبه فلان هی هی هو کامنت بشتر </p>
-                        </div>
-                    </div>
-                    <div class="singleComment">
-                        <div class="singleCommentWrapper">
-                            <p class="name">عرفان</p>
-                            <p class="categorie">شیرینگ چپکمل L30</p>
-                            <p>کامن کامنت خوب فلان دم خوبه فلان هی هی هو کامنت بامن کاتگاه کشتار مرغ دستگاه کشنتشتر </p>
-                        </div>
-                    </div>
-                </div>
-
-
+                </marquee-text>
             </div>
-            </marquee-text>
+            
             
            
         </div>
-    </div>
 
 </template>
 <script>
 import MarqueeText from "vue-marquee-text-component"
+import _ from "lodash"
 
 export default {
     components: {
     MarqueeText
   },
+  props:['comments'],
   methods:{
       stop(){
           this.isStop=true
       },
       cont(){
           this.isStop=false
+      },
+      
+      getHref(comment){
+        return `/products/product-detial/${comment.item.slug}`
+      },
+      validate(index){
+        console.log('index',index)
+        return true ? (index+1)%2==0 : false
       }
+  },
+  computed:{
+    getComments(){
+        const comment=JSON.parse(this.comments)
+        const mustReturn=_.chunk(comment,2)
+        console.log(mustReturn)
+        return mustReturn
+      }
+  },
+  mounted(){
+    console.log(JSON.parse(this.comments))
   },
   data(){
       return{
-          isStop:false
+          isStop:false,
+          counter:0
       }
   }
     
@@ -290,7 +102,7 @@ export default {
         padding:5px;
     }
     .categorie{
-        font-size: 18px;
+        font-size: 13px;
         margin-top: 5px;
         margin-bottom: 5px;
         color: rgb(9,111,211);
