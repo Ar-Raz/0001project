@@ -43,6 +43,22 @@
                 currentComponent:'productDescs'
             }
         },
+        metaInfo(){
+            const product=JSON.parse(this.product)
+            console.log('ppp',product)
+              return{
+                  title: product.title + "-دمیرکو",
+                  titleTemplate: null,
+                  htmlAttrs: {
+                    lang: 'en',
+                    amp: true
+                  },
+                   meta: [
+                      { charset: 'utf-8' },
+                      { name: 'description', content: product.short_description },
+                    ]
+              }
+            },
         mounted(){
             console.log("related",JSON.parse(this.related_products))
         },

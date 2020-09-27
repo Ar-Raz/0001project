@@ -11,7 +11,7 @@
             </div>
              <div id="name" class="inputs">
                 <div class='formInputsWrapper'>
-                        <input style="direction: rtl" v-model="user_name" autocomplete="off" name="username" @blur='focusOut($event)' class='inputWithLabelThatShouldStay signupFormInputs' id='userNameConsulate' type="text">
+                        <input style="direction: rtl" v-model="username" autocomplete="off" name="username" @blur='focusOut($event)' class='inputWithLabelThatShouldStay signupFormInputs' id='userNameConsulate' type="text">
                         <label class='comeUpLabel' for="userNameConsulate">نام</label>                                                                  
                 </div>
                 <p class="inputError">فرمت شماره اشتباه است</p> 

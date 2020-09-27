@@ -71,6 +71,8 @@
 	}
 	#flatMenuWrapper{
 		position:absolute;
+		width:-webkit-max-content;
+		width:-moz-max-content;
 		width:max-content;
 		background:#f6f6f4;
 		/* height:100vh; */
@@ -78,6 +80,7 @@
 		z-index:670;
 		right:-100%;
 		width:max-content;
+		-webkit-transition: all 1s;
 		transition: all 1s;
 		overflow: auto;
 
@@ -102,6 +105,7 @@
 		width:100%;
 		padding:0;
 		height:0;
+		-webkit-transition: all 0.4s;
 		transition: all 0.4s;
 		overflow: hidden;
 	}
@@ -111,13 +115,20 @@
 	svg{
 		width:15px;
 		height: 15px;
-		transform: rotate(-90deg);
+		-webkit-transform: rotate(-90deg);
+		        transform: rotate(-90deg);
 		margin-right: 20px
 	}
 	.link{
+		display: -webkit-box;
+		display: -ms-flexbox;
 		display: flex;
-    	justify-content: space-between;
-    	align-items: center;
+    	-webkit-box-pack: justify;
+    	    -ms-flex-pack: justify;
+    	        justify-content: space-between;
+    	-webkit-box-align: center;
+    	    -ms-flex-align: center;
+    	        align-items: center;
     	cursor:pointer;
 	}
 

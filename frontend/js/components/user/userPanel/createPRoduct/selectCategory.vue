@@ -1,45 +1,20 @@
 <template>
     <div id="selectCategory">
-        <div id="selectCategoryComponent">
-            <label for="">دسته بندی محصول را انتخاب کنید</label>
-            <input placeholder="جست و جو..." list="browsers" autocomplete="off" name="category">
-            <datalist id="browsers">
-                <option value="دسته 1"></option>
-                <option value="دسته 2"></option>
-                <option value="دسته 3"></option>
-                <option value="دسته 4"></option>
-                <option value="دسته 1"></option>
-                <option value="دسته 2"></option>
-                <option value="دسته 3"></option>
-                <option value="دسته 4"></option>
-                <option value="دسته 5"></option>
-                <option value="دسته 1"></option>
-                <option value="دسته 2"></option>
-                <option value="دسته 3"></option>
-                <option value="دسته 4"></option>
-                <option value="دسته 5"></option>
-                <option value="دسته 1"></option>
-                <option value="دسته 2"></option>
-                <option value="دسته 3"></option>
-                <option value="دسته 4"></option>
-                <option value="دسته 5"></option>
-                <option value="دسته 1"></option>
-                <option value="دسته 2"></option>
-                <option value="دسته 3"></option>
-                <option value="دسته 4"></option>
-                <option value="دسته 5"></option>
-                <option value="دسته 1"></option>
-                <option value="دسته 2"></option>
-                <option value="دسته 3"></option>
-                <option value="دسته 4"></option>
-                <option value="دسته 5"></option>
-                <option value="دسته 1"></option>
-                <option value="دسته 2"></option>
-                <option value="دسته 3"></option>
-                <option value="دسته 4"></option>
-                <option value="دسته 5"></option>
-                <option value="دسته 5"></option>
-            </datalist>
+        <div id="selectCategoryWrapper">
+            <div class="headCategory cats">
+                <label for="">دسته بندی محصول را انتخاب کنید</label>
+                <input placeholder="جست و جو..." list="browsers" autocomplete="off" name="category">
+                <datalist id="browsers">
+                    <option v-for='cat in getHeadCats' :key='ket.id' :value="cat.title"></option>
+                </datalist>
+            </div>
+            <div class="subCats cats">
+                <label for="">زیر دسته را انتخاب کنید</label>
+                <input placeholder="جست و جو..." list="browsers" autocomplete="off" name="category">
+                <datalist id="browsers">
+                    <option value="دسته 1"></option>
+                </datalist>
+            </div>
         </div>
     </div>
 </template>
@@ -56,7 +31,7 @@
         margin-bottom:20px;
         width:100%
     }
-    #selectCategoryComponent{
+    #selectCategoryWrapper{
         display:flex;
         flex-direction:column;
         align-items: center;
@@ -72,20 +47,20 @@
     }
     @media (max-width: 500px)
     {
-        #selectCategoryComponent{
+        #selectCategoryWrapper{
             display:flex;
             flex-direction:column;
             align-items: center;
         }
         
-        #selectCategoryComponent input,#selectCategoryComponent datalist{
+        #selectCategoryWrapper input,#selectCategoryWrapper datalist{
             width:90%
         }
 
     }
     @media (max-width:320px)
     {
-        #selectCategoryComponent label{
+        #selectCategoryWrapper label{
             font-size:15pt
         }
     }
@@ -93,14 +68,27 @@
 
 <script>
     // import vSelect from 'vue-select'
+    import axios from "axios"
 export default {
-    components:{
-        // vSelect
-    },
     data(){
         return{
-            options:['Canada', 'United States']
+            options:['Canada', 'United States'],
+            allCats:null
         }
+    },
+    computed:{
+        getHeadCats(){
+            console.log("getAllCars",this.allCats)
+            return this.allCats
+        }
+    },
+    mounted(){
+        let {data}=axios.get("/categories-api/list")
+        console.log("axios get",data)
+        this.allCats=data
+
+
     }
+
 }
 </script>

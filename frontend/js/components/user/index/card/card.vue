@@ -1,5 +1,5 @@
 <template>
-	<div class="card maxIs">
+	<div v-if="products.length>0" class="card maxIs">
 		
 		<div :id="id" :class="getClass()">
 			<div class="titleCard"><p>{{cardTitle}}</p></div>

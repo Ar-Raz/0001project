@@ -27,6 +27,13 @@ import aboutDamir from "./components/abouts/aboutDamirco.vue"
 import rulesToUse from "./components/abouts/rulesToUse.vue"
 import privacy from "./components/abouts/privacy.vue"
 import feedBack from "./components/user/template/feedback/feddback.vue"
+import VueMeta from 'vue-meta'
+import createProduct from "./components/user/userPanel/createPRoduct/createProduct.vue"
+ 
+vue.use(VueMeta, {
+  // optional pluginOptions
+  refreshOnceOnNavigation: true
+})
 
 
 import {routes} from "./routes.js"
@@ -62,7 +69,8 @@ const app=new vue({
 		aboutDamir,
 		rulesToUse,
 		feedBack,
-		privacy
+		privacy,
+		createProduct
 	},
 	store,
 	router,

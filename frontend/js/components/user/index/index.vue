@@ -7,7 +7,7 @@
         <!-- <categorie></categorie> -->
       </div>
     </div>
-    <div class="shouldCollapse">
+    <div class="shouldCollapse maxIs">
       <flip-card></flip-card>
     </div>
     <div style="width: 100%;overflow:hidden;">

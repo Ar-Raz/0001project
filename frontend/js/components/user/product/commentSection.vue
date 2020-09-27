@@ -107,7 +107,6 @@ export default {
         text-align: right;
         resize: none;
         font-size:15pt;
-        box-shadow:0px 5px 20px;
         padding:5px;
 
     }

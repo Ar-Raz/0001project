@@ -28,7 +28,6 @@
 
 <script>
 import ham from "../hamIcon/ham.vue";
-import slicer from "../slicer/slicer.vue";
 import flatMenu from "../flatMenu/flatMenu.vue";
 import { mapGetters } from 'vuex'
 import { mapActions } from "vuex";

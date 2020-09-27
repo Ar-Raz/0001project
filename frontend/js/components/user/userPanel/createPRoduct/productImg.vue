@@ -8,47 +8,37 @@
                         <div id="images">
                             <div class="increaseImgNum">
                                 <label for="">اضافه کردن عکس تا حداکثر ده تا</label>
-                                <button @click.prevent='imgNums+=1' class="submit">اضافه کردن عکس</button>
+                                <button @click.prevent='addImgInput($event)' class="submit">اضافه کردن عکس</button>
                             </div>
 
 
                             <div class="allImagesWrapper">
-                                <div class='imagesInput' v-for="item in imgNums" :key='item'>
-                                <label :for="item" class='uploadImage'>
-                                     <i class="fas fa-plus"></i>
-                                    انتخاب عکس
-                                   
-                                    <input @change='imageChanged($event)' type="file" class='prodctImg' :id='item'>
-                                    
-                                </label>
-
-                                <div class="imageUrl">
-                                    <img class='userProductImg' name=productImages[] src="" alt="">
-                                    <transition name='fade' mode='out-in'>
-                                        <div @mouseleave='blur($event)' @mouseover='focus($event)' class="imgDetails">
-                                            <div class="imgName">
-                                                <p>teksmkmkdmskdmskmdksmst</p>
-                                            </div>
-                                            <div class="imgSize">
-                                                <p>test</p>
-                                            </div>
-                                        </div>
-                                    </transition>
-                                </div>
-                                </div>
+                                
+                                    <!-- <single-image></single-image> -->
+                                <component @imageWasDeleted="deleteImage($event)" v-for="img in singleImgsArray" :key='img.id' :id="img.id" :is="img.name"></component>
+                                
                             </div>
-
-
                         </div>
                     </div>
                 </div>
 </template>
 <script>
+    import singleImage from "./singleImage.vue"
+    import {eventBus} from "../../../../userApp.js"
 export default {
+    components:{
+        singleImage
+    },
     data(){
         return{
-            imgNums:1
+            imgNums:1,
+            singleImgsArray:[{id:1,name:"singleImage"}]
         }
+    },
+    created(){
+        this.$on("imageWasDeleted",id=>{
+            console.log(id)
+        })
     },
     watch:{
         imgNums:function(value){
@@ -59,47 +49,64 @@ export default {
         }
     },
     methods:{
+        deleteImage(e){
+            const el=e.target
+            const wrapper=el.closest(".imagesInput")
+            const shouldDelete=this.singleImgsArray.findIndex(img=>{
+                return img.id==wrapper.id
+            })
+            this.singleImgsArray.splice(shouldDelete,1)
+            document.getElementById(`${wrapper.id}`).remove()
+        },
+        addImgInput(){
+            const items=document.getElementsByClassName('imagesInput')
+            if(items.length>=10){
+                return
+            }
+            const randomId=this.makeid(20)
+            this.singleImgsArray.push({id:randomId,name:'singleImage'})
+            
+        },
+        
         clickImage(){
                 const imageInput=document.querySelector("#productImgInput")
                 imageInput.click()
-            },
-            imageChanged(e){
-                const clickedInput=e.target
-                var reader = new FileReader();
-                let output=clickedInput.parentNode.nextElementSibling.childNodes[0]
-                
-                reader.onload = function()
-                {
-                    output.src = reader.result;
-                }
-                reader.readAsDataURL(e.target.files[0]);
-                output.style.display='block'
-
-                this.showmgDetailes(output,e.target.files[0])
-            },
-            async showmgDetailes(img,fileDetailes)
-            {
-                const imgDetail=img.nextElementSibling
-                const imgName=imgDetail.querySelector(".imgName p"),
-                      imgSize=imgDetail.querySelector(".imgSize p");
-                const fileName=fileDetailes.name.length>15 ? '...'+fileDetailes.name.substring(0,11)  : fileDetailes.name
-                imgName.innerText=fileName
-                imgSize.innerText=(fileDetailes.size)/1000
-            }
-            ,
-            focus(e){
-                const pre=e.target.closest(".imageUrl").childNodes[0]
-                pre.classList.add('blury')
-            },
-            blur(e){
-                const pre=e.target.closest(".imageUrl").childNodes[0]
-                pre.classList.remove('blury')
-            }
+        },
+        
+        async showmgDetailes(img,fileDetailes)
+        {
+            const imgDetail=img.nextElementSibling
+            const imgName=imgDetail.querySelector(".imgName p"),
+                  imgSize=imgDetail.querySelector(".imgSize p");
+            const fileName=fileDetailes.name.length>15 ? '...'+fileDetailes.name.substring(0,11)  : fileDetailes.name
+            imgName.innerText=fileName
+            imgSize.innerText=(fileDetailes.size)/1000
+        }
+        ,
+        focus(e){
+            const pre=e.target.closest(".imageUrl").childNodes[0]
+            pre.classList.add('blury')
+        },
+        blur(e){
+            const pre=e.target.closest(".imageUrl").childNodes[0]
+            pre.classList.remove('blury')
+        },
+        makeid(length) {
+           var result           = '';
+           var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+           var charactersLength = characters.length;
+           for ( var i = 0; i < length; i++ ) {
+              result += characters.charAt(Math.floor(Math.random() * charactersLength));
+           }
+           return result;
+        }
     }
 }
 </script>
 
 <style>
+    
+    
     #productImgWrapper{
         display:flex;
         flex-direction:column
@@ -134,7 +141,8 @@ export default {
         width: 100px;
         height:20px;
         overflow: hidden;
-    }
+        display: flex;
+        }
     .imgName p{
         max-width:100px;
         overflow: hidden;
@@ -166,24 +174,7 @@ export default {
         -ms-filter: blur(8px);
         filter: blur(8px);
     }
-    .imagesInput{
-        width:200px;
-        display: flex;
-        margin:10px;
-        flex-direction:column;
-        align-items: center;
-    }
-    .imagesInput input{
-        display:none
-    }
-    #realImg{
-        width:300px;
-        height: 300px;
-        display:none
-    }
-    .imagesInput .submit{
-        width: max-content;
-    }
+    
     #images{
         display: flex;
         width:100%;
@@ -192,26 +183,13 @@ export default {
         flex-direction:column;
         flex-wrap: wrap;
     }
-    .imageUrl{
-        width:200px;
-        height: 200px;
-        margin-top:10px;
-        margin-bottom:10px;
-        background: cornsilk;
-        outline:2px dashed #0061af;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-    }
+    
     .allImagesWrapper{
         display:flex;
         flex-wrap: wrap;
         justify-content: space-between;
     }
-    .userProductImg:hover + div{
-        display:block
-    }
+    
     #productImgInput
     {
         display:none

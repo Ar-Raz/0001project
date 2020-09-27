@@ -2,7 +2,7 @@
     <div id="createProduct" class='userPanelComp'>
         <div id="createProductWrapper">
             <form action="/blob" method="post">
-                <select-category></select-category>
+                <select-category :s="getCats"></select-category>
                 <div id="name" class='productSection'>
                     <div id="nameWrapper">
                         <label for="">نام محصول:</label>
@@ -104,6 +104,9 @@
         font-size:17pt;
         font-weight: lighter;
     }
+    label{
+        display: flex;
+    }
     @media (max-width:500px)
     {
         #nameWrapper{
@@ -124,10 +127,8 @@
     import productDescs from './productDescs.vue'
     import aditionalInformation from "./aditionalInformation.vue"
     import selectCategory from './selectCategory.vue'
+
     export default{
-        methods:{
-            
-        },
         components: {
             editor: Editor,
             slicer,
@@ -136,6 +137,10 @@
             productDescs,
             aditionalInformation
         },
+        props:["categories"],
+        created(){
+            console.log(this.categories)
+        }
         
     }
 </script>

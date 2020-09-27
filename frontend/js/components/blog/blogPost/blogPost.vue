@@ -2,6 +2,7 @@
     <div id="singleBlogPostItem">
         <feed-back :msgs="msg"></feed-back>
             <div class="signleBlogPostItemWrapper maxIs">
+                <h1>{{JSON.parse(post).title}}</h1>
                 <div v-html="JSON.parse(post).content" class="postText">
                 </div>
                 <suggestin :latests="JSON.parse(latest_posts)"></suggestin>
@@ -12,6 +13,10 @@
 </template>
 
 <style scoped>
+h1{
+    font-weight: 800;
+    text-align: right
+}
     .comments{
         margin-top:50px
     }
@@ -70,8 +75,24 @@
             feedBack
         },
         props:['post',"msg","latest_posts"],
+        metaInfo(){
+            const product=JSON.parse(this.post)
+            console.log('ppp',product)
+              return{
+                  title: product.title + "-دمیرکو",
+                  titleTemplate: null,
+                  htmlAttrs: {
+                    lang: 'en',
+                    amp: true
+                  },
+                   meta: [
+                      { charset: 'utf-8' },
+                      { name: 'description', content: product.short_description },
+                    ]
+              }
+            },
         created(){
-            console.log('msg',JSON.parse(this.msg))
+            console.log('msg',JSON.parse(this.post))
         }
     }
 </script>

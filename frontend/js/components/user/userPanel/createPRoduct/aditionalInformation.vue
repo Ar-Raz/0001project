@@ -87,10 +87,15 @@
 <style scoped>
   label::after{
     content:' *';
+    margin-left:5px;
+
     color:red;
     font-size:20pt;
     font-weight: 900;
   } 
+  label{
+    display: flex;
+  }
     .title p{
         color:#0061af;
         font-size:17pt;

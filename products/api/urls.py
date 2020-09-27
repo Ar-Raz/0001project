@@ -21,6 +21,7 @@ urlpatterns = [
     path('my_products/create/', views.ProductCreationView.as_view(), name="create-product"),
     path('my_products/update/<slug>/', views.ProductRUDView.as_view(), name="update-product"),
     path('categories_variation/<slug>/', views.ProductVariation.as_view()),
+    path('categories_variation/create/', views.ProductVariationCreation.as_view()),
 ]
 
 # from django.urls import path

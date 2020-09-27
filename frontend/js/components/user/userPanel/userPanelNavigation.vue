@@ -2,11 +2,11 @@
     <div  id='userPanelNavigation' @click='toggleUserPanelNavigation(),toggleBodyOverFlow()'>
         <div id="userPanelNavigationWrapper" @click='prevent($event)'>
             <ul>
-                <li @click="toggleUserPanelNavigation(),toggleBodyOverFlow()"> <router-link to="/userPanel">پروفایل</router-link> </li>
-                <li @click="toggleUserPanelNavigation(),toggleBodyOverFlow()"><router-link to="/userPanel/createProduct">اضافه کردن محصول برای فروش</router-link></li>
-                <li @click="toggleUserPanelNavigation(),toggleBodyOverFlow()"><router-link to="/userPanel/usersList">لیست کاربران</router-link></li>
-                <li @click="toggleUserPanelNavigation(),toggleBodyOverFlow()"><router-link to="/userPanel/createBlogPost">اضافه کردن پست بلاگ</router-link></li>
-                <li @click="toggleUserPanelNavigation(),toggleBodyOverFlow()"><router-link to="/userPanel/category">اضافه کردن دسته بندی</router-link></li>
+                <li><a to="/products/users">پروفایل</a> </li>
+                <li><a to="/products/users/createProduct">اضافه کردن محصول برای فروش</a></li>
+                <li><a to="/products/users/usersList">لیست کاربران</a></li>
+                <li><a to="/products/users/createBlogPost">اضافه کردن پست بلاگ</a></li>
+                <li><a to="/products/users/category">اضافه کردن دسته بندی</a></li>
 
             </ul>
         </div>

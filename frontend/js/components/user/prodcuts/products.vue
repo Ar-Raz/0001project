@@ -10,6 +10,7 @@
                 </div>
                 <div class="title">
                     <a :href="gethref(p.slug)"><p>{{p.title}}</p></a>
+                    <p>{{getDescs(p.short_discription)}}</p>
                 </div>
                 <div class="price">
                     <p>{{p.price}} تومان</p>
@@ -74,7 +75,7 @@ img.normal{
     export default{
         props:['products',"paginations"],
         mounted(){
-            console.log('paginationss',this.paginations)
+            console.log('paginationss',JSON.parse(this.products))
             const allImages=document.querySelectorAll(".normal")
             allImages.forEach(img=>{
                 img.style.width='100%'
@@ -91,17 +92,14 @@ img.normal{
         },
         mixins:[adjustElFromTop],
         data(){
-            return{
-                descs:'محصول ساخت چین قدرت تولید صدا تا 1200 دسیبل دارای باتری 36 ولت فلان لان فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان فلان فلان فلان فلان فلان فلان فلان لان فلان فلان الن'
-            }
         },
         methods:{
             ...mapActions([
                'toggleFiltering',
                'toggleConsulate'
             ]),
-            getDescs(){
-                return this.descs.length>100 ? this.descs.substring(0,200)+'...' : this.descs
+            getDescs(txt){
+                return txt.length>100 ?txt.substring(0,200)+'...' :txt
             },
             adjustConsulateTop(){
                 const consulate=document.querySelector("#consulateWrapper")

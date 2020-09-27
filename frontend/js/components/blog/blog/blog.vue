@@ -16,10 +16,10 @@
 
         </div>
       </div>
-      <div class="paginationWrapper">
+      <div class="paginationWrapper" v-if="JSON.parse(this.pagination).number_of_pages>1">
         <paginate
-          :value="getPage"
-          :page-count="20"
+          :value="JSON.parse(this.pagination).current_page"
+          :page-count="JSON.parse(this.pagination).number_of_pages"
           :page-range="3"
           :margin-pages="2"
           :click-handler="handleMargins"
@@ -69,7 +69,7 @@ export default {
   },
   methods: {
     handleMargins(pageNum){
-      window.location.href="/blog/posts/"+pageNum
+      window.location.href="/blog/posts/?page="+pageNum
       console.log(pageNum)
 
     },

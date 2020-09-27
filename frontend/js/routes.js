@@ -4,9 +4,9 @@ import usersList from './components/user/userPanel/usersList/usersList.vue'
 import createBlogPost from "./components/user/userPanel/createBlogPost/createBlogPost.vue"
 import category from "./components/user/userPanel/category/category.vue"
 export const routes=[
-    {path:'/userPanel/createProduct',component:createComponent},
-    {path:'/userPanel',component:profile},
-    {path:"/userPanel/usersList",component:usersList},
-    {path:"/userPanel/createBlogPost",component:createBlogPost},
-    {path:"/userPanel/category",component:category}
+    {path:'/products/users/createProduct',component:createComponent},
+    {path:'/products/users',component:profile},
+    {path:"/products/users/usersList",component:usersList},
+    {path:"/products/users/createBlogPost",component:createBlogPost},
+    {path:"/products/users/category",component:category}
 ]
