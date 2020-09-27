@@ -78,7 +78,16 @@ class ProductCommentSerializer(serializers.ModelSerializer):
             'username',
         )
 
+class SimpleProductSerializer(serializers.ModelSerializer):
 
+    class Meta:
+        model = Product
+        fields = (
+            'id',
+            'title',
+            'product_image',
+            'orderd_times',
+        )
 
 class ProductDetailSerializer(serializers.ModelSerializer):
     sample = serializers.SerializerMethodField()

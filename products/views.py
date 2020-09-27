@@ -46,6 +46,7 @@ from .serializers import (ProductSerializer,
 from categories.serializers import (
         MainCategorySerializer,
         CategoryDetailSerializer,
+        MainCategoryQuickSerializer
         )
 from categories.models import Category, MainCategory, Variation
 from categories.serializers import VarationCreatSerializer, CategoryTitleSerializer
@@ -392,8 +393,8 @@ def user_panel_view(request):
     json_products = json.dumps(serialized_products)
     json_user_profile_data = json.dumps(serialized_user)
 
-    categories = Category.objects.all()
-    sered_cats = CategoryTitleSerializer(categories, many=True).data
+    categories = MainCategory.objects.all()
+    sered_cats = MainCategoryQuickSerializer(categories).data
     json_cats = json.dumps(sered_cats)
 
     
