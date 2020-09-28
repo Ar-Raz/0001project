@@ -254,15 +254,15 @@ def create_product_view(request):
         product_title = request.POST.get("product-title")
         product_price = request.POST.get("product-price") or None
         product_price2 = request.POST.get("product-price2") or None
-        product_image = request.FILES.get("product-image") or None
+        product_image = request.POST.get("product-image") or request.FILES.get("product-image")
         product_description = request.POST.get("product-description") or None
-        product_made_in = request.POST.get("product-made_in") or None
+        product_made_in = request.POST.get("product-made-in") or None
         product_packing = request.POST.get("product-packing") or None
         product_origin = request.POST.get("product-origin") or None
         product_delivery = request.POST.get("product-delivery") or None
         product_shipping = request.POST.get("product-shipping") or None
-        product_payment_type = request.POST.get("product-payment_type") or None
-        product_minimum_order = request.POST.get("product-minimum_order") or None
+        product_payment_type = request.POST.get("product-payment-type") or None
+        product_minimum_order = request.POST.get("product-minimum-order") or None
         product_samples = request.POST.get("product-samples") or None
         product_short_description = request.POST.get("short-description") or None
         if product_title and category and product_image:
