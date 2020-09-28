@@ -1,9 +1,28 @@
 <template>
   <div id="productDescs" class="productSection">
-    <div id="productDescsWrapper">
-      <label for="tinymce">توضیحات محصول را بنویسید</label>
+    <div class="creatProductTitle">
+      <div class="createProductTitleWrapper">
+        <svg
+          style="
+            height: 20px;
+            transform: rotate(270deg);
+            margin-right: 10px;
+            cursor: pointer;
+          "
+          @click="toggleWrapperMethod($event)"
+          viewBox="0 0 100 100"
+        >
+          <path
+            d="M 50,0 L 60,10 L 20,50 L 60,90 L 50,100 L 0,50 Z"
+            class="arrow"
+          ></path>
+        </svg>
+        <p>توضیحات محصول</p>
+      </div>
+    </div>
+    <div id="productDescsWrapper" class="hiddenAtDisPlay">
       <br />
-      <textarea id="editor" name="myeditor"></textarea>
+      <textarea id="editor" name="product-description"></textarea>
     </div>
   </div>
 </template>
@@ -23,7 +42,7 @@ export default {
         },
         language: "fa",
         selector: "#editor",
-        plugins: "image code table lists",
+        plugins: "image code table lists link",
         toolbar:
           "undo redo | link image | code fontsizeselect forecolor backcolor numlist bullist alignment bold",
         menubar: "table",
@@ -100,10 +119,10 @@ export default {
         content_style:
           "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
       });
-	},
-	mounted(){
-		this.init()
-	}
+    },
+    mounted() {
+      this.init();
+    },
   },
 
   mounted() {
@@ -113,6 +132,9 @@ export default {
 </script>
 
 <style scoped>
+#productDescs {
+  padding: 10px;
+}
 label {
   color: #0061af;
   font-size: 17pt;
@@ -121,14 +143,12 @@ label {
 #productDescsWrapper {
   padding: 10px;
   width: 100%;
-  display: flex;
-  flex-direction: column;
   align-items: flex-end;
 }
 #productDescs textarea {
   width: 100%;
   height: 500px;
-  padding: 5px;
+  padding: 10px;
 }
 #productDescsEditor {
   width: 100%;
@@ -139,5 +159,8 @@ label {
 }
 #aria_1852541166151599251559412 {
   display: none;
+}
+.mce-notification-inner {
+  display: none !important;
 }
 </style>

@@ -25,17 +25,21 @@ from .permissions import IsOwnerOrReadOnly, IsProducer
 from .models import ProducerProfile, Profile
 from .forms import ProducerProfileForm, CustomerProfileForm
 from .serializers import (
-            ProducerProfileSerializer, 
-            ProfileSerializer, 
-            ProducerProfileDetailSerializer, 
-            UserSerializer, 
+            ProducerProfileSerializer,
+            ProfileSerializer,
+            ProducerProfileDetailSerializer,
+            UserSerializer,
             RegisterSerializer,
             LoginSerializer,
 )
 
 from users.models import User
-from categories.models import MainCategory, Variation
-from categories.serializers import MainCategoryQuickSerializer
+from categories.models import MainCategory, Variation, Category
+from categories.serializers import (
+            MainCategoryQuickSerializer,
+            CategoryTitleSerializer,
+            MainCategoryTitleSerializer
+            )
 from products.models import Product, ProductDetail
 from products.serializers import ProductDetailSerializer, SimpleProductSerializer
 """
@@ -48,7 +52,7 @@ from products.serializers import ProductDetailSerializer, SimpleProductSerialize
        ##         #     ##                   ##
       ##           #    ##                   ##
      ##             #   ##                   ##
-##################################################################      
+##################################################################
 """
 
 class UserIDView(APIView):
@@ -109,7 +113,7 @@ END OF:
        ##         #     ##                   ##
       ##           #    ##                   ##
      ##             #   ##                   ##
-##################################################################      
+##################################################################
 """
 
 def complete_prod_profile(request):
@@ -176,7 +180,7 @@ def login_view(request):
                 message = {"messages": "شما با موفقیت وارد شدید"}
                 json_message = json.dumps(message)
                 return redirect(reverse('pages:index', kwargs=json_message))
-            else: 
+            else:
                 message = {"messages" : "رمز عبور یا نام کاربری اشتباه است"}
                 json_message = json.dumps(message)
                 return redirect(reverse('users:login', kwargs=json_message))
@@ -217,7 +221,7 @@ def register_view(request):
             user.save()
             login(request, user)
             return redirect('pages:index')
-            
+
     return redirect('pages:index')
 
 
@@ -233,31 +237,38 @@ def create_product_view(request):
     json_products = json.dumps(serialized_products)
     json_user_profile_data = json.dumps(serialized_user)
 
-    categories = MainCategory.objects.all()
-    sered_cats = MainCategoryQuickSerializer(categories, many=True).data
+    categories = Category.objects.all()
+    sered_cats = CategoryTitleSerializer(categories, many=True).data
     json_cats = json.dumps(sered_cats)
 
+    main_categories = MainCategory.objects.all()
+    sered_mains = MainCategoryTitleSerializer(main_categories, many=True).data
+    json_mains = json.dumps(sered_mains)
+
     if request.method == "POST":
-        category = request.POST.get("category").strip()
-        variations = Variation.objects.filter(category=category)
-        
-        product_tilte = request.POST.get("product_title")
-        product_price = request.POST.get("product_price")
-        product_price2 = request.POST.get("product_price2")
-        product_image = request.FILES.get("product_image")
-        product_description = request.POST.get("product_description")
-        product_made_in = request.POST.get("product_made_in")
-        product_packing = request.POST.get("product_packing")
-        product_origin = request.POST.get("product_origin")
-        product_delivery = request.POST.get("product_delivery")
-        product_shipping = request.POST.get("product_shipping")
-        product_payment_type = request.POST.get("product_payment_type")
-        product_minimum_order = request.POST.get("product_minimum_order")
-        product_samples = request.POST.get("product_samples")
-        product_short_description = request.POST.get("product_short_description")
-        if product_tilte and category and product_image:
+        category = request.POST.get("headCategory").strip()
+        variations = Variation.objects.filter(category__title=category)
+        print(category)
+        print(variations)
+
+        product_title = request.POST.get("product-title")
+        product_price = request.POST.get("product-price") or None
+        product_price2 = request.POST.get("product-price2") or None
+        product_image = request.FILES.get("product-image") or None
+        product_description = request.POST.get("product-description") or None
+        product_made_in = request.POST.get("product-made_in") or None
+        product_packing = request.POST.get("product-packing") or None
+        product_origin = request.POST.get("product-origin") or None
+        product_delivery = request.POST.get("product-delivery") or None
+        product_shipping = request.POST.get("product-shipping") or None
+        product_payment_type = request.POST.get("product-payment_type") or None
+        product_minimum_order = request.POST.get("product-minimum_order") or None
+        product_samples = request.POST.get("product-samples") or None
+        product_short_description = request.POST.get("short-description") or None
+        if product_title and category and product_image:
+            print("got title and category")
             product = Product.objects.create(
-                title=product_tilte,
+                title=product_title,
                 price=product_price,
                 second_price=product_price2,
                 product_image=product_image,
@@ -291,15 +302,16 @@ def create_product_view(request):
                         obj.products.add(product)
         else:
             messsage = { 'msg' :  "فیلد های ستاره دار نمیتواند خالی باشید "}
-            json_msg = json.dumps(messages)
-            
+            json_msg = json.dumps(messsage)
+
             context = {
                 'cats' : json_cats,
                 'user' : json_user_profile_data,
                 'msg'  : json_msg,
             }
+            print("not good")
             return render(request, "views/userPanel/createProduct.html")
-    
+
     context = {
         'user': json_user_profile_data,
         'products': json_products,
@@ -316,7 +328,7 @@ class UserPanelView(View):
         json_user = json.dumps(sered_user)
 
         profile = ProducerProfile.objects.get(user=user)
-        sered_profile = ProducerProfileDetailSerializer(profile).data 
+        sered_profile = ProducerProfileDetailSerializer(profile).data
         json_profile = json.dumps(sered_profile)
 
         products = Product.objects.filter(producer=profile)

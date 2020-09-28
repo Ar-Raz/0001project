@@ -11,7 +11,8 @@ export const store=new Vuex.Store({
 		isShowUserPanelNavigation:false,
 		currentComponentUserPanelNavigation:"profile",
 		isShowConsulate:false,
-		catsWithSubs:null
+		catsWithSubs:null,
+		catsFromCreaeProduct:[]
 	},
 	getters:{
 		isSubMenu:state=>{
@@ -19,6 +20,9 @@ export const store=new Vuex.Store({
 		},
 		getCatsWithSubs:state=>{
 			return state.catsWithSubs
+		},
+		getCatsFromCreaeProduct:state=>{
+			return state.catsFromCreaeProduct
 		}
 	},
 	mutations:{
@@ -39,6 +43,9 @@ export const store=new Vuex.Store({
 		},
 		fillCatsWithSubs:(state,payload)=>{
 			state.catsWithSubs=payload
+		},
+		fillCatsFromCreaeProduct:(state,payload)=>{
+			state.catsFromCreaeProduct=payload
 		}
 	},
 	actions:{
@@ -60,6 +67,9 @@ export const store=new Vuex.Store({
 		fillCatsWithSubs:({commit},payload)=>{
 			
 			commit("fillCatsWithSubs",payload)
+		},
+		fillCatsFromCreaeProduct:({commit},payload)=>{
+			commit('fillCatsFromCreaeProduct',payload)
 		}
 
 	}

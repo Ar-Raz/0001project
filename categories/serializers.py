@@ -1,6 +1,15 @@
 from rest_framework import serializers
 from .models import Category, CategoryVariation, Variation, MainCategory
 
+class MainCategoryTitleSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = MainCategory
+        fields = (
+            'id',
+            'title',
+            'slug',
+        )
 
 class CategoryTitleSerializer(serializers.ModelSerializer):
 
