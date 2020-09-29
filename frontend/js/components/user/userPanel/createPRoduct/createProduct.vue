@@ -143,8 +143,10 @@ export default {
     aditionalInformation,
     variations,
   },
-  props: ["cats"],
-  beforeCreate() {
+
+  props: ["cats",'products'],
+  created() {
+    console.log("products",JSON.parse(this.products))
     var scriptTag = document.createElement("script");
     scriptTag.src =
       "https://cdn.datatables.net/v/dt/dt-1.10.16/sl-1.2.5/datatables.min.js";

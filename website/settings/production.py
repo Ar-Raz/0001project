@@ -1,4 +1,4 @@
-from .base import *
+from ._base import *
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", cast=bool)

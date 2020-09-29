@@ -94,30 +94,9 @@ export default {
       catName: null,
     };
   },
-  mounted() {
-    console.clear();
-    let text;
-    const initial = document.querySelector(".vs__selected");
-    if (initial == null) {
-      return;
-    }
-    text = initial.innerText;
-    const iniIndex = this.cats.findIndex((cat) => {
-      return (cat.title = text);
-    });
-    this.changeCategory(null, this.cats[iniIndex].id);
-  },
   methods: {
-    async changeCategory(e, id = -1) {
+    async changeCategory(e) {
       const loader = document.querySelector("#loader");
-      if (id > -1) {
-        console.log("here");
-        const { data } = await axios.get(`/categories-api/variations/${id}`);
-        this.fillCatsFromCreaeProduct(data);
-        loader.style.display = "none";
-        return;
-      }
-      console.log("there");
 
       loader.style.display = "block";
       const { data } = await axios.get(`/categories-api/variations/${e.id}`);

@@ -35,7 +35,7 @@
             @imageWasDeleted="deleteImage($event)"
             v-for="img in singleImgsArray"
             :key="img.id"
-            :id="img.id"
+            :single_id="img.id"
             :is="img.name"
           ></component>
         </div>
@@ -84,7 +84,7 @@ export default {
         return;
       }
       const randomId = this.makeid(20);
-      this.singleImgsArray.push({ id: randomId, name: "singleImage" });
+      this.singleImgsArray.push({ id:String(randomId), name: "singleImage" });
     },
 
     clickImage() {

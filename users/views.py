@@ -41,7 +41,10 @@ from categories.serializers import (
             MainCategoryTitleSerializer
             )
 from products.models import Product, ProductDetail
-from products.serializers import ProductDetailSerializer, SimpleProductSerializer
+from products.serializers import (
+                ProductDetailSerializer, 
+                SimpleProductSerializer
+            )   
 """
 ################################################################
             ##          ############         ##
@@ -255,6 +258,15 @@ def create_product_view(request):
         product_price = request.POST.get("product-price") or None
         product_price2 = request.POST.get("product-price2") or None
         product_image = request.POST.get("product-image") or request.FILES.get("product-image")
+        slider_image = request.FILES.get("slider-image1")
+        slider_image2 = request.FILES.get("slider-image2")
+        slider_image3 = request.FILES.get("slider-image3")
+        slider_image4 = request.FILES.get("slider-image4")
+        slider_image5 = request.FILES.get("slider-image5")
+        slider_image6 = request.FILES.get("slider-image6")
+        slider_image7 = request.FILES.get("slider-image7")
+        slider_image9 = request.FILES.get("slider-image8")
+        slider_image9 = request.FILES.get("slider-image9")
         product_description = request.POST.get("product-description") or None
         product_made_in = request.POST.get("product-made-in") or None
         product_packing = request.POST.get("product-packing") or None
@@ -272,6 +284,15 @@ def create_product_view(request):
                 price=product_price,
                 second_price=product_price2,
                 product_image=product_image,
+                slider_image=slider_image,
+                slider_image2=slider_image2,
+                slider_image3=slider_image3,
+                slider_image4=slider_image4,
+                slider_image5=slider_image5,
+                slider_image6=slider_image6,
+                slider_image7=slider_image7,
+                slider_image8=slider_image8,
+                slider_image9=slider_image9,
                 description=product_description,
                 minimum_order=product_minimum_order,
                 payment_type=product_payment_type,
