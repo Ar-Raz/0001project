@@ -95,6 +95,7 @@ export default {
             }
 
             json = JSON.parse(xhr.responseText);
+            console.log(json)
 
             if (!json || typeof json.location != "string") {
               failure("Invalid JSON: " + xhr.responseText);

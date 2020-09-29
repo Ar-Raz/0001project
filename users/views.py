@@ -233,8 +233,9 @@ def register_view(request):
 
 
 def create_product_view(request):
+    user = request.user
     serialized_user = UserSerializer(request.user).data
-    producer = ProducerProfile.objects.get(user=request.user)
+    producer = ProducerProfile.objects.get(user=user)
     user_products = Product.objects.filter(producer=producer)
     serialized_products = ProductDetailSerializer(user_products, many=True).data
     json_products = json.dumps(serialized_products)
@@ -257,16 +258,31 @@ def create_product_view(request):
         product_title = request.POST.get("product-title")
         product_price = request.POST.get("product-price") or None
         product_price2 = request.POST.get("product-price2") or None
-        product_image = request.POST.get("product-image") or request.FILES.get("product-image")
-        slider_image = request.FILES.get("slider-image1")
-        slider_image2 = request.FILES.get("slider-image2")
-        slider_image3 = request.FILES.get("slider-image3")
-        slider_image4 = request.FILES.get("slider-image4")
-        slider_image5 = request.FILES.get("slider-image5")
-        slider_image6 = request.FILES.get("slider-image6")
-        slider_image7 = request.FILES.get("slider-image7")
-        slider_image9 = request.FILES.get("slider-image8")
-        slider_image9 = request.FILES.get("slider-image9")
+        print(request.FILES)
+        product_image = request.FILES['product-image']
+        files = request.FILES.getlist('slider')
+        files_dict = {
+            'slider_image1'  : None ,
+            'slider_image2' : None,
+            'slider_image3' : None,
+            'slider_image4' : None,
+            'slider_image5' : None,
+            'slider_image6' : None,
+            'slider_image7' : None,
+            'slider_image8' : None,
+            'slider_image9' : None,
+        }
+        for f in range(len(files)):
+            files_dict[f"slider_image{f+1}"] = files[f]
+        slider_image1 = files_dict['slider_image1']
+        slider_image2 = files_dict['slider_image2']
+        slider_image3 = files_dict['slider_image3']
+        slider_image4 = files_dict['slider_image4']
+        slider_image5 = files_dict['slider_image5']
+        slider_image6 = files_dict['slider_image6']
+        slider_image7 = files_dict['slider_image7']
+        slider_image8 = files_dict['slider_image8']
+        slider_image9 = files_dict['slider_image9']
         product_description = request.POST.get("product-description") or None
         product_made_in = request.POST.get("product-made-in") or None
         product_packing = request.POST.get("product-packing") or None
@@ -284,7 +300,7 @@ def create_product_view(request):
                 price=product_price,
                 second_price=product_price2,
                 product_image=product_image,
-                slider_image=slider_image,
+                slider_image=slider_image1,
                 slider_image2=slider_image2,
                 slider_image3=slider_image3,
                 slider_image4=slider_image4,
@@ -359,3 +375,8 @@ class UserPanelView(View):
         latest_products = Product.objects.filter()
 
         return render(request, "template_name", {})
+
+
+
+#OTP and 2FacAuth
+

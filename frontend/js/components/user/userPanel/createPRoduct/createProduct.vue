@@ -1,7 +1,7 @@
 <template>
   <div id="createProduct" class="userPanelComp maxIs">
     <div id="createProductWrapper">
-      <form action="" method="post">
+      <form action="" method="post" enctype="multipart/form-data">
         <select-category :cats="JSON.parse(cats)"></select-category>
         <div id="name" class="productSection">
           <div id="nameWrapper">
@@ -9,6 +9,8 @@
             <input type="text" placeholder="نام" name="product-title" />
           </div>
         </div>
+        <slicer></slicer>
+        <main-picture></main-picture>
         <slicer></slicer>
         <product-img></product-img>
 
@@ -132,6 +134,7 @@ import aditionalInformation from "./aditionalInformation.vue";
 import selectCategory from "./selectCategory.vue";
 import variations from "./variations.vue";
 import shortDescription from "./shortDescription.vue";
+import mainPicture from "./mainPicture.vue";
 export default {
   components: {
     editor: Editor,
@@ -142,6 +145,7 @@ export default {
     productDescs,
     aditionalInformation,
     variations,
+    mainPicture
   },
 
   props: ["cats",'products'],

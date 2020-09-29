@@ -120,14 +120,11 @@ def test(request):
             name=file_name,
             document=single,
         )
-        location = "location"
-        path = f"images/documents/{file_name}"
-        context = { 'response' : f'{{location: "{path}"}}'}
-        json_context = json.dumps(context)
-        render(request, 'views/userPanel.html',json_context)
-        return HttpResponse('Done')
+        location = { 'location' : f"/images/documents/{file_name}" }
+        json_context = json.dumps(location)
+        print(json_context)
+        return JsonResponse(location, safe=False)
     return HttpResponse("this is get")
-
 
 
 def aboutus(request):
