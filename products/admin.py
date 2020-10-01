@@ -1,11 +1,12 @@
 from django.contrib import admin
-from .models import Product, ProductVariation, Variation, ProductComment, Rating,ProductDetail
+from .models import Product, ProductVariation, Variation, ProductComment, Rating,ProductDetail, SliderImage
 
 
 admin.site.register(Variation)
 admin.site.register(ProductVariation)
 admin.site.register(Rating)
 admin.site.register(ProductDetail)
+admin.site.register(SliderImage)
 
 
 class ProductAdmin(admin.ModelAdmin):
