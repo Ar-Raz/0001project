@@ -99,11 +99,12 @@ class SimpleProductSerializer(serializers.ModelSerializer):
 
 class ProductSliderSerializer(serializers.ModelSerializer):
 
-    model = SliderImage
-    fields = (
-        'id',
-        'image',
-    )
+    class Meta:
+        model = SliderImage
+        fields = (
+            'id',
+            'image',
+        )
 
 class ProductDetailSerializer(serializers.ModelSerializer):
     sample = serializers.SerializerMethodField()
