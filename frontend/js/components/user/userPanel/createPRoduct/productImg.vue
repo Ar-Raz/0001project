@@ -33,7 +33,6 @@
           <!-- <single-image></single-image> -->
           <component
             @imageWasDeleted="deleteImage($event)"
-            :key="img.id"
             v-for="img in singleImgsArray"
             :single_id="img.id"
             :is="img.name"

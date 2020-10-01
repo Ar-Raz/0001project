@@ -1,6 +1,14 @@
 from rest_framework import serializers
 
-from .models import Product, ProductVariation, Variation , ProductComment, Rating, ProductDetail
+from .models import (
+            Product, 
+            ProductVariation, 
+            Variation , 
+            ProductComment, 
+            Rating,
+            ProductDetail,
+            SliderImage
+)
 
 from users.serializers import UserSerializer,ProducerProfileDetailSerializer
 from categories.serializers import CategorySerializer, VariationDetailSerializer
@@ -89,6 +97,14 @@ class SimpleProductSerializer(serializers.ModelSerializer):
             'orderd_times',
         )
 
+class ProductSliderSerializer(serializers.ModelSerializer):
+
+    model = SliderImage
+    fields = (
+        'id',
+        'image',
+    )
+
 class ProductDetailSerializer(serializers.ModelSerializer):
     sample = serializers.SerializerMethodField()
     user = serializers.SerializerMethodField()
@@ -96,6 +112,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
     label = serializers.SerializerMethodField()
     detail = serializers.SerializerMethodField()
     comments = serializers.SerializerMethodField()
+    sliders = serializers.SerializerMethodField()
 
 
     class Meta:
@@ -106,15 +123,6 @@ class ProductDetailSerializer(serializers.ModelSerializer):
             'second_price',
             'discount_price',
             'product_image',
-            'slider_image',
-            'slider_image2',
-            'slider_image3',
-            'slider_image4',
-            'slider_image5',
-            'slider_image6',
-            'slider_image7',
-            'slider_image8',
-            'slider_image9',
             'slug',
             'stock',
             'description',
@@ -136,6 +144,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
             'detail',
             'date_addded',
             'orderd_times',
+            'sliders'
         )
 
     def get_sample(self, obj):
@@ -156,10 +165,8 @@ class ProductDetailSerializer(serializers.ModelSerializer):
     def get_comments(self, obj):
         return ProductCommentSerializer(obj.get_comments, many=True).data
 
-
-
-
-
+    def get_sliders(self, obj):
+        return ProductSliderSerializer(obj.get_sliders, many=True).data
 
 
 class RatingSerializer(serializers.ModelSerializer):

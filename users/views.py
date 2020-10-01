@@ -40,7 +40,7 @@ from categories.serializers import (
             CategoryTitleSerializer,
             MainCategoryTitleSerializer
             )
-from products.models import Product, ProductDetail
+from products.models import Product, ProductDetail, SliderImage
 from products.serializers import (
                 ProductDetailSerializer, 
                 SimpleProductSerializer
@@ -300,15 +300,6 @@ def create_product_view(request):
                 price=product_price,
                 second_price=product_price2,
                 product_image=product_image,
-                slider_image=slider_image1,
-                slider_image2=slider_image2,
-                slider_image3=slider_image3,
-                slider_image4=slider_image4,
-                slider_image5=slider_image5,
-                slider_image6=slider_image6,
-                slider_image7=slider_image7,
-                slider_image8=slider_image8,
-                slider_image9=slider_image9,
                 description=product_description,
                 minimum_order=product_minimum_order,
                 payment_type=product_payment_type,
@@ -321,6 +312,14 @@ def create_product_view(request):
                 short_discription=product_short_description,
                 producer=producer,
             )
+
+            for slider in files_dict:
+                if files_dict[slider] != None:
+                    slider = SliderImage.objects.create(
+                        product=product,
+                        image=files_dict[slider]
+                    )
+
 
             for var in variations:
                 value = request.POST.get(f"{var.id}")

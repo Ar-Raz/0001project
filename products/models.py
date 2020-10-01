@@ -40,15 +40,6 @@ class Product(models.Model):
     category = models.ManyToManyField(Category)
     discount_price = models.FloatField(blank=True, null=True, verbose_name="قیمت تخفیف")
     product_image = models.ImageField(null=True, blank=True)
-    slider_image = models.ImageField(null=True, blank=True)
-    slider_image2 = models.ImageField(null=True, blank=True)
-    slider_image3 = models.ImageField(null=True, blank=True)
-    slider_image4 = models.ImageField(null=True, blank=True)
-    slider_image5 = models.ImageField(null=True, blank=True)
-    slider_image6 = models.ImageField(null=True, blank=True)
-    slider_image7 = models.ImageField(null=True, blank=True)
-    slider_image8 = models.ImageField(null=True, blank=True)
-    slider_image9 = models.ImageField(null=True, blank=True)
     slug = models.SlugField(null=True, blank=True, allow_unicode=True)
     stock = models.IntegerField(default=1, verbose_name='موجودی')
     description = HTMLField(verbose_name="توضیحات محصول")
@@ -88,6 +79,17 @@ class Product(models.Model):
         comments = ProductComment.objects.filter(product=self, is_confirmed=True)
         return comments
 
+    @property
+    def get_sliders(self):
+        sliders = SliderImage.objects.filter(product=self)
+        return sliders
+
+class SliderImage(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    image = models.ImageField()
+
+    def __str__(self):
+        return f"{self.product.title} slider image"
 
 class Variation(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)

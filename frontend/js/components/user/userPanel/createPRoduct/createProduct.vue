@@ -1,7 +1,7 @@
 <template>
   <div id="createProduct" class="userPanelComp maxIs">
     <div id="createProductWrapper">
-      <form action="" method="post" enctype="multipart/form-data">
+      <form action="/blob" method="post">
         <select-category :cats="JSON.parse(cats)"></select-category>
         <div id="name" class="productSection">
           <div id="nameWrapper">
