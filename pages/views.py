@@ -9,7 +9,6 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.http.response import HttpResponseBadRequest, HttpResponse, JsonResponse
-from website.settings.base import BASE_DIR
 from django.core.files.uploadhandler import FileUploadHandler
 from django.db.models import Q
 # from django.
@@ -125,6 +124,7 @@ def test(request):
         print(json_context)
         return JsonResponse(location, safe=False)
     return HttpResponse("this is get")
+
 
 
 def aboutus(request):

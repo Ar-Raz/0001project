@@ -23,17 +23,8 @@ from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .forms import ProductCommentForm
-from .models import (Product,
-                ProductComment,
-                Rating,
-                ProductDetail
-                )
-from .serializers import ( ProductSerializer,
-                    ProductDetailSerializer,
-                    ProductCommentSerializer,
-                    ProductDetailsSerializer,
-                    ProductTechDetailSerializer,
-                    )
+from .models import Product, ProductComment, Rating
+from .serializers import ProductSerializer, ProductDetailSerializer, ProductCommentSerializer
 from .permissions import IsProducer, IsOwnerOrReadOnly
 from .serializers import (ProductSerializer,
             ProductCommentSerializer,
@@ -46,10 +37,8 @@ from .serializers import (ProductSerializer,
 from categories.serializers import (
         MainCategorySerializer,
         CategoryDetailSerializer,
-        MainCategoryQuickSerializer
         )
-from categories.models import Category, MainCategory, Variation
-from categories.serializers import VarationCreatSerializer, CategoryTitleSerializer
+from categories.models import Category, MainCategory
 from users.serializers import UserSerializer
 from users.models import ProducerProfile
 from blog.models import Post
@@ -85,7 +74,7 @@ class ProductRUDView(RetrieveUpdateDestroyAPIView):
 
 
 class ProducersProductListView(ListAPIView):
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = ProductDetailSerializer
 
     def get_queryset(self, request, *args, **kwargs):
@@ -238,26 +227,6 @@ class VueFilterView(generics.ListAPIView):
     def get_queryset(self):
         qs = filter(self.request)
         return qs
-
-
-class ProductVariation(generics.ListCreateAPIView):
-    serializer_class = ProductDetailsSerializer
-
-    def get_queryset(self):
-        category = self.kwargs['slug']
-        queryset = ProductDetail.objects.filter(variation__category__slug=category)
-        return queryset
-
-class ProductVariationCreation(generics.CreateAPIView):
-    serializer_class = ProductDetailsSerializer
-    
-    def get_queryset(self):
-        variatio_id = self.kwargs["id"]
-        queryset = ProductDetail.objects.get()
-
-
-
-
 """
 END OF:
 ################################################################
@@ -378,6 +347,18 @@ class ProductDetailView(View):
 
             return render(request, 'views/product.html', context)
 
+        # form = ProductCommentForm(request.POST or None)
+        # if form.is_valid():
+        #     product = Product.objects.get(slug=slug)
+        #     if request.user.is_authenticated():
+        #         form.instance.user = self.request.user
+        #     form.instance.product = product
+        #     form.instance.content = json.loads(request.POST['content'])
+        #     form.instance.username = json.loads(request.POST['username'])
+        #     # form.instance.content = request.POST['content']
+        #     form.save()
+        #     return redirect(reverse("products:product_detail", kwargs={'slug': slug}))
+
 
 def product_detail_view(request, slug):
     product = Product.objects.get(slug=slug)
@@ -392,15 +373,33 @@ def user_panel_view(request):
     serialized_products = ProductDetailSerializer(user_products, many=True).data
     json_products = json.dumps(serialized_products)
     json_user_profile_data = json.dumps(serialized_user)
-
-    categories = MainCategory.objects.all()
-    sered_cats = MainCategoryQuickSerializer(categories).data
-    json_cats = json.dumps(sered_cats)
-
-    
     context = {
         'user': json_user_profile_data,
         'products': json_products,
-        'cats' : json_cats,
     }
-    return render(request, 'views/userPanel/createProduct.html', context)
+    return render(request, 'views/userPanel.html', context)
+
+
+
+
+def paginated_products(request):
+
+    products = Product.objects.all()
+    products_quantity = products.count()
+    number_of_pages = products_quantity/12
+    page = request.GET.get("page","number")
+    current_page = int(page)
+    next_page = int(page) + 1
+    previous_page = int(page) - 1
+    current_page_products = products[(current_page-1)*12 : current_page*12]
+    sered_product = ProductDetailSerializer(current_page_products, many=True).data
+    json_product_string = json.dumps(sered_product)
+
+    page_data = { "current_page" : current_page, "number_of_pages" : number_of_pages }
+    json_page_data = json.dumps(page_data)
+
+    context = {
+        "products" : current_page_products,
+        "pagination" : json_page_data,
+    }
+    return render(request, 'products.html', context)

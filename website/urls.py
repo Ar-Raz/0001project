@@ -21,6 +21,7 @@ from django.conf.urls.static import static
 from pages.views import SearchView
 
 
+
 urlpatterns = [
     path('', include('pages.urls', namespace='home')),
     path('admin/', admin.site.urls),
@@ -31,7 +32,7 @@ urlpatterns = [
     path('rest-auth/', include('rest_auth.urls')),
     path('rest-auth/registration/', include('rest_auth.registration.urls')),
     path('api-auth/', include('rest_framework.urls')),
-    path('categories-api/', include('categories.api.urls')),
+    path('categories-api', include('categories.api.urls')),
     path('products-api/', include('products.api.urls')),
     path("posts-api/", include('blog.api.urls')),
     path("merchandise-api/", include('merchandise.api.urls')),

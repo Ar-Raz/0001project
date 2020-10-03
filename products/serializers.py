@@ -1,17 +1,18 @@
 from rest_framework import serializers
 
 from .models import (
-            Product, 
-            ProductVariation, 
-            Variation , 
-            ProductComment, 
+            Product,
+            ProductVariation,
+            Variation,
+            ProductComment,
             Rating,
             ProductDetail,
-            SliderImage
-)
+            SliderImage,
+            )
 
 from users.serializers import UserSerializer,ProducerProfileDetailSerializer
 from categories.serializers import CategorySerializer, VariationDetailSerializer
+
 
 class ProductTechDetailSerializer(serializers.ModelSerializer):
 
@@ -23,6 +24,19 @@ class ProductTechDetailSerializer(serializers.ModelSerializer):
             'variation',
             'products',
         )
+
+
+class SimpleProductSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Product
+        fields = (
+            'id',
+            'title',
+            'product_image',
+            'orderd_times',
+        )
+
 
 class ProductDetailsSerializer(serializers.ModelSerializer):
     variation = serializers.SerializerMethodField()
@@ -62,13 +76,11 @@ class ProductSerializer(serializers.ModelSerializer):
             'origin',
             'made_in',
             'delivery',
-            'short_discription',
             'sample',
             'remarks',
             'date_addded',
             'orderd_times',
         )
-        read_only_fields = ('slug',)
 
     def get_sample(self, obj):
         return obj.get_samples_display()
@@ -86,25 +98,13 @@ class ProductCommentSerializer(serializers.ModelSerializer):
             'username',
         )
 
-class SimpleProductSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Product
-        fields = (
-            'id',
-            'title',
-            'product_image',
-            'orderd_times',
-        )
-
 class ProductSliderSerializer(serializers.ModelSerializer):
 
-    class Meta:
-        model = SliderImage
-        fields = (
-            'id',
-            'image',
-        )
+    model = SliderImage
+    fields = (
+        'id',
+        'image',
+    )
 
 class ProductDetailSerializer(serializers.ModelSerializer):
     sample = serializers.SerializerMethodField()
@@ -123,11 +123,9 @@ class ProductDetailSerializer(serializers.ModelSerializer):
             'price',
             'second_price',
             'discount_price',
-            'product_image',
             'slug',
             'stock',
             'description',
-            'short_discription',
             'minimum_order',
             'payment_type',
             'packing',
@@ -170,10 +168,16 @@ class ProductDetailSerializer(serializers.ModelSerializer):
         return ProductSliderSerializer(obj.get_sliders, many=True).data
 
 
+
+
+
+
+
 class RatingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rating
         fields = ('id', 'starts', 'user', 'product')
+
 
 
 class ProductTitleSerializer(serializers.ModelSerializer):

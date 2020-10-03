@@ -1,10 +1,13 @@
 from django.contrib import admin
 from .models import Category, CategoryVariation, Variation, MainCategory
+
 from products.models import ProductDetail
 
 admin.site.register(Category)
 admin.site.register(MainCategory)
 admin.site.register(CategoryVariation)
+
+
 
 class InlineProductDetail(admin.TabularInline):
     model = ProductDetail
@@ -19,4 +22,4 @@ class VariationAdmin(admin.ModelAdmin):
 
 
 
-admin.site.register(Variation, VariationAdmin)
+# admin.site.register(Variation, VariationAdmin)

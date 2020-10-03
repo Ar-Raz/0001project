@@ -18,7 +18,7 @@ class MainCategory(models.Model):
 
 class Category(models.Model):
     title = models.CharField(max_length=64)
-    sub_category_of = models.ForeignKey(MainCategory, on_delete=models.CASCADE)
+    sub_category_of = models.ForeignKey('MainCategory', on_delete=models.CASCADE)
     seo_post = RichTextUploadingField()
     slug = models.SlugField(blank=True, null=True, allow_unicode=True)
 
@@ -59,7 +59,7 @@ class CategoryVariation(models.Model):
 class FAQMainCategory(models.Model):
     question = models.CharField(max_length=2048)
     text = models.TextField()
-    main_category = models.ForeignKey(MainCategory, on_delete=models.CASCADE)
+    main_category = models.ForeignKey('MainCategory', on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.question} for :{self.main_category.title} main category"
@@ -67,7 +67,7 @@ class FAQMainCategory(models.Model):
 class FAQCategory(models.Model):
     question = models.CharField(max_length=2048)
     text = models.TextField()
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey('Category', on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.question} for :{self.category.title} category"

@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'jalali_date',
+
+    'kavenegar',
 ]
 
 MIDDLEWARE = [

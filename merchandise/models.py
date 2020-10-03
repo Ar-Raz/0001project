@@ -1,6 +1,7 @@
 from django.db import models
 from users.models import Profile, ProducerProfile
 from products.models import Product
+from users.validators import validate_phone_number
 
 ADDRESS_CHOICES = (
     ('ارسال','ارسال'),

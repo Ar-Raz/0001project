@@ -1,28 +1,57 @@
-venv
-media
-backup
-.vscode
-.idea
-env
-envv
-static
-frontend
-frontend/node_modules
-node_modules
-blog/api/__pycache__
-merchandise/api/__pycache__
-users/api/__pycache__
-products/api/__pycache__
-categories/api/__pycache__
-
-
-blog/__pycache__
-merchandise/__pycache__
-users/__pycache__
-products/__pycache__
-categories/__pycache__
-webiste/__pycache__
-pages/__pycache__
 **/**/__pycache__
 **/__pycache__
+/__pycache__
 __pycache__
+
+env
+venv
+backup
+urls.md
+yekan.ttf
+iranSans.ttf
+frontend
+static
+db_backup
+
+# .gitignore
+### Python template
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+# Translations
+*.moGetting Started with Django 3.0 Chapter 1
+[ 35 ]
+*.pot
+# Django stuff:
+*.log
+db.sqlite3
+# Sphinx documentation
+docs/_build/
+# IPython
+profile_default/
+ipython_config.py
+# Environments
+env/
+# Media and Static directories
+/media/
+!/media/.gitkeep
+/static/
+!/static/.gitkeep
+# Secrets
+secrets.json

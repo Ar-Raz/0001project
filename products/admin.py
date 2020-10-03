@@ -1,12 +1,12 @@
 from django.contrib import admin
-from .models import Product, ProductVariation, Variation, ProductComment, Rating,ProductDetail, SliderImage
+from . import models
 
+admin.site.register(models.Variation)
+admin.site.register(models.ProductVariation)
+admin.site.register(models.Rating)
+admin.site.register(models.ProductDetail)
+admin.site.register(models.SliderImage)
 
-admin.site.register(Variation)
-admin.site.register(ProductVariation)
-admin.site.register(Rating)
-admin.site.register(ProductDetail)
-admin.site.register(SliderImage)
 
 
 class ProductAdmin(admin.ModelAdmin):
@@ -21,5 +21,5 @@ class ProductCommentAdmin(admin.ModelAdmin):
 
     active.boolean = True
 
-admin.site.register(Product, ProductAdmin)
-admin.site.register(ProductComment, ProductCommentAdmin)
+admin.site.register(models.Product, ProductAdmin)
+admin.site.register(models.ProductComment, ProductCommentAdmin)

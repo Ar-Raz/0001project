@@ -4,6 +4,8 @@ from django.db.models.signals import pre_save, post_save
 from django.utils.translation import ugettext_lazy as _
 
 from tinymce.models import HTMLField
+from ckeditor_uploader.fields import RichTextUploadingField
+
 
 from .custom_fields import IntegerRangeField
 from users.models import ProducerProfile, Profile, User
@@ -27,6 +29,8 @@ LABEL_CHOICES = (
 
 )
 
+
+
 class Product(models.Model):
     SAMPLE_CHOICES = (
         ("خیر","خیر"),
@@ -42,7 +46,7 @@ class Product(models.Model):
     product_image = models.ImageField(null=True, blank=True)
     slug = models.SlugField(null=True, blank=True, allow_unicode=True)
     stock = models.IntegerField(default=1, verbose_name='موجودی')
-    description = HTMLField(verbose_name="توضیحات محصول")
+    description = RichTextUploadingField(verbose_name="توضیحات محصول")
     minimum_order = models.CharField(max_length=32, verbose_name='حداقل تعداد جهت سفارش', null=True, blank=True)
     payment_type = models.CharField(max_length=32, verbose_name='روش پرداخت', null=True, blank=True)
     packing = models.CharField(max_length=32, verbose_name="بسته بندی", null=True, blank=True)
@@ -52,7 +56,7 @@ class Product(models.Model):
     delivery = models.CharField(max_length=32, verbose_name="بازه زمانی ارسال", null=True, blank=True)
     samples = models.CharField(max_length=24, verbose_name="ارائه نمونه", null=True,
                                 blank=True, choices=SAMPLE_CHOICES)
-    remarks = models.TextField(verbose_name="ملاحظات", null=True, blank=True)
+    remarks = RichTextUploadingField(verbose_name="ملاحظات", null=True, blank=True)
     label = models.CharField(max_length=32, choices=LABEL_CHOICES, null=True, blank=True)
     date_addded = models.DateTimeField(auto_now_add=True, null=True)
     orderd_times = models.IntegerField(default=1, null=True)
@@ -84,12 +88,14 @@ class Product(models.Model):
         sliders = SliderImage.objects.filter(product=self)
         return sliders
 
+
 class SliderImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     image = models.ImageField()
 
     def __str__(self):
         return f"{self.product.title} slider image"
+
 
 class Variation(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -143,7 +149,7 @@ class Rating(models.Model):
 
 
 class ProductDetail(CategoryVariation):
-    products = models.ManyToManyField(Product)
+    products = models.ManyToManyField('Product')
 
     def __str__(self):
         return self.value

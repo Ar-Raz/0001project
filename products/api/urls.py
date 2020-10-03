@@ -18,10 +18,8 @@ urlpatterns = [
     path('detail/', include(router.urls)),
     path('category/<category>/', views.ProductsByCategory.as_view(), name="product-category"),
     path('search/filter/', views.VueFilterView.as_view(), name='filter'),
-    path('my_products/create/', views.ProductCreationView.as_view(), name="create-product"),
+    path('my_products/craete/', views.ProductCreationView.as_view(), name="create-product"),
     path('my_products/update/<slug>/', views.ProductRUDView.as_view(), name="update-product"),
-    path('categories_variation/<slug>/', views.ProductVariation.as_view()),
-    path('categories_variation/create/', views.ProductVariationCreation.as_view()),
 ]
 
 # from django.urls import path
@@ -65,3 +63,12 @@ urlpatterns = [
 #     path('snippets/<str:name>/<int:pk>/rate_product/', product_rate_product, name='product-highlight'),
 #     path('products/<str:name>/<int:pk>/comment/', product_comments, name='product-comments'),
 # ])
+
+
+
+
+
+
+
+
+
