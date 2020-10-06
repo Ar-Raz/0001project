@@ -22,6 +22,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+from hitcount.views import HitCountMixin, HitCountDetailView
+from hitcount.models import HitCount
+
 from .forms import ProductCommentForm
 from .models import Product, ProductComment, Rating
 from .serializers import ProductSerializer, ProductDetailSerializer, ProductCommentSerializer
@@ -30,7 +33,7 @@ from .serializers import (ProductSerializer,
             ProductCommentSerializer,
             ProductDetailSerializer,
             RatingSerializer,
-            ProductSerializer
+            ProductSerializer,
             )
 
 
@@ -245,11 +248,11 @@ def products_list_view(request):
     queryset = Product.objects.all()
 
     new_products = queryset.order_by('-date_addded')
-    sered_new_products = ProductDetailSerializer(new_products, many=True).data
+    sered_new_products = ProductSerializer(new_products, many=True).data
     new_products_json_string =  json.dumps(sered_new_products)
 
     best_sellers = Product.objects.filter(label='پرفروش')
-    sered_best_seller_products = ProductDetailSerializer(best_sellers, many=True).data
+    sered_best_seller_products = ProductSerializer(best_sellers, many=True).data
     best_sellers_json_string = json.dumps(sered_best_seller_products)
 
     page = request.GET.get('page', 1)
@@ -264,7 +267,7 @@ def products_list_view(request):
     except EmptyPage:
         queryset = paginator.page(paginator.num_pages)
 
-    sered_data = ProductDetailSerializer(queryset, many=True).data
+    sered_data = ProductSerializer(queryset, many=True).data
     json_string = json.dumps(sered_data)
 
 
@@ -276,22 +279,25 @@ def products_list_view(request):
 
     context = {
         'products': json_string,
-        'new_products' : new_products_json_string,
-        'best_sellers' : best_sellers_json_string,
-        'pagination' : json_page_data,
+        'new_products': new_products_json_string,
+        'best_sellers': best_sellers_json_string,
+        'pagination': json_page_data,
     }
 
     return render(request, 'views/products.html', context)
 
 
-class ProductDetailView(View):
+class ProductDetailView(View, HitCountMixin):
     form = ProductCommentForm()
+
 
     def get(self, request, slug, *args, **kwargs):
         try:
             form = ProductCommentForm
             queryset = Product.objects.get(slug=slug)
             serialized_q_set = ProductDetailSerializer(queryset).data
+            hit_count = HitCount.objects.get_for_object(queryset)
+            hit_count_response = HitCountMixin.hit_count(request, hit_count)
             json_product = json.dumps(serialized_q_set)
 
             cat = queryset.category.distinct()[0].title
@@ -313,7 +319,7 @@ class ProductDetailView(View):
             }
             return render(request, 'views/product.html', context)
         except ObjectDoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response({}, status=status.HTTP_404_NOT_FOUND)
 
     def post(self, request, slug, *args, **kwargs):
         product = Product.objects.get(slug=slug)
@@ -382,24 +388,24 @@ def user_panel_view(request):
 
 
 
-def paginated_products(request):
-
-    products = Product.objects.all()
-    products_quantity = products.count()
-    number_of_pages = products_quantity/12
-    page = request.GET.get("page","number")
-    current_page = int(page)
-    next_page = int(page) + 1
-    previous_page = int(page) - 1
-    current_page_products = products[(current_page-1)*12 : current_page*12]
-    sered_product = ProductDetailSerializer(current_page_products, many=True).data
-    json_product_string = json.dumps(sered_product)
-
-    page_data = { "current_page" : current_page, "number_of_pages" : number_of_pages }
-    json_page_data = json.dumps(page_data)
-
-    context = {
-        "products" : current_page_products,
-        "pagination" : json_page_data,
-    }
-    return render(request, 'products.html', context)
+# def paginated_products(request):
+#
+#     products = Product.objects.all()
+#     products_quantity = products.count()
+#     number_of_pages = products_quantity/12
+#     page = request.GET.get("page","number")
+#     current_page = int(page)
+#     next_page = int(page) + 1
+#     previous_page = int(page) - 1
+#     current_page_products = products[(current_page-1)*12 : current_page*12]
+#     sered_product = ProductDetailSerializer(current_page_products, many=True).data
+#     json_product_string = json.dumps(sered_product)
+#
+#     page_data = { "current_page" : current_page, "number_of_pages" : number_of_pages }
+#     json_page_data = json.dumps(page_data)
+#
+#     context = {
+#         "products" : current_page_products,
+#         "pagination" : json_page_data,
+#     }
+#     return render(request, 'products.html', context)

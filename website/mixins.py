@@ -1,121 +1,25 @@
-import inspect
-import datetime
-import re
-
-from django.conf import settings
-from django.contrib.auth import REDIRECT_FIELD_NAME
-from django.contrib.auth.views import redirect_to_login, logout_then_login
-from django.core.exceptions import ImproperlyConfigured, PermissionDenied
-from django.http import (HttpResponseRedirect, HttpResponsePermanentRedirect,
-                         Http404, HttpResponse, StreamingHttpResponse)
-from django.shortcuts import resolve_url
-
-try:
-    from django.utils.encoding import force_str as force_string
-except ImportError:
-    from django.utils.encoding import force_text as force_string
-from django.utils.timezone import now
+from rest_framework import  response, status
 
 import six
 
-class AccessMixin(object):
-    """
-    'Abstract' mixin that gives access mixins the same customizable
-    functionality.
-    """
-    login_url = None
-    raise_exception = False
-    redirect_field_name = REDIRECT_FIELD_NAME  # Set by django.contrib.auth
-    redirect_unauthenticated_users = False
-
-    def get_login_url(self):
-        """
-        Override this method to customize the login_url.
-        """
-        login_url = self.login_url or settings.LOGIN_URL
-        if not login_url:
-            raise ImproperlyConfigured(
-                'Define {0}.login_url or settings.LOGIN_URL or override '
-                '{0}.get_login_url().'.format(self.__class__.__name__))
-
-        return force_string(login_url)
-
-    def get_redirect_field_name(self):
-        """
-        Override this method to customize the redirect_field_name.
-        """
-        if self.redirect_field_name is None:
-            raise ImproperlyConfigured(
-                '{0} is missing the '
-                'redirect_field_name. Define {0}.redirect_field_name or '
-                'override {0}.get_redirect_field_name().'.format(
-                    self.__class__.__name__))
-        return self.redirect_field_name
-
-    def handle_no_permission(self, request):
-        if self.raise_exception:
-            if (self.redirect_unauthenticated_users
-                    and not request.user.is_authenticated):
-                return self.no_permissions_fail(request)
-            else:
-                if (inspect.isclass(self.raise_exception)
-                        and issubclass(self.raise_exception, Exception)):
-                    raise self.raise_exception
-                if callable(self.raise_exception):
-                    ret = self.raise_exception(request)
-                    if isinstance(ret, (HttpResponse, StreamingHttpResponse)):
-                        return ret
-                raise PermissionDenied
-
-        return self.no_permissions_fail(request)
-
-    def no_permissions_fail(self, request=None):
-        """
-        Called when the user has no permissions and no exception was raised.
-        This should only return a valid HTTP response.
-        By default we redirect to login.
-        """
-        return redirect_to_login(request.get_full_path(),
-                                 self.get_login_url(),
-                                 self.get_redirect_field_name())
-
-
-class AnonymousRequiredMixin(object):
-    """
-    View mixin which redirects to a specified URL if authenticated.
-    Can be useful if you wanted to prevent authenticated users from
-    accessing signup pages etc.
-    NOTE:
-        This should be the left-most mixin of a view.
-    Example Usage
-        class SomeView(AnonymousRequiredMixin, ListView):
-            ...
-            # required
-            authenticated_redirect_url = "/accounts/profile/"
-            ...
-    """
-    authenticated_redirect_url = settings.LOGIN_REDIRECT_URL
-
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return HttpResponseRedirect(self.get_authenticated_redirect_url())
-        return super(AnonymousRequiredMixin, self).dispatch(
-            request, *args, **kwargs)
-
-    def get_authenticated_redirect_url(self):
-        """ Return the reversed authenticated redirect url. """
-        if not self.authenticated_redirect_url:
-            raise ImproperlyConfigured(
-                '{0} is missing an authenticated_redirect_url '
-                'url to redirect to. Define '
-                '{0}.authenticated_redirect_url or override '
-                '{0}.get_authenticated_redirect_url().'.format(
-                    self.__class__.__name__))
-        return resolve_url(self.authenticated_redirect_url)
+from django.contrib.auth.mixins import AccessMixin
+from django.core.exceptions import ImproperlyConfigured, PermissionDenied
+from django.contrib.auth.views import redirect_to_login
 
 
 class GroupRequiredMixin(AccessMixin):
+
+    login_url = 'users:tfentry'
+    raise_exception = True
     group_required = None
+    permission_denied_message = "برای دسترسی به این صفحه باید {0} خودرا فعال کنید"
+
+    def handle_no_permission(self):
+        if self.raise_exception or self.request.user.is_authenticated:
+            self.request.session['message'] = 'شما به این صفخه دسترسی ندارید'
+            return response.Response({'message' : 'شما به این صفحه دسترسی ندارید'},
+                                     status=status.HTTP_401_UNAUTHORIZED)
+        return redirect_to_login(self.request.get_full_path(), self.get_login_url(), self.get_redirect_field_name())
 
     def get_group_required(self):
         if self.group_required is None or (
@@ -139,13 +43,10 @@ class GroupRequiredMixin(AccessMixin):
         return set(groups).intersection(set(user_groups))
 
     def dispatch(self, request, *args, **kwargs):
-        self.request = request
         in_group = False
         if request.user.is_authenticated:
-            in_group = self.check_membership(self.get_group_required())
+            in_group = self.check_membership(self.group_required())
 
         if not in_group:
-            return self.handle_no_permission(request)
-
-        return super(GroupRequiredMixin, self).dispatch(
-            request, *args, **kwargs)
+            return self.handle_no_permission()
+        return super().dispatch(request, *args, **kwargs)

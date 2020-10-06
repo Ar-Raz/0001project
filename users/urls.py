@@ -14,4 +14,5 @@ urlpatterns = [
     path('tfauth/<phone>/', views.VerifyTF.as_view(), name='verify'),
     path('profile/', views.UserPanelOverView.as_view(), name='profile'),
     path('profile/orders/', views.MiniOrderListDetailView.as_view(), name='profile-orders'),
+    path('t/', views.Test.as_view()),
 ]

@@ -165,3 +165,25 @@ class CategoryDetailSerializer(serializers.ModelSerializer):
 
     def get_variation(self, obj):
         return VariationSerializer(obj.variation_set.all(), many=True).data
+
+class MainCategoryQuickSerializer(serializers.ModelSerializer):
+    categories = serializers.SerializerMethodField()
+
+    class Meta:
+        model = MainCategory
+        fields = (
+            'id',
+            'title',
+            'slug',
+            'categories',
+        )
+
+    def get_categories(self, obj):
+        categories = Category.objects.filter(sub_category_of=obj)
+        return CategoryTitleSerializer(categories, many=True).data
+
+class VarationCreatSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Variation
+        fields = "__all__"

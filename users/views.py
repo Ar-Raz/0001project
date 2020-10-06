@@ -5,11 +5,13 @@ from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import authenticate, login
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.views import View
 from django.utils import timezone
 
+
 from website.utils import send_otp_kavenegar
+from website.mixins import GroupRequiredMixin
 
 from .models import ProducerProfile, Profile, TokenTFA
 from .forms import ProducerProfileForm, CustomerProfileForm
@@ -33,6 +35,7 @@ from products.models import Product, ProductDetail, SliderImage
 from products.serializers import (
     ProductDetailSerializer,
     SimpleProductSerializer,
+    ProductSerializer,
 )
 from users.models import User
 from users.serializers import UserSerializer
@@ -313,8 +316,13 @@ class VerifyTF(View):
 
 
 def create_product_view(request):
+    # body = json.loads(body_unicode)
+    # content = body['content']
+    # print(content)
+    # print(body)
     user = request.user
-    serialized_user = UserSerializer(request.user).data
+    # user = User.objects.get(username='jer')
+    serialized_user = UserSerializer(user).data
     producer = ProducerProfile.objects.get(user=user)
     user_products = Product.objects.filter(producer=producer)
     serialized_products = ProductDetailSerializer(user_products, many=True).data
@@ -331,6 +339,7 @@ def create_product_view(request):
 
     if request.method == "POST":
         category = request.POST.get("headCategory").strip()
+        cat = Category.objects.get(title=category)
         variations = Variation.objects.filter(category__title=category)
 
         product_title = request.POST.get("product-title")
@@ -351,6 +360,7 @@ def create_product_view(request):
         if product_title and category and product_image:
             print("got title and category")
             product = Product.objects.create(
+                producer_id=user.id,
                 title=product_title,
                 price=product_price,
                 second_price=product_price2,
@@ -365,8 +375,10 @@ def create_product_view(request):
                 delivery=product_delivery,
                 samples=product_samples,
                 short_discription=product_short_description,
-                producer=producer,
             )
+            product.producer = producer
+            product.category.add(cat)
+            product.save()
 
             for f in files:
                 slider_image = SliderImage.objects.create(
@@ -416,7 +428,7 @@ def create_product_view(request):
                 'msg': json_msg,
             }
             print("not good")
-            return render(request, "views/userPanel/createProduct.html")
+            return HttpResponse("DEAD")
 
     context = {
         'user': json_user_profile_data,
@@ -424,6 +436,20 @@ def create_product_view(request):
         'cats': json_cats,
     }
     return render(request, 'views/userPanel/createProduct.html', context)
+
+class ProductEditView(View):
+
+    def get(self, request, slug, *args, **kwargs):
+        product = Product.objects.get(slug=slug)
+        sered_product = ProductSerializer(product).data
+        json_product = json.dumps(sered_product)
+
+        context =  {
+            'product' : json_product,
+        }
+        return render(request, 'views/userPanel/createProduct.html', context)
+
+    # def post(self, request, slug, *args, **kwargs):
 
 
 class ProfileEditView(View):
@@ -552,3 +578,12 @@ class MiniOrderListDetailView(View):
         }
 
         return render(request, 'orders.html', context)
+
+class Test(View, GroupRequiredMixin):
+
+    group_required = 'producer'
+    redirect_field_name = 'pages:index'
+
+    def get(self, request, *args, **kwargs):
+
+        return render(request, 'tess.html', {})

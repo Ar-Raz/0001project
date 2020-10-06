@@ -28,7 +28,14 @@ from blog.serializers import PostSerializer
 
 from .forms import SubscriptionForm, DocumentForm, DocumentSerializer
 from .models import NewsTellerEmails, Document, AboutUs
-from .serializers import AboutUsSerializer
+from .serializers import (
+            AboutUsSerializer,
+            SellInDamirSerializer,
+            AboutDamirSerializer,
+            RulesToUseSerializer,
+            PrivacyPolicySerializer,
+            BuyFromDamirSerializer
+)
 
 class FrontendRenderView(View):
     def get(self, request, *args, **kwargs):
@@ -151,3 +158,53 @@ class SearchView(View):
             'products': json_string
         }
         return render(request, 'views/products.html', context)
+
+
+class AboutUsView(View):
+
+    def get(self, request,):
+        content = AboutUs.objects.all()[0]
+        sered_content = AboutUsSerializer(content).data
+        json_content = json.dumps(sered_content)
+
+        return render(request, 'views/aboutUs.html', { 'content' : json_content})
+
+class AboutDamir(View):
+
+    def get(self, request,):
+        content = AboutUs.objects.all()[0]
+        sered_content = AboutDamirSerializer(content).data
+        json_content = json.dumps(sered_content)
+        return render(request, 'views/aboutDamir.html', { 'content' : json_content})
+
+class Privacy(View):
+
+    def get(self, request,):
+        content = AboutUs.objects.all()[0]
+        sered_content = PrivacyPolicySerializer(content).data
+        json_content = json.dumps(sered_content)
+        return render(request, 'views/privacy.html', { 'content' : json_content})
+
+class SellInDamir(View):
+
+    def get(self, request,):
+        content = AboutUs.objects.all()[0]
+        sered_content = SellInDamirSerializer(content).data
+        json_content = json.dumps(sered_content)
+        return render(request, 'views/sellInDamir.html', { 'content' : json_content})
+
+class RulesToUse(View):
+
+    def get(self, request,):
+        content = AboutUs.objects.all()[0]
+        sered_content = RulesToUseSerializer(content).data
+        json_content = json.dumps(sered_content)
+        return render(request, 'views/rulesToUse.html', { 'content' : json_content})
+
+class BuyFromDamir(View):
+
+    def get(self, request,):
+        content = AboutUs.objects.all()[0]
+        sered_content = BuyFromDamirSerializer(content).data
+        json_content = json.dumps(sered_content)
+        return render(request, 'views/buyFromDamir.html', { 'content' : json_content})

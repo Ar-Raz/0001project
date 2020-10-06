@@ -2,6 +2,11 @@ from django.db import models
 from django.utils.text import slugify
 from django.db.models.signals import pre_save, post_save
 from django.utils.translation import ugettext_lazy as _
+from django.utils.encoding import python_2_unicode_compatible
+from django.contrib.contenttypes.fields import GenericRelation
+from hitcount.models import HitCountMixin, HitCount
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 from tinymce.models import HTMLField
 from ckeditor_uploader.fields import RichTextUploadingField
@@ -61,6 +66,8 @@ class Product(models.Model):
     date_addded = models.DateTimeField(auto_now_add=True, null=True)
     orderd_times = models.IntegerField(default=1, null=True)
     short_discription = models.TextField(verbose_name="توضیحات")
+    hit_count = GenericRelation(HitCount, object_id_field='object_pk',
+                                        related_query_name='hit_count_generic_relation')
 
 
     def __str__(self):
@@ -153,3 +160,17 @@ class ProductDetail(CategoryVariation):
 
     def __str__(self):
         return self.value
+
+class MetaDetail(models.Model):
+    count = models.PositiveIntegerField(default=0)
+    product = models.OneToOneField(Product, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    fake_content = models.CharField(max_length=1234)
+
+    def __str__(self):
+        return self.product.title
+
+@receiver(post_save, sender=Product)
+def create_product_meta_detail(sender, instance=None, created=False, **kwargs):
+    if created:
+        MetaDetail.objects.create(product=instance, count=0, user=instance.producer.user)

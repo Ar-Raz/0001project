@@ -6,6 +6,7 @@ from products.models import ProductDetail
 admin.site.register(Category)
 admin.site.register(MainCategory)
 admin.site.register(CategoryVariation)
+# admin.site.register(Variation)
 
 
 
@@ -22,4 +23,5 @@ class VariationAdmin(admin.ModelAdmin):
 
 
 
-# admin.site.register(Variation, VariationAdmin)
+
+admin.site.register(Variation, VariationAdmin)

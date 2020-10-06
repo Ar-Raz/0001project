@@ -2,6 +2,7 @@ import json
 
 from django.shortcuts import render
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.views import View
 
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, RetrieveAPIView
@@ -14,7 +15,9 @@ from .serializers import (
         CategorySerializer,
         CategoryDetailSerializer,
         VariationDetailSerializer,
-        MainCategorySerializer
+        MainCategorySerializer,
+        VarationCreatSerializer,
+        MainCategoryQuickSerializer
         )
 from .models import Category, Variation, CategoryVariation, MainCategory
 
@@ -34,6 +37,19 @@ from products.serializers import ProductDetailSerializer
 ##################################################################
 """
 
+class QuickCategoriesList(ListAPIView):
+    permission_classes = (AllowAny,)
+    serializer_class = MainCategoryQuickSerializer
+    queryset = MainCategory.objects.all()
+
+class CategoryListAPIView(ListAPIView):
+    serializer_class = VarationCreatSerializer
+
+    def get_queryset(self):
+        pk = self.kwargs['pk']
+        category = Category.objects.get(pk=pk)
+        variations = Variation.objects.filter(category=category)
+        return variations
 
 class CategoryListView(ListAPIView):
     # permission_classes = (AllowAny,)
@@ -103,3 +119,13 @@ def by_category(request, name):
         "page_data" : json_page_data,
     }
     return render(request, 'views/products.html', context)
+
+
+
+class VariationHandling(View):
+
+    def get(self, request, *args, **kwargs):
+        main_cats = MainCategory.objects.all()
+        sered_mains = MainCategorySerializer(main_cats).data
+        json_mains = json.dumps(sered_mains)
+        return render(variatons)

@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'jalali_date',
+    'braces',
 
     'kavenegar',
 ]
