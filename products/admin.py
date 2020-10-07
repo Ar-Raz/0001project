@@ -7,6 +7,7 @@ admin.site.register(models.Rating)
 admin.site.register(models.SliderImage)
 admin.site.register(models.MetaDetail)
 admin.site.register(models.Product)
+admin.site.register(models.Label)
 
 class ProductInline(admin.TabularInline):
     model = models.ProductDetail.products.through

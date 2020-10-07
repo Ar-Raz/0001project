@@ -14,10 +14,11 @@ from django.db.models import Q
 # from django.
 
 #COMPONENTS
-from products.models import Product, ProductComment
+from products.models import Product, ProductComment, Label
 from products.serializers import (
         ProductDetailSerializer, ProductSerializer,
-        ProductCommentSerializer, ProductCommentDetailSerializer
+        ProductCommentSerializer, ProductCommentDetailSerializer, 
+        LabeledProductsSerializer
         )
 
 from categories.models import Category, MainCategory
@@ -79,6 +80,10 @@ class IndexView(View):
             sered_best_seller_products = ProductDetailSerializer(best_sellers, many=True).data
             best_sellers_json_string = json.dumps(sered_best_seller_products)
 
+            lables = Label.objects.all()
+            sered_labeles = LabeledProductsSerializer(lables, many=True).data
+            json_labeles = json.dumps(sered_labeles)
+
 
             context = {
                 'products' : products_ser_json,
@@ -86,7 +91,7 @@ class IndexView(View):
                 'main_categories' : main_categories_ser_json,
                 'posts' : post_ser_json,
                 'new_products' : new_products_json_string,
-                'best_sellers' : best_sellers_json_string,
+                'labeles' : json_labeles,
                 'comments' : json_comments,
             }
             return render(self.request, "views/index.html", context)

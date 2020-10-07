@@ -8,6 +8,7 @@ from .models import (
             Rating,
             ProductDetail,
             SliderImage,
+            Label,
             )
 
 from users.serializers import UserSerializer,ProducerProfileDetailSerializer
@@ -208,3 +209,20 @@ class ProductCommentDetailSerializer(serializers.ModelSerializer):
 
     def get_item(self, obj):
         return ProductTitleSerializer(obj.product).data
+
+
+class LabeledProductsSerializer(serializers.ModelSerializer):
+    products = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Label 
+        fields = (
+            'id',
+            'title',
+            'slug',
+            'products',
+        )
+
+    def get_products(self, obj):
+        products = Product.objects.filter(label_try=obj)
+        return ProductSerializer(products, many=True).data

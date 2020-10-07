@@ -6,11 +6,11 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.contrib.contenttypes.fields import GenericRelation
 from hitcount.models import HitCountMixin, HitCount
 from django.dispatch import receiver
-from django.db.models.signals import post_save
 
 from tinymce.models import HTMLField
 from ckeditor_uploader.fields import RichTextUploadingField
 
+from website.utils import unique_slug_generator
 
 from .custom_fields import IntegerRangeField
 from users.models import ProducerProfile, Profile, User
@@ -66,6 +66,7 @@ class Product(models.Model):
     date_addded = models.DateTimeField(auto_now_add=True, null=True)
     orderd_times = models.IntegerField(default=1, null=True)
     short_discription = models.TextField(verbose_name="توضیحات")
+    label_try = models.ManyToManyField('Label')
     hit_count = GenericRelation(HitCount, object_id_field='object_pk',
                                         related_query_name='hit_count_generic_relation')
 
@@ -103,6 +104,13 @@ class SliderImage(models.Model):
     def __str__(self):
         return f"{self.product.title} slider image"
 
+
+class Label(models.Model):
+    title = models.CharField(max_length=164)
+    slug = models.SlugField(null=True, blank=True, allow_unicode=True)
+
+    def __str__(self):
+        return self.title
 
 class Variation(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -186,3 +194,14 @@ class MetaDetail(models.Model):
 def create_product_meta_detail(sender, instance=None, created=False, **kwargs):
     if created:
         MetaDetail.objects.create(product=instance, count=0, user=instance.producer.user)
+
+def product_pre_save_receiver(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
+
+def label_pre_save_reciever(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
+
+pre_save.connect(product_pre_save_receiver, sender=Product)
+pre_save.connect(label_pre_save_reciever, sender=Label)
