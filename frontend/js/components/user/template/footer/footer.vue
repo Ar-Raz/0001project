@@ -8,7 +8,7 @@
 			<div class="secondRow">
 				<mission></mission>
 				<abouts></abouts>
-				<sign-up></sign-up>
+				<!-- <sign-up></sign-up> -->
 				<cont></cont>
 
 
@@ -28,15 +28,18 @@
 
 
 		</div>
-		<p class="copy">تمام حقوق این سایت متعلق به دمیرکو است &#169;</p>
+		<p class="copy">&#169;تمام حقوق این سایت متعلق به دمیرکو است </p>
 	</div>
 
 </template>
 
 
 <style scoped>
+.firstRow{
+	width:100%
+}
 #thirdRow a{
-	font-size: 15px;
+	font-size: 12px;
     font-weight: 800;
 }
 .copy{
@@ -46,10 +49,11 @@
 	display: flex;
 	justify-content: center;
 	flex-wrap: wrap;
+	width: 100%;
 }
 #thirdRow p{
-
-	margin: 15px
+	font-size: 12px;
+	margin: 15px;
 }
 .copy{
 	margin:auto;
@@ -59,6 +63,7 @@
     margin: auto;
     height: 3px;
     background-color: #9f9f9f;
+	margin-top:50px
 	}
 	input{
 		border:1px solid rgb(184, 184, 184);
@@ -105,6 +110,9 @@
 	p{
 		color:black
 	}
+  .secondRow div{
+    margin: 10px;
+  }
 	@media (max-width: 1120px)
 	{
 		#footerWrapper{

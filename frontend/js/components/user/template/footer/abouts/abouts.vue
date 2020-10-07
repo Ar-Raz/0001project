@@ -13,15 +13,13 @@
 
 
 <style scoped>
-	#abouts{
-		margin:20px;
-	}
 	li{
 		text-align: right;
 		line-height: 2rem
 	}
 	a{
-		color: #4a4a4a
+		color: #4a4a4a;
+		font-size: 18px
 	}
 
 </style>

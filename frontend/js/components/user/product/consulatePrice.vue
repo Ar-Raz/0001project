@@ -5,14 +5,14 @@
                     <form action="">
                         <div id="email" class="inputs">
                             <div class='formInputsWrapper'>
-                                    <input autocomplete="off" name="email" @blur='focusOut($event)' class='inputWithLabelThatShouldStay signupFormInputs' id='userName' type="text">
-                                    <label class='comeUpLabel' for="userName">نام</label>                                                                  
+                                    <input autocomplete="off" name="email" @blur='focusOut($event)' class='inputWithLabelThatShouldStay signupFormInputs' id='consulateUserName' type="text">
+                                    <label class='comeUpLabel' for="consulateUserName">نام</label>
                             </div>
                         </div>
                         <div id="email" class="inputs">
                             <div class='formInputsWrapper'>
-                                    <input autocomplete="off" name="email" @blur='focusOut($event),startValidation("email",$event)' class='inputWithLabelThatShouldStay signupFormInputs' id='userPhone' type="text">
-                                    <label class='comeUpLabel' for="userPhone">شماره تلفن</label>                                                                  
+                                    <input autocomplete="off" name="email" @blur='focusOut($event),startValidation("email",$event)' class='inputWithLabelThatShouldStay signupFormInputs' id='ConsulateUserPhone' type="text">
+                                    <label class='comeUpLabel' for="ConsulateUserPhone">شماره تلفن</label>
                             </div>
                             <p class="inputError">فرمت شماره اشتباه است</p> 
                         </div>

@@ -158,10 +158,17 @@ class Rating(models.Model):
 
 #     def __str__(self):
 #         return self.products.all()[0].title
+
+
      
 
-class ProductDetail(CategoryVariation):
+class ProductDetail(models.Model):
     products = models.ManyToManyField('Product')
+    variation = models.ForeignKey(to="categories.Variation", on_delete=models.CASCADE, default=1)
+    value = models.CharField(max_length=50, null=True, blank=True)  # S, M, L
+    attachment = models.ImageField(blank=True, null=True)
+    selectable = models.BooleanField(default=False, blank=True, null=True)
+    yes_or_no = models.BooleanField(default=False, blank=True, null=True)
 
     def __str__(self):
         return self.value

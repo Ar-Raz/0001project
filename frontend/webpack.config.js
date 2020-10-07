@@ -8,14 +8,19 @@ module.exports = {
   output:{
       path:path.resolve(__dirname,"public"),
       filename:"[name].js",
-      publicPath:"/public/"
+      // publicPath:"/"
+    publicPath:"/static/public/"
   },
-  mode: 'production',
+  mode: 'development',
   module: {
     rules: [
       {
         test: /\.vue$/,
         loader: 'vue-loader'
+      },
+      {
+        test: /\.svg$/,
+        loader: 'svg-inline-loader'
       },
       {
         test: /\.js$/,

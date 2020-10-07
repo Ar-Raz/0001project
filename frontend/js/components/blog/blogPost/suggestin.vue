@@ -1,85 +1,41 @@
 <template>
     <div class="other">
-                    <div class="singleOther">
-                        <div class="otherWrapper">
-                            
-                            <div class="otherImg">
-                                <img src="/images/2.jpg" alt="">
-                            </div>
-                            <div class="otherTitle">
-                                <a href="#">شرینگ پک</a>
-                            </div>
-                            <div class="otherModel">
-                                 <button><svg class="icon-svg iconSvg-style" width="24" height="24" viewBox="0 0 24 24">
-                                    <path d="M17.016 3c1.078 0 1.969 0.938 1.969 2.016v15.984l-6.984-3-6.984 3v-15.984c0-1.078 0.891-2.016 1.969-2.016h10.031z"></path>
-                                </svg></button>
-                                <a href="#">مدل شرینگ پک L30</a>
-                            </div>
-                        </div>
+        <div class="title">جدید ترین مقالات</div>
+        <div class="otherWrapper">
+            <div class="singleOther" v-for="(s,i) in latests" :key="s.id" v-if="i<4" :id="'single'+i">
+                <div class="singleOtherOtherWrapper">
+                    <div class="otherImg">
+                        <img :src="s.thumbnail" alt="">
                     </div>
-                    <div class="singleOther">
-                        <div class="otherWrapper">
-                            
-                            <div class="otherImg">
-                                <img src="/images/2.jpg" alt="">
-                            </div>
-                            <div class="otherTitle">
-                                <a href="#">شرینگ پک</a>
-                            </div>
-                            <div class="otherModel">
-                                 <button><svg class="icon-svg iconSvg-style" width="24" height="24" viewBox="0 0 24 24">
-                                    <path d="M17.016 3c1.078 0 1.969 0.938 1.969 2.016v15.984l-6.984-3-6.984 3v-15.984c0-1.078 0.891-2.016 1.969-2.016h10.031z"></path>
-                                </svg></button>
-                                <a href="#">مدل شرینگ پک L30</a>
-                            </div>
-                        </div>
+                    <div class="otherTitle">
+                        <a :href="'/blog/post/'+s.slug">{{getText(s.title)}}</a>
                     </div>
-                    <div class="singleOther">
-                        <div class="otherWrapper">
-                            
-                            <div class="otherImg">
-                                <img src="/images/2.jpg" alt="">
-                            </div>
-                            <div class="otherTitle">
-                                <a href="#">شرینگ پک</a>
-                            </div>
-                            <div class="otherModel">
-                                 <button><svg class="icon-svg iconSvg-style" width="24" height="24" viewBox="0 0 24 24">
-                                    <path d="M17.016 3c1.078 0 1.969 0.938 1.969 2.016v15.984l-6.984-3-6.984 3v-15.984c0-1.078 0.891-2.016 1.969-2.016h10.031z"></path>
-                                </svg></button>
-                                <a href="#">مدل شرینگ پک L30</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="singleOther">
-                        <div class="otherWrapper">
-                            
-                            <div class="otherImg">
-                                <img src="/images/2.jpg" alt="">
-                            </div>
-                            <div class="otherTitle">
-                                <a href="#">شرینگ پک</a>
-                            </div>
-                            <div class="otherModel">
-                                 
-                                 <button><svg class="icon-svg iconSvg-style" width="24" height="24" viewBox="0 0 24 24">
-                                    <path d="M17.016 3c1.078 0 1.969 0.938 1.969 2.016v15.984l-6.984-3-6.984 3v-15.984c0-1.078 0.891-2.016 1.969-2.016h10.031z"></path>
-                                </svg></button>
-                                <a href="#">مدل شرینگ پک L30</a>
-                            </div>
-                        </div>
+                    <div class="otherModel">
+                        <!--  <button><svg class="icon-svg iconSvg-style" width="24" height="24" viewBox="0 0 24 24">
+                            <path d="M17.016 3c1.078 0 1.969 0.938 1.969 2.016v15.984l-6.984-3-6.984 3v-15.984c0-1.078 0.891-2.016 1.969-2.016h10.031z"></path>
+                        </svg></button> -->
+                        <p >{{getText(s.short_description)}}</p>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <style scoped>
+    .title{
+        font-size: 18px;
+        font-weight: 800;
+    }
  .otherImg,img{
         width:250px;
         height:150px;
     }
     .other{
         display:flex;
+        flex-direction: column;
         justify-content: center;
+        align-items: center;
         flex-wrap: wrap;
         margin-top:50px
     }
@@ -91,14 +47,23 @@
         align-items: center;
         margin:5px
     }
-    .singleOther p{
-        width:80%;
-        margin:auto
-    }
     .otherWrapper{
-            display: flex;
-    flex-direction: column;
-    align-items: center;
+        display: grid;
+        grid-gap: 10px;
+        grid-template-areas: 
+        'single1 single2 single3 single4'
+    }
+    #single1{
+        grid-area: single1
+    }
+    #single2{
+        grid-area: single2
+    }
+    #single3{
+        grid-area: single3
+    }
+    #single4{
+        grid-area: single4
     }
     .otherTitle{
         width:100%;
@@ -117,7 +82,7 @@
     .otherModel{
         display:flex;
         width:100%;
-        justify-content:space-between;
+        justify-content:flex-end;
         margin-top:10px;
         
     }
@@ -136,4 +101,37 @@
     .otherModel button{
         border:0
     }
+    a,p{
+        text-align: right;
+        direction: rtl
+    }
+    @media (max-width: 1100px){
+        .otherWrapper{
+            display: grid;
+            grid-template-areas: 
+            'single1 single2'
+            'single3 single4'
+        }
+    }
+    @media (max-width: 550px){
+        .otherWrapper{
+            display: grid;
+            grid-template-areas: 
+            'single1'
+            'single2'
+            'single3'
+            'single4'
+        }
+    }
 </style>
+
+<script> 
+    export default{
+        props:["latests"],
+        methods:{
+            getText(txt){
+                return txt.length>70 ? txt.substring(0,70)+"..." : txt
+            }
+        }
+    }
+</script>

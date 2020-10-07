@@ -58,9 +58,6 @@
 		display: flex;
     	flex-direction: column;
 	}
-	.footeSignUp{
-		margin:20px;
-	}
 	.footeSignUp > p{
 		margin-bottom: 5px
 	}

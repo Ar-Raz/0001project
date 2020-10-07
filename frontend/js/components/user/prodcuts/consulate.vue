@@ -1,23 +1,39 @@
 <template>
     <div class="consulate" @click='closeConsulate($event)'>
         <div @click='prevent($event)' class="consulateWrapper">
-             <div id="email" class="inputs">
+             <form class="consulateForm" action="/merchandise/miniorder" method="post">
+                 <div id="email" class="inputs">
                 <div class='formInputsWrapper'>
-                        <input autocomplete="off" name="email" @blur='focusOut($event)' class='inputWithLabelThatShouldStay signupFormInputs' id='consulateUserName' type="text">
-                        <label class='comeUpLabel' for="userName">نام</label>                                                                  
+                        <input v-model="email" autocomplete="off" name="email" @blur='focusOut($event),startValidation("email",$event)' class='inputWithLabelThatShouldStay signupFormInputs' id='userEmailConsulate' type="text">
+                        <label class='comeUpLabel' for="userEmailConsulate">ایمیل</label>                                                                  
                 </div> 
+                 <p class="inputError">فرمت ایمیل اشتباه است</p>
             </div>
-             <div id="email" class="inputs">
+             <div id="name" class="inputs">
                 <div class='formInputsWrapper'>
-                        <input autocomplete="off" name="email" @blur='focusOut($event),startValidation("phone",$event)' class='inputWithLabelThatShouldStay signupFormInputs' id='consulateUserPhone' type="text">
-                        <label class='comeUpLabel' for="consulateUserPhone">شماره تلفن</label>                                                                  
+                        <input style="direction: rtl" v-model="username" autocomplete="off" name="username" @blur='focusOut($event)' class='inputWithLabelThatShouldStay signupFormInputs' id='userNameConsulate' type="text">
+                        <label class='comeUpLabel' for="userNameConsulate">نام</label>                                                                  
                 </div>
                 <p class="inputError">فرمت شماره اشتباه است</p> 
             </div>
-            <div>
-                <button @click='consulateRequest' class="submit">ثبت</button>
+            <div id="phone" class="inputs">
+                <div class='formInputsWrapper'>
+                        <input v-model="phone_number"  name="phone_number" @blur='focusOut($event),startValidation("phone",$event)' class='inputWithLabelThatShouldStay signupFormInputs' id='userPhoneConsulate' type="text">
+                        <label class='comeUpLabel' for="userPhoneConsulate">شماره تلفن</label>                                                                  
+                </div>
+                <p class="inputError">فرمت شماره تلفن اشتباه است</p> 
             </div>
-            <input type="hidden" :value="productName">
+             <div id="descs" class="inputs">
+                <div class='formInputsWrapper'>
+                        <textarea style="direction: rtl" v-model="extra_discription" placeholder="توضیحات اضافه"  name="extra_discription" class='inputWithLabelThatShouldStay signupFormInputs' id='userDescs'></textarea>
+                </div>
+            </div>
+
+            <div>
+                <button id="submitConsulate" type="submit" class="submit" >ثبت</button>
+            </div>
+            <input type="hidden" :value="productId" name="product_slug" >
+             </form>
 
         </div>
     </div>
@@ -27,17 +43,27 @@
 <script>
     import {mapActions} from 'vuex'
     import {validationRules} from '../mixIns/validationMixIn.js'
+    import axios from "axios"
     import {keepStay} from "../mixIns/keepStay.js"
     export default {
         mixins:[validationRules,keepStay],
-        props:['productName'],
+        props:['productId'],
         methods:{
             ...mapActions([
                 'toggleConsulate'
             ]),
             prevent(e){
+              if(e.target.classList.contains('comeUpLabel')){
+                  const pre=e.target.closest('.formInputsWrapper')
+                  pre.childNodes[0].focus()
+                }
                 e.preventDefault();
                 e.stopPropagation()
+                if(e.target.id=="submitConsulate"){
+                    const form=document.querySelector('.consulateForm')
+                    form.submit()
+                }
+
             },
             closeConsulate(e){
                     e.target.style.display="none"
@@ -70,7 +96,11 @@
         },
         data(){
             return{
-                name:""
+                username:"",
+                email:"",
+                extra_discription:"",
+                phone_number:''
+                
             }
         },
         computed:{
@@ -78,7 +108,10 @@
                 return this.$store.state.isShowConsulate
                 
             }            
-        }        
+        },
+        mounted(){
+            console.log("consulateisijdsij",this.productId)
+        }  
     }
 </script>
 
@@ -135,5 +168,16 @@
     .input:nth-child(2) input
     {
         direction: ltr;
+    }
+    .inputs{
+        margin-top:5px
+    }
+    textarea{
+        width:215.31px;
+    }
+    form{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 </style>

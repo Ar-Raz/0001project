@@ -35,12 +35,17 @@
     .zoomIn img{
         position: absolute;
         z-index:555;
-        width:85%;
+        width:60%;
+      max-width: 900px;
+      object-fit: contain;
         /* max-height: 700px; */
         left: 50%;
         margin-top:100px;
         transform: translateX(-50%);
         display: block;
         
+    }
+    img{
+      max-height: 100vh;
     }
 </style>

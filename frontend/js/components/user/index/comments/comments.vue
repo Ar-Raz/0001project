@@ -1,159 +1,128 @@
 <template>
     <div id="comments">
         <div id="commentsWrapper">
-            <div class="marquee">
-                <div class="singleTwinComment">
-                    <div class="order1">
-                        <div class="order1Wrapper">
-                            <div class="name">
-                                <p>عرفان</p>
-                                <p class="categorie">شیرینگ مدل L30 | بسته بندی</p>
+
+
+                <marquee-text :paused="isStop" :duration='60'>
+                    <div class="marquee" >
+                        <template v-for="(comment,index) in getComments">
+                            <div class="singleTwinComment">
+                                <div @mouseover="stop" @mouseleave="cont" class="singleComment"  v-for="subC in comment">
+                                    <div class="singleCommentWrapper">
+                                        <p class="name">{{subC.username}}</p>
+                                        <a :href="getHref(subC)"><p class="categorie">{{subC.item.title}}</p></a>
+                                        <p>{{subC.content}}</p>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="comment">
-                                <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که </p>
-                            </div>
-                        </div>
+                        </template>
                     </div>
-                    <div class="order2">
-                        <div class="order2Wrapper">
-                            <div class="name">
-                                <p>عرفان</p>
-                                <p class="categorie">شیرینگ مدل L30 | بسته بندی</p>
-                            </div>
-                            <div class="comment">
-                                <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="order1">
-                        <div class="order1Wrapper">
-                            <div class="name">
-                                <p>عرفان</p>
-                                <p class="categorie">شیرینگ مدل L30 | بسته بندی</p>
-                            </div>
-                            <div class="comment">
-                                <p>طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="order2">
-                        <div class="order2Wrapper">
-                            <div class="name">
-                                <p>عرفان</p>
-                                <p class="categorie">شیرینگ مدل L30 | بسته بندی</p>
-                            </div>
-                            <div class="comment">
-                                <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفها و </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="order1">
-                        <div class="order1Wrapper">
-                            <div class="name">
-                                <p>عرفان</p>
-                                <p class="categorie">شیرینگ مدل L30 | بسته بندی</p>
-                            </div>
-                            <div class="comment">
-                                <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="order2">
-                        <div class="order2Wrapper">
-                            <div class="name">
-                                <p>عرفان</p>
-                                <p class="categorie">شیرینگ مدل L30 | بسته بندی</p>
-                            </div>
-                            <div class="comment">
-                                <p>لورم ایپسوم متن ساختگی با </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- <div class="singleTwinComment">
-                    <div class="order1">
-                        <div class="order1Wrapper">
-                            <div class="name">
-                                <p>عرفان</p>
-                                <p class="categorie">شیرینگ مدل L30 | بسته بندی</p>
-                            </div>
-                            <div class="comment">
-                                <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="order2">
-                        <div class="order2Wrapper">
-                            <div class="name">
-                                <p>عرفان</p>
-                                <p class="categorie">شیرینگ مدل L30 | بسته بندی</p>
-                            </div>
-                            <div class="comment">
-                                <p>لورم ایپسوم متن ساختگی با </p>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-                <!-- <div class="singleTwinComment">
-                    <div class="order1">
-                        <div class="order1Wrapper">
-                            <div class="name">
-                                <p>عرفان</p>
-                                <p class="categorie">شیرینگ مدل L30 | بسته بندی</p>
-                            </div>
-                            <div class="comment">
-                                <p>طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="order2">
-                        <div class="order2Wrapper">
-                            <div class="name">
-                                <p>عرفان</p>
-                                <p class="categorie">شیرینگ مدل L30 | بسته بندی</p>
-                            </div>
-                            <div class="comment">
-                                <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفها و </p>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
+
+                </marquee-text>
             </div>
+            
+            
+           
         </div>
-    </div>
 
 </template>
+<script>
+import MarqueeText from "vue-marquee-text-component"
+import _ from "lodash"
+
+export default {
+    components: {
+    MarqueeText
+  },
+  props:['comments'],
+  methods:{
+      stop(){
+          this.isStop=true
+      },
+      cont(){
+          this.isStop=false
+      },
+      
+      getHref(comment){
+        return `/products/product-detial/${comment.item.slug}`
+      },
+      validate(index){
+        console.log('index',index)
+        return true ? (index+1)%2==0 : false
+      }
+  },
+  computed:{
+    getComments(){
+        const comment=JSON.parse(this.comments)
+        const mustReturn=_.chunk(comment,2)
+        console.log(mustReturn)
+        return mustReturn
+      }
+  },
+  mounted(){
+    console.log(JSON.parse(this.comments))
+  },
+  data(){
+      return{
+          isStop:false,
+          counter:0
+      }
+  }
+    
+}
+</script>
 
 
 <style scoped>
 #comments{
     background:#ffffff;
-    margin-top:50px
+    margin-top:50px;
+    width: 100%
 }
     .marquee{
         display:flex;
     }
+    .singleTwinComment{ 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
     .singleTwinComment{
-        display:grid;
-        grid-template-columns: repeat(auto-fit,minmax(max-content,250px));
-        grid-template-rows: repeat(2,200px);
-        grid-auto-flow: dense;        
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 200px;
+        /*max-width: 400px;*/
+        margin:8px;        
     }
-    .order1,.order2{
-        /* max-width:300px; */
-        /* width:max-content; */
-        /* min-width: */
+    .singleComment{
+        width:100%;
+        border:1px solid #d9d8d8;
         margin:5px;
-        border:1px solid rgb(175, 175, 175)
-    }
-    .order1Wrapper,.order2Wrapper{
-        padding:5px
+        padding:5px;
     }
     .categorie{
-        font-size: 18px;
+        font-size: 13px;
         margin-top: 5px;
         margin-bottom: 5px;
         color: rgb(9,111,211);
         font-weight: 800;
+    }
+    .marquee{
+        position: relative;
+        /* left:100%; */
+        /* animation: moveIt 300s linear infinite */
+    }
+    @keyframes moveIt{
+        from {
+            transform: translateX(0);
+            left:100%;
+        }to{
+            left:0;
+            transform: translateX(-5320px);
+        }
+    }
+    .marquee:hover{
+        animation-play-state: paused;
     }
 </style>

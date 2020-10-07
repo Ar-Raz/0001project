@@ -1,95 +1,121 @@
 <template>
-	<div id="mega">
-		<div id="megaWrapper">
-						<ul class="singleMega item1">
-							<li class="headMega">بسته بندی</li>
-							<li class="megaLink">شیرینگ پم</li>
-							<li class="megaLink">شیرینگ پک</li>
-							<li class="megaLink">درب بند</li>
-							<li class="megaLink">شیرینگ پن</li>
-							<li class="megaLink">درب بند</li>
-						</ul>
-						<ul class="singleMega item1">
-							<li class="headMega">بسته بندی</li>
-							<li class="megaLink">شیرینگ پم</li>
-							<li class="megaLink">شیرینگ پک</li>
-							<li class="megaLink">درب بند</li>
-							<li class="megaLink">شیرینگ پن</li>
-							<li class="megaLink">درب بند</li>
-						</ul>
-						<ul class="singleMega item2">
-							<li class="headMega">بسته بندی</li>
-							<li class="megaLink">شیرینگ پم</li>
-							<li class="megaLink">شیرینگ پک</li>
-							<li class="megaLink">درب بند</li>
-							<li class="megaLink">شیرینگ پن</li>
-							<li class="megaLink">درب بند</li>
-						</ul>
-						<ul class="singleMega item2">
-							<li class="headMega">بسته بندی</li>
-							<li class="megaLink">شیرینگ پم</li>
-							<li class="megaLink">شیرینگ پک</li>
-							<li class="megaLink">درب بند</li>
-							<li class="megaLink">شیرینگ پن</li>
-							<li class="megaLink">درب بند</li>
-						</ul>
-						<ul class="singleMega item2">
-							<li class="headMega">بسته بندی</li>
-							<li class="megaLink">شیرینگ پم</li>
-							<li class="megaLink">شیرینگ پک</li>
-							<li class="megaLink">درب بند</li>
-							<li class="megaLink">شیرینگ پن</li>
-							<li class="megaLink">درب بند</li>
-						</ul>
-						<ul class="singleMega item1">
-							<li class="headMega">بسته بندی</li>
-							<li class="megaLink">شیرینگ پم</li>
-							<li class="megaLink">شیرینگ پک</li>
-							<li class="megaLink">درب بند</li>
-							<li class="megaLink">شیرینگ پن</li>
-							<li class="megaLink">درب بند</li>
-						</ul>
-						<ul class="singleMega item1">
-							<li class="headMega">بسته بندی</li>
-							<li class="megaLink">شیرینگ پم</li>
-							<li class="megaLink">شیرینگ پک</li>
-							<li class="megaLink">درب بند</li>
-							<li class="megaLink">شیرینگ پن</li>
-							<li class="megaLink">درب بند</li>
-						</ul>
-					
+  <div id="mega">
+    <div id="megaWrapper">
 
-		</div>
-	</div>
+      <div class="headWrapper">
+                <div  class="headMenuWrapper">
+                  <div  v-for="(cat,ind) in getCats" class="singleMenu"  v-if="ind<3">
+                    <div class="title">{{cat.title}}</div>
+                      <ul >
+                        <li v-for="(sub,index) in cat.subs" v-if="index<5"><a :href='getHref(sub.title)'>{{sub.title}}</a></li>
+                      </ul>
+                  </div>
+                </div>
+
+
+                <div  class="headMenuWrapper" >
+                  <div v-for="(cat,ind) in getCats" class="singleMenu" v-if="ind>=3 && ind<6">
+                    <div class="title">{{cat.title}}</div>
+                      <ul>
+                        <li v-for="(sub,index) in cat.subs" v-if="index<5"><a :href='getHref(sub.title)'>{{sub.title}}</a></li>
+                      </ul>
+                  </div>
+                </div>
+
+
+      </div>
+	  
+    </div>
+  </div>
 </template>
 
 <style scoped>
-	#mega{
-		width:100%;
-		background: #f6f6f4
-	}
-	.singleMega{
-		margin:10px;
-	}
-	.headMega{
-		font-weight: bold;
-		font-size:24px;
-	}
-	li{
-		line-height: 1.5rem;
-		color:#4a4a4a;
-		text-align: right;
-		width: 100px
-	}
-	ul{
-		display: flex;
-		align-items: center;
-		flex-direction: column;
+.headWrapper{
+  width:100%;
+	display:flex;
+}
+#megaWrapper{
+  width:100%;
+	display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+#mega {
+  margin-top: 50px;
+}
+ul {
+  list-style: none;
+    line-height: 1.4rem;
+}
+li a {
+  font-size: 18px;
+  text-align:right;
+}
+li {
+    text-align: right;
+    line-height:2rem;
+}
+.headMenuWrapper{
+  display:flex;
+  justify-content:space-around;
+  width:100%;
 
-	}
-	#megaWrapper{
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: space-between;
-	}
-</style>>
+}
+.title{
+  text-align:right;
+  font-weight:bold;
+  font-size:18px;
+}
+@media (min-width:550px) and (max-width:1000px){
+  .headWrapper{
+    flex-direction:row
+  }
+  .headMenuWrapper{
+    flex-direction:column;
+    margin-right: 10px;
+    align-items:space-between;
+    justify-content: flex-start;
+  }
+  .singleMenu{
+    width: 100%
+  }
+}
+@media (max-width:550px){
+  .headWrapper{
+    flex-direction:column
+  }
+  .headMenuWrapper{
+    flex-direction:column;
+    align-items:space-between
+  }
+  .singleMenu{
+    margin-right:10px;
+    margin-top:15px
+  }
+}
+</style>
+
+<script>
+export default {
+  computed: {
+    getCats() {
+      return this.$store.getters.getCatsWithSubs;
+    },
+  },
+  methods: {
+    getHref(cat) {
+      return `/categories/${cat}`;
+    }
+  },
+  mounted(){
+
+  },
+  computed:{
+    getCats(){
+      console.log(this.$store.getters.getCatsWithSubs)
+      return this.$store.getters.getCatsWithSubs
+      
+    }
+  }
+};
+</script>

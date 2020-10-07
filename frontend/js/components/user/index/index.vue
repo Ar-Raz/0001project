@@ -4,31 +4,48 @@
       <div id="topOfIndexWrapper">
         <slider></slider>
         <categorie :mainCats="JSON.parse(main_categories)"></categorie>
+        <!-- <categorie></categorie> -->
       </div>
     </div>
-    <div class="shouldCollapse">
-      <comments></comments>
+    <div class="shouldCollapse maxIs">
+      <flip-card></flip-card>
     </div>
-	<div class="shouldCollapse">
-		<flip-card></flip-card>
-	</div>
+    <div style="width: 100%;overflow:hidden;">
+      <comments :comments="comments"></comments>
+    </div>
+	
 
-    
 
-    <!-- <expanding-card></expanding-card> -->
 
-    <!-- <extra-sign-up></extra-sign-up> -->
-    <div id="allCards" class="shouldCollapse maxIs">
+    <!-- <expanding-card></expanding-card> 
+
+    <extra-sign-up></extra-sign-up>  -->
+     <div class="allCards shouldCollapse maxIs">
       <card
-        cardTitle="بیشترین کلیک شده"
-        descs="فلان لان فلان خیلی فلا هی فلان بازم فلان"
-        :products="JSON.parse(products)"
+        cardTitle="پر فروش ترین ها"
+        :products="JSON.parse(best_sellers)"
+        id="mostSell"
       ></card>
     </div>
-    <div class="digiCardIndex shouldCollapse maxIs">
+
+
+    <!-- <div class="digiCardIndex shouldCollapse maxIs">
       <digi-card
         :imgs='JSON.stringify(["/images/shrink.png","/images/shrink2.png","/images/digi1.jpg","/images/digi2.jpg"])'
       ></digi-card>
+      
+    </div> -->
+
+    <div class="allCards shouldCollapse maxIs">
+      <card
+        cardTitle="جدید ترین محصولات"
+        :products="JSON.parse(new_products)"
+        id="news"
+      ></card>
+    </div>
+
+
+    <div class="maxIs shouldCollapse">
       <customers></customers>
     </div>
   </div>
@@ -39,10 +56,8 @@ import slider from "./slider/slider.vue";
 import card from "./card/card.vue";
 import flipCard from "./flipCard/flipCard.vue";
 import categorie from "./categorie/categorie.vue";
-import expandingCard from "./expandingCard/expandingCard.vue";
-import extraSignUp from "./extraSignUp/extraSignUp.vue";
-import customers from "./customers/customers.vue"
-import comments from "./comments/comments.vue"
+import customers from "./customers/customers.vue";
+import comments from "./comments/comments.vue";
 export default {
   components: {
     slider,
@@ -50,24 +65,26 @@ export default {
     categorie,
     flipCard,
     digiCard,
-    extraSignUp,
-    expandingCard,
     customers,
-    comments
+    comments,
   },
-  props: ["products", "main_categories", "posts"],
-
-  methods: {
-    getProducts() {
-      return JSON.stringify(this.products);
-    },
+  props: [
+    "products",
+    "main_categories",
+    "posts",
+    "best_sellers",
+    "new_products",
+    "comments"
+  ],
+  mounted() {
+    console.log("comment",JSON.parse(this.comments));
   },
 };
 </script>
 
 <style>
-.shouldCollapse{
-	width:90% !important;
+.shouldCollapse {
+  width: 90% !important;
 }
 .digiCardIndex {
   margin-top: 50px;
@@ -86,7 +103,7 @@ export default {
 #index {
   position: relative;
 }
-#allCards {
+.allCards {
   display: flex;
   width: 100%;
   flex-direction: column;
@@ -102,18 +119,6 @@ export default {
   grid-area: new;
 }
 
-#app {
-  display: grid;
-  width: 100%;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: fit-content(1000rem) auto auto auto fit-content(1000rem);
-  grid-template-areas:
-    "header header"
-    "slicer slicer"
-    "navigation navigation"
-    "main main"
-    "footer footer";
-}
 .titleCard {
   display: flex;
   width: 100%;
@@ -147,9 +152,9 @@ export default {
   #sideSliderCats {
     display: none;
   }
-  .shouldCollapse{
-	width:100% !important
-}
+  .shouldCollapse {
+    width: 100% !important;
+  }
 }
 @media (max-width: 800px) {
   #topOfIndexWrapper {
@@ -157,5 +162,3 @@ export default {
   }
 }
 </style>
-
-

@@ -6,38 +6,38 @@
             </div>
             <div id="signupForm">
                 <form action="/users/register/" method="post" novalidate>
-                    <div id="email" class="inputs">
+                    <div class="inputs">
                         <div class='formInputsWrapper'>
-                                <input autocomplete="off" name="email" @blur='focusOut($event),startValidation("email",$event)' class='inputWithLabelThatShouldStay signupFormInputs' id='userEmail' type="text">
-                                <label class='comeUpLabel' for="userEmail">ایمیل</label>                                                                  
+                                <input autocomplete="off" name="phonenumber" @blur='focusOut($event),startValidation("phone",$event)' class='inputWithLabelThatShouldStay signupFormInputs' id='phonenumber' type="text">
+                                <label class='comeUpLabel' for="phonenumber">شماره تلفن</label>
                         </div>
-                        <p class="inputError">فرمت ایمیل اشتباه است</p> 
+                        <p class="inputError">فرمت شماره اشتباه است</p>
                     </div>
 
-                    <div id="userName" class="inputs">
-                        <div class='formInputsWrapper'>
-                                <input autocomplete="off" name="username" @blur='focusOut($event),startValidation("name",$event)' class='inputWithLabelThatShouldStay signupFormInputs' id='userName' type="text">
-                                <label class='comeUpLabel' for="userName">نام کاربری</label>                                                                  
-                        </div>
-                        <p class="inputError">فرمت نام اشتباه است</p> 
-                    </div>
+<!--                    <div id="userName" class="inputs">-->
+<!--                        <div class='formInputsWrapper'>-->
+<!--                                <input autocomplete="off" name="username" @blur='focusOut($event),startValidation("name",$event)' class='inputWithLabelThatShouldStay signupFormInputs' id='userName' type="text">-->
+<!--                                <label class='comeUpLabel' for="userName">نام کاربری</label>                                                                  -->
+<!--                        </div>-->
+<!--                        <p class="inputError">فرمت نام اشتباه است</p> -->
+<!--                    </div>-->
 
-                    <div id="password" class="inputs">
-                        <div class='formInputsWrapper'>
-                                <input autocomplete="off" name="password1" v-model="pass" @blur='focusOut($event),startValidation("pass",$event)' class='inputWithLabelThatShouldStay signupFormInputs' id='userPassword' type="password">
-                                <label class='comeUpLabel' for="userPassword">رمز</label>                                
-                        </div>
-                        <p class="inputError">رمز باید حداقل 8 کاراکتر باشد و همچنین حداقل شامل یک کاراکتر خاص مثل <span>#</span> باشد</p> 
-                    </div>
-                    <div id="passwordConf" name="password2" class="inputs">
-                        <div class='formInputsWrapper'>
-                                 
-                                <input autocomplete="off" @blur='focusOut($event),checkConfirmation($event)' id='userPasswordCond' class='inputWithLabelThatShouldStay signupFormInputs' name='password2'  type="password">
-                                <label class='comeUpLabel' for="userPasswordCond">رمز را دوباره وارد کنید</label>
-                                
-                        </div>
-                        <p class="inputError">با رمز اصلی برابر نیست</p> 
-                    </div>
+<!--                    <div id="password" class="inputs">-->
+<!--                        <div class='formInputsWrapper'>-->
+<!--                                <input autocomplete="off" name="password1" v-model="pass" @blur='focusOut($event),startValidation("pass",$event)' class='inputWithLabelThatShouldStay signupFormInputs' id='userPassword' type="password">-->
+<!--                                <label class='comeUpLabel' for="userPassword">رمز</label>                                -->
+<!--                        </div>-->
+<!--                        <p class="inputError">رمز باید حداقل 8 کاراکتر باشد و همچنین حداقل شامل یک کاراکتر خاص مثل <span>#</span> باشد</p> -->
+<!--                    </div>-->
+<!--                    <div id="passwordConf" name="password2" class="inputs">-->
+<!--                        <div class='formInputsWrapper'>-->
+<!--                                 -->
+<!--                                <input autocomplete="off" @blur='focusOut($event),checkConfirmation($event)' id='userPasswordCond' class='inputWithLabelThatShouldStay signupFormInputs' name='password2'  type="password">-->
+<!--                                <label class='comeUpLabel' for="userPasswordCond">رمز را دوباره وارد کنید</label>-->
+<!--                                -->
+<!--                        </div>-->
+<!--                        <p class="inputError">با رمز اصلی برابر نیست</p> -->
+<!--                    </div>-->
                     <div id="submit" class='inputs'>
                         <button @click='checkInputs($event)' class="submit">
                             ثبت نام
@@ -132,7 +132,9 @@
     .title{
         display:flex;
         justify-content: center;
-        font-size:24pt
+    }
+    .title p{
+      font-size:20pt
     }
     input{
         border:1px solid rgb(202, 202, 202);
@@ -143,7 +145,6 @@
     }
     
     .inputError{
-        max-width:150px;
         text-align:justify ;
     }
     .inputError span{

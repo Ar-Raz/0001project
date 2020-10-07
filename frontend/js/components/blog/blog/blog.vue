@@ -1,70 +1,33 @@
 <template>
   <div id="blog">
-      <!-- <div class="allCatsForBlog" @click='closeMenu(),toggleBodyOverFlow()'>
-          <div class="allBlogCatsWrapper" @click='preventDef($event)'>
-              <ul>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">درب بند</a></li>
-                  <li><a href="#">خط تولید پنیر پیتزا</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-                  <li><a href="#">شرینگ پک</a></li>
-              </ul>
-          </div>
-      </div> -->
     <div id="blogWrapper">
-
-        <!-- <div class="openCatsBtn">
-            <button class='submit' @click.prevent='showCats=true,adjustation()'>دسته بندی موضوعات</button>
-        </div> -->
-
-
-
-
-
-
-
-
-
-
-      <!-- <consulate></consulate> -->
-
       <div class="blogPostWrapper">
         <div v-for="(p,i) in JSON.parse(posts)" :key="i">
           <a :href="getSlugn(p)">
               <single-post
+              
               :title="p.title"
               :descs="p.short_description"
               :author="p.author"
               :img="p.thumbnail"
-            ></single-post> 
-          </a>          
-          
+              :avg_read="p.avg_read"
+            ></single-post>
+          </a>
+
         </div>
+      </div>
+      <div class="paginationWrapper" v-if="JSON.parse(this.pagination).number_of_pages>1">
+        <paginate
+          :value="JSON.parse(this.pagination).current_page"
+          :page-count="JSON.parse(this.pagination).number_of_pages"
+          :page-range="3"
+          :margin-pages="2"
+          :click-handler="handleMargins"
+          :prev-text="'قبل'"
+          :next-text="'بعد'"
+          :container-class="'pagination'"
+
+        ></paginate>
       </div>
     </div>
   </div>
@@ -75,25 +38,43 @@ import singlePost from "./singlePost.vue";
 import consulate from "../consulate/consulate.vue";
 import {adjustElFromTop} from '../../user/mixIns/adjustElFromTop.js'
 import {toggleBodyOverFlow} from '../../user/mixIns/toggleBodyOverFlow.js'
+import Paginate from 'vuejs-paginate'
 export default {
   components: {
     singlePost,
     consulate,
+    Paginate
   },
-  props:['posts'],
+  props:['posts','pagination',],
+  mounted(){
+    const href=window.location.href.split("/")
+    console.log()
+    this.page=+href[href.length-1]
+    console.log("blogs",JSON.parse(this.posts))
+  },
+  computed:{
+    getPage(){
+      return this.page
+    }
+  },
   created(){
-    console.log("posts",JSON.parse(this.posts))
+    console.log("pospaginationts",JSON.parse(this.pagination))
   },
   mixins:[toggleBodyOverFlow,adjustElFromTop],
   data(){
       return{
-          showCats:false
+          showCats:false,
+          page:2
       }
   },
   methods: {
+    handleMargins(pageNum){
+      window.location.href="/blog/posts/?page="+pageNum
+      console.log(pageNum)
+
+    },
     startValidation(type, e) {
       const el = e.target;
-      const parentNode = e.target.parentElement;
 
       const error = parentNode.nextElementSibling;
       if (el.id == "userPassword" && el.value.length < 8) {
@@ -121,7 +102,7 @@ export default {
         console.log("docdoc",el)
         this.toggleBodyOverFlow("hidden")
         this.adjustFromTop(el)
-        
+
     },
     closeMenu(){
         const all=document.querySelector(".allCatsForBlog")
@@ -132,7 +113,7 @@ export default {
       return `/blog/post/${p.slug}`
     }
   },
-  
+
 };
 </script>
 
@@ -194,4 +175,5 @@ export default {
     right:0
   }
 }
+
 </style>

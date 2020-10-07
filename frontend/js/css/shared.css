@@ -1,27 +1,28 @@
 * {
 	box-sizing: border-box;
+	line-height: 1.4rem;
+	font-family: 'iranSans';
 }
 
 html {
 	max-width: 100vw;
 	scroll-behavior: smooth;
 }
-
 @font-face {
 	font-family: yekan;
 	src: url(/static/js/css/font/yekan.ttf);
 }
 @font-face {
 	font-family: iranSans;
-	src: url(/static/js/css/font/iranSans.ttf);
+	src: url(/static/IRANSansWeb_Light.woff2);
 }
 
 body {
-	font-family: 'yekan';
+	font-family: 'iranSans';
 	max-width: 100vw;
 	position: relative;
 	overflow-x: hidden;
-	font-size: 16pt;
+	font-size: 16px;
 	background:#f6f6f4;
 }
 .link{
@@ -37,7 +38,9 @@ a {
 p {
 	direction: rtl;
 	text-align: right;
-	color:black
+	color:black;
+	font-size:16px;
+	line-height: 1.4rem
 }
 
 input {
@@ -69,7 +72,8 @@ input::-webkit-input-placeholder {
 .mainWrapper {
 	width: 100%;
 	display: flex;
-	justify-content: center;
+	flex-direction: column;
+	align-items: center;
 
 }
 
@@ -87,6 +91,9 @@ input::-webkit-input-placeholder {
 
 #header {
 	grid-area: header
+}
+#footer{
+	grid-area: footer;
 }
 
 #slicer {
@@ -126,7 +133,7 @@ select:focus {
 
 .inputError {
 	color: rgb(206, 30, 30) !important;
-	font-size: 17pt;
+	font-size: 16px;
 	margin-top: 5px;
 	display: none;
 	width:215px
@@ -151,7 +158,7 @@ label.stay {
 	position: absolute;
 	top: 2px;
 	color: #139dd7 !important;
-	font-size: 12pt
+	font-size: 14px
 }
 
 
@@ -174,4 +181,101 @@ label.stay {
 
 .submit{
 	margin-top:5px;
+}
+
+ul li{
+	font-size:;
+}
+
+
+
+.nineThreePercent{
+	width:90% !important
+}
+
+@media (max-width: 1000px){
+	.nineThreePercent{
+		width:100% !important;
+	}
+}
+
+
+
+
+
+
+
+#app {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: fit-content(1000rem) auto auto auto fit-content(1000rem);
+  grid-template-areas:
+    "header header"
+    "slicer slicer"
+    "navigation navigation"
+    "main main"
+    "footer footer";
+}
+
+
+
+ul.pagination{
+  display:flex;
+  justify-content: center;
+}
+ul.pagination li{
+  margin:10px !important;
+}
+ul.pagination li{
+  margin:10px;
+}
+ul.pagination li.active{
+	border:0;
+}
+ul.pagination li.active a{
+  color:white;
+  padding:5px;
+  border:0;
+  background: rgb(9,111,211);
+}
+ul.pagination li.active:focus, ul.pagination li.active:focus{
+    outline: none;
+}
+
+
+.creatProductTitle p{
+	color: #0061af;
+	font-size: 17pt;
+	font-weight: lighter;
+}
+
+.creatProductTitle {
+	width: 100%;
+	display: flex;
+	justify-content: flex-end;
+}
+.createProductTitleWrapper{
+	width: 230px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.creatProductTitle svg{
+	margin-right:10px;
+	height: 50px !important;
+	padding: 10px !important;
+}
+.hiddenAtDisPlay{
+	display: none;
+}
+.rtl{
+	direction: rtl;
+}
+.ltr{
+	direction: ltr;
+}
+
+.imagesInput:first-child .danger{
+	display: none;
 }

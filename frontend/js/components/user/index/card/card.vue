@@ -1,8 +1,8 @@
 <template>
-	<div class="card maxIs">
+	<div v-if="products.length>0" class="card maxIs">
 		
-		<div class="splide">
-			<div class="titleCard"><p>{{cardTitle || 'بیشترین کلیک شده'}}</p></div>
+		<div :id="id" :class="getClass()">
+			<div class="titleCard"><p>{{cardTitle}}</p></div>
 			<div class="splide__track">
 				<ul class="splide__list">
 					<li class="splide__slide" v-for="(p,index) in products" :key="index">
@@ -16,125 +16,18 @@
 										<a class="link" :href="getSlug(p.slug)">{{p.title}}</a>
 									</div>
 									<div class="descsP">
-										<p>{{getDescription(p.description)}}</p>
+										<p v-html="getDescription(p.description)"></p>
 									</div>
 									<div class="link">
-										<a class="submit" :href="getSlug(p.slug)">مشاهده</a>
 										<p>{{p.price || 0}}  تومان</p>
+										<a class="submit" :href="getSlug(p.slug)">مشاهده</a>
+										
 									</div>
 								</div>
 							</div>
 						</div>
 					
 					</li>
-					
-					<!-- <li class="splide__slide">
-						<div class="singleSlide">
-							<div class="singleSlideWrapper">
-								<div class="img">
-									<img src="/images/abchasb.png" alt="">
-								</div>
-								<div class="descs">
-									<div class="title">
-										<a class="link" href="#">اب چسب</a>
-									</div>
-									<div class="descsP">
-										<p>فلان لان فلان لان للللللللان فلانل الن انل نفنلفننفئ لئفنئ لئنفثنئل </p>
-									</div>
-									<div class="link">
-										<a class="submit">مشاهده</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					
-					</li>
-
-					<li class="splide__slide">
-						<div class="singleSlide">
-							<div class="singleSlideWrapper">
-								<div class="img">
-									<img src="/images/htest2.jpg" alt="">
-								</div>
-								<div class="descs">
-									<div class="title">
-										<a class="link" href="#">اب چسب</a>
-									</div>
-									<div class="descsP">
-										<p>فلان لان فلان لان للللللللان فلانل الن انل نفنلفننفئ لئفنئ لئنفثنئل </p>
-									</div>
-									<div class="link">
-										<a class="submit">مشاهده</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					
-					</li><li class="splide__slide">
-						<div class="singleSlide">
-							<div class="singleSlideWrapper">
-								<div class="img">
-									<img src="/images/bandRole.png" alt="">
-								</div>
-								<div class="descs">
-									<div class="title">
-										<a class="link" href="#">اب چسب</a>
-									</div>
-									<div class="descsP">
-										<p>فلان لان فلان لان للللللللان فلانل الن انل نفنلفننفئ لئفنئ لئنفثنئل </p>
-									</div>
-									<div class="link">
-										<a class="submit">مشاهده</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					
-					</li>
-					
-					<li class="splide__slide">
-						<div class="singleSlide">
-							<div class="singleSlideWrapper">
-								<div class="img">
-									<img src="/images/abchasb.png" alt="">
-								</div>
-								<div class="descs">
-									<div class="title">
-										<a class="link" href="#">اب چسب</a>
-									</div>
-									<div class="descsP">
-										<p>فلان لان فلان لان للللللللان فلانل الن انل نفنلفننفئ لئفنئ لئنفثنئل </p>
-									</div>
-									<div class="link">
-										<a class="submit">مشاهده</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					
-					</li>
-
-					<li class="splide__slide">
-						<div class="singleSlide">
-							<div class="singleSlideWrapper">
-								<div class="img">
-									<img src="/images/htest2.jpg" alt="">
-								</div>
-								<div class="descs">
-									<div class="title">
-										<a class="link" href="#"><p>اب چسب</p></a>
-									</div>
-									<div class="descsP">
-										<p>فلان لان فلان لان للللللللان فلانل الن انل نفنلفننفئ لئفنئ لئنفثنئل </p>
-									</div>
-									<div class="link">
-										<a class="submit">مشاهده</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					
-					</li> -->
 				</ul>
 			</div>
 		</div>
@@ -142,7 +35,7 @@
 </template>
 <script>	
     export default{
-		props:['products'],
+		props:['products','cardTitle',"id"],
 		data(){
 			return{
 				container:null,
@@ -160,7 +53,7 @@
 		mounted(){
 			this.container=document.querySelector('.cardWrapper');
 			let per=this.reCalculatePer()
-			const glide=new Splide( '.splide',{
+			const glide=new Splide( `#${this.id}`,{
 					type   : 'loop',
 					perPage: per,
 					perMove: 1,
@@ -170,22 +63,14 @@
 					let pper=this.reCalculatePer()
 					glide.options.perPage=pper
 				})
-				
-				// glide.on('resize',()=>{
-				// 	let per=this.reCalculatePer()
-					
-				// 	glide.options.perPage=per
-				// })
-			
-			
-			
+				console.log('from card',this.products)
 		},
         methods:{
 			getDescription(desc){
-				return desc.length>100 ? desc.substring(0,100)+"...." : desc
+				return desc.length>130 ? desc.substring(0,130)+"...." : desc
 			},
 			getSlug(slug){
-				return `/products/${slug}`
+				return `/products/product-detial/${slug}`
 			},
 			reCalculatePer(){
 				let per=2
@@ -210,67 +95,12 @@
                 console.log(desc.substring(0,30).length)
                 return desc.length>30 ? desc.substring(0,100)+"..." : desc
 			},
-			mouseDown(e){
-				this.isDown=true
-				this.container.classList.add("active")
-				this.startX=e.pageX-this.container.offsetLeft
-				this.scrollLeft=this.container.scrollLeft
-			},
-			mouseleave(){
-				this.isDown=false
-				this.container.classList.remove("active")
-			},
-			mouseup(){
-				this.isDown=false
-				this.container.classList.remove("active")
-			},
-			mouseMove(e){
-				if(!this.isDown) return
-				e.preventDefault();
-				const x=e.pageX-this.container.offsetLeft
-				const walk=x-this.startX
-				this.container.scrollLeft=this.scrollLeft-walk
-				console.log(walk)
-			},
-			goToLeft(){
-				console.log("left")
-				this.sideScroll(this.container,'left',25,220,10)
-			},
-			goToRight(){
-				this.sideScroll(this.container,'right',25,220,10)
-			},
-			sideScroll(element,direction,speed,distance,step){
-				let scrollAmount = 0;
-				var slideTimer = setInterval(()=>{
-					if(direction == 'left'){
-						element.scrollLeft -= step;
-					} else {
-						element.scrollLeft += step;
-					}
-					scrollAmount += step;
-					if(scrollAmount >= distance){
-						window.clearInterval(slideTimer);
-					}
-				}, speed);
-			},
-			getPrice(p){
-				// return "hey"
-				let price=p || p.toString().split("")
-				let c=0
-				const newPrice=[]
-				for (let i=price.length-1;i>0;i--){
-					newPrice.push(price[i])
-					c++
-					if(c==3){
-						newPrice.push(",")
-						c=0
-					}
-				}
-				return newPrice.reverse().join("")
-			},
 			getImage(img){
 				console.log(img)
-				return '/images/کیسه-پر-کنCBE-NWB-300x300.png'
+				return img
+			},
+			getClass(){
+				return `splide ${this.id}`
 			}
 		}
     }
@@ -285,18 +115,6 @@
 	font-weight: 100;
 	margin:10px;
 }
-	.cardWrapper{
-		display: flex;
-		overflow-y: hidden;
-        overflow-x: scroll;
-		scrollbar-width: none;
-		margin-top:10px;
-		font-weight: lighter;
-		
-	}
-	.cardWrapper::-webkit-scrollbar{
-		display:none
-	}
 	.card{
 		box-shadow: 0px 2px 5px 0 rgba(0,0,0,0.2);
 		background:#ffffff;
@@ -315,20 +133,18 @@
 		border-top-left-radius: 10px;
 		border-top-right-radius: 10px;
 	}
-	.active{
-		cursor: grabbing;
-	}
-	.cardWrapper:hover{
-		cursor: grabbing;
-	}
 	.singleSlide{
 		width:280px;
+		padding:5px;
 		margin-top:10px;
 	}
 	.link{
 		display: flex;
     justify-content: space-between;
     align-items: center;
+    direction: rtl;
+    text-align: right;
+    height: 70px;
 	}
 	.singleSlide img{
 		width:280;
@@ -344,9 +160,7 @@
 		color:#707070;
 		font-weight:bold
 	}
-	.splide__slide{
-		padding:10px;
-	}
+
 	.title{
 		margin-top:5px;
 		margin-bottom:5px;
@@ -364,11 +178,7 @@
 .splide__track{
 	margin-top:20px
 }
-.splide{
-	margin-top:3px
-
+.splide__slide{
+  padding:10px;
 }
-	
-
-	
 </style>

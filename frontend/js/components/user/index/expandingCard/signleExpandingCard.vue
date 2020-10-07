@@ -70,7 +70,6 @@
 
 
 <script>
-    import tilt from "../../vannilajs/tilt.js"
     export default{
         props:["img",'title','descs'],
         methods:{

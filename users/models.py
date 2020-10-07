@@ -104,19 +104,19 @@ class TwoFactorToken(models.Model):
     def __str__(self):
         return f"{self.user.username} token"
 
-class TokenTFA(models.Model):
-    code = models.CharField(max_length=6, blank=True)
-    gen_time = models.DateTimeField(blank=True)
-
-    def __str__(self):
-        return self.code
-
-# class TokenTFA(Token):
+# class TokenTFA(models.Model):
 #     code = models.CharField(max_length=6, blank=True)
 #     gen_time = models.DateTimeField(blank=True)
 
 #     def __str__(self):
-#         return self.user.username
+#         return self.code
+
+class TokenTFA(Token):
+    code = models.CharField(max_length=6, blank=True)
+    gen_time = models.DateTimeField(blank=True)
+
+    def __str__(self):
+        return self.user.username
 
 
 @receiver(post_save, sender=User)

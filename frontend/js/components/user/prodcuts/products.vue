@@ -10,6 +10,7 @@
                 </div>
                 <div class="title">
                     <a :href="gethref(p.slug)"><p>{{p.title}}</p></a>
+                    <p>{{getDescs(p.short_discription)}}</p>
                 </div>
                 <div class="price">
                     <p>{{p.price}} تومان</p>
@@ -18,14 +19,14 @@
                 <div class="contactUs">
                     <button class="stelam" @click.prevent='showConsulate($event)'>استعلام قیمت</button>
                 </div>
-                <consulate :productName="p.title"></consulate>
+                <consulate :productId="p.slug"></consulate>
             </div>
 
 
 
 
-            
-            
+
+
         </div>
 
     </div>
@@ -48,7 +49,7 @@
 img{
     height:300px;
     width:300px;
-    
+
 }
 .title{
     height:100px
@@ -72,12 +73,11 @@ img.normal{
      import {adjustElFromTop} from "../../user/mixIns/adjustElFromTop.js"
      import {toggleBodyOverFlow} from "../../user/mixIns/toggleBodyOverFlow.js"
     export default{
-        props:['products',"pagination"],
+        props:['products',"paginations"],
         mounted(){
-            console.log(JSON.parse(this.products),this.pagination)
+            console.log('paginationss',JSON.parse(this.products))
             const allImages=document.querySelectorAll(".normal")
             allImages.forEach(img=>{
-                console.log(img)
                 img.style.width='100%'
                 img.style.height="300px"
                 const zoom=img.nextElementSibling
@@ -85,23 +85,19 @@ img.normal{
                 zoom.style.width="200%"
             })
         },
+
         components:{
             consulate,
             filtering
         },
         mixins:[adjustElFromTop],
-        data(){
-            return{
-                descs:'محصول ساخت چین قدرت تولید صدا تا 1200 دسیبل دارای باتری 36 ولت فلان لان فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان  فلان فلان فلان فلان فلان فلان فلان فلان فلان فلان فلان فلان فلان فلان فلان لان فلان فلان الن'
-            }
-        },
         methods:{
             ...mapActions([
                'toggleFiltering',
                'toggleConsulate'
             ]),
-            getDescs(){
-                return this.descs.length>100 ? this.descs.substring(0,200)+'...' : this.descs
+            getDescs(txt){
+                return txt.length>100 ?txt.substring(0,200)+'...' :txt
             },
             adjustConsulateTop(){
                 const consulate=document.querySelector("#consulateWrapper")
@@ -121,7 +117,7 @@ img.normal{
                 consulate.style.display="flex"
                 this.adjustFromTop(wrap,false,true)
                 this.toggleBodyOverFlow("hidden")
-                
+
             },
             getImage(img){
                 if(img==null){
@@ -130,7 +126,7 @@ img.normal{
                 return img
             },
             gethref(slug){
-                return `/products/${slug}`
+                return `/products/product-detial/${slug}`
             }
         }
     }

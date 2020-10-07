@@ -6,8 +6,8 @@
 			</div>
 			<div class="searchBar">
 				<div id="searchBarWrapper">
-						<form>
-							<input type="" placeholder="جست و جو ..." name="">
+						<form action="/search" method="get">
+							<input type="" placeholder="جست و جو ..." name="q">
 							<button class='magnifier'>
 								<img src="/images/mag.png" alt="">
 							</button>
@@ -35,16 +35,16 @@
 	#headerWrapper{
 		width: 95%;
 		display: flex;
+		flex-wrap:wrap;
 		justify-content: space-between;
 		align-items: center;
 	}
+
 	#searchBarWrapper{
 		padding:5px;
 		display: flex;
-		
-		
 	}
-	
+
 	.magnifier img{
 		height: 20px;
 		width: 20px;
@@ -54,10 +54,10 @@
 		align-items: center;
 		border:2px solid rgb(9,111,211);
 		border-radius:28px;
-		
+
 	}
 	input{
-		
+
 		border: 0;
 		min-width: 0;
 		flex: 1;
@@ -71,7 +71,7 @@
 	}
 	::placeholder {
   		color: black;
-  		opacity: 1; 
+  		opacity: 1;
 	}
 	.magnifier{
 		border: 0;
@@ -84,6 +84,8 @@
 		padding:10px;
 		display: flex;
 		justify-content: center;
+    align-items: center;
+    border-left: 1px solid #b4b4b4;
 		height: 100%;
 	}
 	.logo{
@@ -93,24 +95,24 @@
 	.logo img{
 		width:100%
 	}
-	@media  (max-width: 833px)
-	{
-		#headerWrapper{
-			display: flex;
-			flex-direction: column;
-		}
-		#headerWrapper div
-		{
-			margin-top: 20px
-		}
-		.phone
-		{
-			margin-bottom: 20px;
-		}
-	}
+  @media (max-width: 735px) {
+
+    #headerWrapper{
+      justify-content: space-around;
+    }
+  }
 
 </style>
 
 <script>
-
+	import axios from "axios"
+	export default{
+		created(){
+			axios.get("/categories-api")
+			.then(res=>{
+				this.$store.commit("fillCatsWithSubs",res.data)
+				console.log(res.data)
+			})
+		}
+	}
 </script>

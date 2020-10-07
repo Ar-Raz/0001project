@@ -5,16 +5,17 @@
                 <img :src="img">
             </div>
             <div class="descs">
-                <p>{{title}}</p>
+                <p class="title">{{getTitle(title)}}</p>
+                <p>{{getTitle(descs)}}</p>
 
                 <div class="extraDetail">
-                    <p class='timeAndCat'>بسته بندی | مدت زمان خواندن 5 دقیقه</p>
+                    <p class='timeAndCat'>میانگین زمان خواندن:{{avg_read}} دقیقه</p>
                 <p class="author">نویسنده:{{author.username}}</p>
                 </div>
             </div>
         </div>
     </div>
-    
+
 </template>
 
 <style scoped>
@@ -23,11 +24,14 @@
     flex-direction:column;
     align-items:flex-end
 }
+.title{
+    color:rgb(9,111,211)
+}
 
 
 .singleBlogPost{
     width:300px;
-    height:400px;
+    height:430px;
     margin:20px;
     margin-top:40px;
     transition:all 0.5s
@@ -50,14 +54,14 @@
 }
 .descs{
     background: rgb(235,242,248);
-    height:200px;
+    height:230px;
     display:flex;
     flex-direction:column;
     justify-content: space-between;
 }
 .descs p{
     text-align:justify ;
-    padding:10px;    
+    padding:10px;
 }
 img{
     width:100%;
@@ -71,11 +75,18 @@ img{
 
 <script>
 export default {
-    props:['title','img','descs','author'],
+    props:['title','img','descs','author',"avg_read","msg"],
     methods:{
         getDescs(txt){
             return txt.length>100 ? `${txt.slice(0,100)}...` : txt
-        }
+        },
+        getTitle(title){
+        return title.length>70 ? title.substring(0,70)+"..." : title
+        },
+
+    },
+    mounted(){
+        console.log("MSG",this.msg)
     }
 }
 </script>

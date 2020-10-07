@@ -1,28 +1,19 @@
 <template>
     <div id="profile" class='userPanelComp'>
-        <div id="profileWrapper">
+        <div id="profileWrapper" class="maxIs">
             <div class="title">
-                <p>اطلااعات کمپانی
+                <p> پروفایل
                     <i class='fa fa-building-o'></i>
 
                 </p>
             </div>
 
 
-            <div class="profile">
+            <div class="profileForm">
 
 
-                <form action="">
-                    <compony-name></compony-name>
-                    <compony-website></compony-website>
-                    <compony-work-fields></compony-work-fields>
-                    <compony-brief-introduction></compony-brief-introduction>
-                    <compony-workers-numbers></compony-workers-numbers>
-                    <compony-year-stablished></compony-year-stablished>
-                    <compony-map></compony-map>
-                    <div class="updateProfile">
-                        <button style="margin-top:20px" class='submit'>ویرایش پروفایل</button>
-                    </div>
+                <form action="" enctype="multipart/form-data">
+                  <producer></producer>
                 </form>
             
             </div>
@@ -37,23 +28,10 @@
 
 
 <script>
-
-    import componyName from './componyName.vue'
-    import componyWebsite from "./componyWebsite.vue"
-    import componyWorkFields from './componyWorkFields.vue'
-    import componyBriefIntroduction from "./componyBriefIntroduction.vue"
-    import componyWorkersNumbers from './componyWorkersNumbers.vue'
-    import componyYearStablished from './componyYearStablished.vue'
-    import componyMap from "./componyMap.vue"
+    import producer from "./producer/producer.vue";
     export default{
         components:{
-            componyName,
-            componyWebsite,
-            componyWorkFields,
-            componyBriefIntroduction,
-            componyWorkersNumbers,
-            componyYearStablished,
-            componyMap
+          producer
         }
     }
 
@@ -61,7 +39,21 @@
 
 
 
-<style>
+<style scoped>
+.title{
+  width: 100%;
+  margin-right: 10px;
+}
+.title p{
+  font-size: 20px;
+  font-weight: 800;
+}
+#profile{
+  width:90%
+}
+.profileForm{
+  width: 90%;
+}
     .updateProfile{
         display: flex;
         width: 100%;
@@ -87,7 +79,12 @@
         margin-right:20px
     }
     #profileWrapper{
-        padding:20px
+      padding-top:20px;
+      padding-bottom: 20px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     .profileInput input{
         border:1px solid rgb(210,214,222);

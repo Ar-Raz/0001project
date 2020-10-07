@@ -1,106 +1,117 @@
 <template>
-    <div id="selectCategory">
-        <div id="selectCategoryComponent">
-            <label for="">دسته بندی محصول را انتخاب کنید</label>
-            <input placeholder="جست و جو..." list="browsers" autocomplete="off" name="category">
-            <datalist id="browsers">
-                <option value="دسته 1"></option>
-                <option value="دسته 2"></option>
-                <option value="دسته 3"></option>
-                <option value="دسته 4"></option>
-                <option value="دسته 1"></option>
-                <option value="دسته 2"></option>
-                <option value="دسته 3"></option>
-                <option value="دسته 4"></option>
-                <option value="دسته 5"></option>
-                <option value="دسته 1"></option>
-                <option value="دسته 2"></option>
-                <option value="دسته 3"></option>
-                <option value="دسته 4"></option>
-                <option value="دسته 5"></option>
-                <option value="دسته 1"></option>
-                <option value="دسته 2"></option>
-                <option value="دسته 3"></option>
-                <option value="دسته 4"></option>
-                <option value="دسته 5"></option>
-                <option value="دسته 1"></option>
-                <option value="دسته 2"></option>
-                <option value="دسته 3"></option>
-                <option value="دسته 4"></option>
-                <option value="دسته 5"></option>
-                <option value="دسته 1"></option>
-                <option value="دسته 2"></option>
-                <option value="دسته 3"></option>
-                <option value="دسته 4"></option>
-                <option value="دسته 5"></option>
-                <option value="دسته 1"></option>
-                <option value="دسته 2"></option>
-                <option value="دسته 3"></option>
-                <option value="دسته 4"></option>
-                <option value="دسته 5"></option>
-                <option value="دسته 5"></option>
-            </datalist>
-        </div>
+  <div id="selectCategory">
+    <div id="selectCategoryWrapper">
+      <div class="headCategory cats" id="cats">
+        <v-select
+          placeholder="یک دسته بندی انتخاب کنید"
+          dir="rtl"
+          @input="changeCategory($event, -1)"
+          class="style-chooser"
+          label="title"
+          :options="cats"
+        ></v-select>
+        <input type="hidden" name="headCategory" :value="catName" />
+      </div>
     </div>
+  </div>
 </template>
 <style scoped>
-    input{
-        color:black;
-        direction:rtl;
-        border:1px solid rgb(210,214,222);
-        padding:10px
-    }
+label {
+  text-align: center;
+}
+.cats {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  max-width: 500px;
+}
+.style-chooser .vs__dropdown-toggle {
+  direction: rtl !important;
+}
 
-    #selectCategory{
-        margin-top:20px;
-        margin-bottom:20px;
-        width:100%
-    }
-    #selectCategoryComponent{
-        display:flex;
-        flex-direction:column;
-        align-items: center;
-    }
-    label{
-            margin-bottom:10px
-        }
-    label:before{
-        content:"* ";
-        color:red;
-        font-size:20pt;
-        font-weight: 900;
-    }
-    @media (max-width: 500px)
-    {
-        #selectCategoryComponent{
-            display:flex;
-            flex-direction:column;
-            align-items: center;
-        }
-        
-        #selectCategoryComponent input,#selectCategoryComponent datalist{
-            width:90%
-        }
+input {
+  color: black;
+  direction: rtl;
+  border: 1px solid rgb(210, 214, 222);
+  padding: 10px;
+}
 
-    }
-    @media (max-width:320px)
-    {
-        #selectCategoryComponent label{
-            font-size:15pt
-        }
-    }
+#selectCategory {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+#selectCategoryWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+label {
+  margin-bottom: 10px;
+}
+label:before {
+  content: "* ";
+  color: red;
+  font-size: 20pt;
+  font-weight: 900;
+}
+@media (max-width: 500px) {
+  #selectCategoryWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #selectCategoryWrapper input,
+  #selectCategoryWrapper datalist {
+    width: 90%;
+  }
+}
+@media (max-width: 320px) {
+  #selectCategoryWrapper label {
+    font-size: 15pt;
+  }
+}
+@media (max-width: 500px) {
+  #cats{
+    width:98%;
+  }
+
+}
+.vs__search {
+  cursor: pointer;
+}
 </style>
 
 <script>
-    // import vSelect from 'vue-select'
+// import vSelect from 'vue-select'
+import axios from "axios";
+import vSelect from "vue-select";
+import "vue-select/dist/vue-select.css";
+import { mapActions } from "vuex";
+
 export default {
-    components:{
-        // vSelect
+  props: ["cats"],
+  components: {
+    vSelect,
+  },
+  data() {
+    return {
+      catName: null,
+    };
+  },
+  methods: {
+    async changeCategory(e) {
+      const loader = document.querySelector("#loader");
+
+      loader.style.display = "block";
+      const { data } = await axios.get(`/categories-api/variations/${e.id}`);
+      this.catName = e.title;
+      this.fillCatsFromCreaeProduct(data);
+      console.log("data data", e);
+      loader.style.display = "none";
     },
-    data(){
-        return{
-            options:['Canada', 'United States']
-        }
-    }
-}
+    ...mapActions(["fillCatsFromCreaeProduct"]),
+  },
+};
 </script>
