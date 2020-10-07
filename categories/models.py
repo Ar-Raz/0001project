@@ -42,7 +42,7 @@ class Variation(models.Model):
 
 
 class CategoryVariation(models.Model):
-    variation = models.ForeignKey(Variation, on_delete=models.CASCADE)
+    variation = models.ForeignKey(Variation, on_delete=models.CASCADE, default=1)
     value = models.CharField(max_length=50, null=True, blank=True)  # S, M, L
     attachment = models.ImageField(blank=True, null=True)
     selectable = models.BooleanField(default=False, blank=True, null=True)

@@ -153,18 +153,18 @@ class Rating(models.Model):
     unique_together = (('user', 'product'),)
     index_together = (('user', 'product'),)
 
-class ProductDetail(models.Model):
-    products = models.ManyToManyField('Product')
-
-    def __str__(self):
-        return self.products.all()[0].title
-     
-
-# class ProductDetail(CategoryVariation):
+# class ProductDetail(models.Model):
 #     products = models.ManyToManyField('Product')
 
 #     def __str__(self):
-#         return self.value
+#         return self.products.all()[0].title
+     
+
+class ProductDetail(CategoryVariation):
+    products = models.ManyToManyField('Product')
+
+    def __str__(self):
+        return self.value
 
 class MetaDetail(models.Model):
     count = models.PositiveIntegerField(default=0)
