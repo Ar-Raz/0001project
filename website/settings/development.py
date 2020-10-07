@@ -17,27 +17,27 @@ port = url.port
 
 ALLOWED_HOSTS = ['192.168.1.106',"127.0.0.1"]
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'damir',
-        'USER': 'jeremih',
-        'PASSWORD': 'hellomother',
-        'HOST': 'localhost',
-        'PORT': '5433',
-    }
-}
-
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': database,
-#         'USER': user,
-#         'PASSWORD': password,
-#         'HOST': host,
-#         'PORT': port,
+#         'NAME': 'damir',
+#         'USER': 'jeremih',
+#         'PASSWORD': 'hellomother',
+#         'HOST': 'localhost',
+#         'PORT': '5433',
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': database,
+        'USER': user,
+        'PASSWORD': password,
+        'HOST': host,
+        'PORT': port,
+    }
+}
 
 #
 # DATABASES = {
