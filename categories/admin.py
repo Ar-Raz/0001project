@@ -10,18 +10,18 @@ admin.site.register(CategoryVariation)
 
 
 
-class InlineProductDetail(admin.TabularInline):
-    model = ProductDetail
-    extra = 1
+# class InlineProductDetail(admin.TabularInline):
+#     model = ProductDetail
+#     extra = 1
 
 
-class VariationAdmin(admin.ModelAdmin):
-    inlines = [InlineProductDetail]
-    list_filter = ('category',)
-
-
-
+# class VariationAdmin(admin.ModelAdmin):
+#     inlines = [InlineProductDetail]
+#     list_filter = ('category',)
 
 
 
-admin.site.register(Variation, VariationAdmin)
+
+
+
+# admin.site.register(Variation, VariationAdmin)
