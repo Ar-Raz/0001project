@@ -1,6 +1,10 @@
 import json
+import random
 
-from django.shortcuts import render
+from django.shortcuts import render, reverse, redirect
+from django.http import JsonResponse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib import messages
 
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -18,7 +22,7 @@ from .models import Post, Comment
        ##         #     ##                   ##
       ##           #    ##                   ##
      ##             #   ##                   ##
-##################################################################      
+##################################################################
 """
 class PostCreationView(CreateAPIView):
     # permission_classes = (IsAuthenticated,)
@@ -78,7 +82,7 @@ END OF:
        ##         #     ##                   ##
       ##           #    ##                   ##
      ##             #   ##                   ##
-##################################################################      
+##################################################################
 """
 
 # #posts list
@@ -91,10 +95,31 @@ def post_list_view(request):
 
 def post_list(request):
     posts = Post.objects.all()
+    posts_quantity = posts.count()
+    if type(posts_quantity/12) == type(1.6):
+        page_numbers = int(posts_quantity/12)  + 1
+    else:
+        page_numbers = int(posts_quantity/12)
+
+
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(posts, 12)
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+
     serialized = PostSerializer(posts, many=True).data
     post_json_string = json.dumps(serialized)
+
+    page_data = {"number_of_pages" : page_numbers, "current_page" : page}
+    json_page_data = json.dumps(page_data)
     context = {
         'posts' : post_json_string,
+        'pageData' : json_page_data,
     }
     return render(request, 'views/blog.html', context)
 
@@ -105,7 +130,80 @@ def post_detail(request, slug):
     post = Post.objects.get(slug=slug)
     serialized_post = PostDetailSerializer(post).data
     post_json_string = json.dumps(serialized_post)
+
+    posts = Post.objects.all()
+
+    latest_posts = posts.order_by("-pk")[:5]
+    serialized_latest_post = PostDetailSerializer(latest_posts, many=True).data
+    json_latest_string = json.dumps(serialized_latest_post)
+
+    random_posts = random.sample(list(posts), 5)
+    serialized_random_post = PostDetailSerializer(random_posts, many=True).data
+    json_random_string = json.dumps(serialized_latest_post)
+
+
+
+    if request.method == "POST":
+        post = Post.objects.get(slug=slug)
+        username = request.POST.get("username", "")
+        content = request.POST.get("content", "")
+        if username and content:
+
+            comment = Comment.objects.create(
+                username=username,
+                content=content,
+                post=post,
+            )
+
+            message = {'msg': 'نظر شما با موفقیت ثبت شد'}
+            json_msg = json.dumps(message)
+            context = {
+                'post' : post_json_string,
+                'random_posts' : json_random_string,
+                'latest_posts' : json_latest_string,
+                'message' : json_msg,
+            }
+
+            return render(request, "views/singleBlogPost.html", context)
+        else:
+            message = {'msg': 'لطفا اطلاعات خود را کامل کنید'}
+            json_msg = json.dumps(message)
+
+            context = {
+                'post' : post_json_string,
+                'random_posts' : json_random_string,
+                'latest_posts' : json_latest_string,
+                'message' :  json_msg,
+            }
+
+            return render(request,"views/singleBlogPost.html", context)
+
     context = {
-        'post' : post_json_string
+        'post' : post_json_string,
+        'random_posts' : json_random_string,
+        'latest_posts' : json_latest_string,
+        'message' : None,
     }
     return render(request, 'views/singleBlogPost.html', context)
+
+
+def post_by_category(request, name):
+    posts = Post.objects.filter(categories__title=name)
+    sered_post = PostDetailSerializer(posts, many=True).data
+    json_post = json.dumps(sered_post)
+
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(posts, 12)
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+
+    context = {
+        "posts" : json_post,
+    }
+
+    return render(request, "views/blog.html", context)

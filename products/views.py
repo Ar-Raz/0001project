@@ -1,37 +1,51 @@
 import json
 
+from rest_framework import viewsets, status, generics, mixins
 from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.views import APIView
-from rest_framework import viewsets, status, generics, mixins
-from .models import Product, Rating, ProductComment
-from .serializers import ProductSerializer, ProductCommentSerializer, ProductDetailSerializer, RatingSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.reverse import reverse
 from rest_framework.decorators import api_view
-
-
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
-
 from rest_framework.renderers import JSONRenderer
 
+
+
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect, reverse
 from django.db.models import Q
 from django.views import View
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+from hitcount.views import HitCountMixin, HitCountDetailView
+from hitcount.models import HitCount
 
 from .forms import ProductCommentForm
-
-from .models import Product, ProductComment
+from .models import Product, ProductComment, Rating
 from .serializers import ProductSerializer, ProductDetailSerializer, ProductCommentSerializer
 from .permissions import IsProducer, IsOwnerOrReadOnly
+from .serializers import (ProductSerializer,
+            ProductCommentSerializer,
+            ProductDetailSerializer,
+            RatingSerializer,
+            ProductSerializer,
+            )
 
-from categories.models import Category
+
+from categories.serializers import (
+        MainCategorySerializer,
+        CategoryDetailSerializer,
+        )
+from categories.models import Category, MainCategory
 from users.serializers import UserSerializer
 from users.models import ProducerProfile
+from blog.models import Post
+from blog.serializers import PostDetailSerializer
 """
 ################################################################
             ##          ############         ##
@@ -63,7 +77,7 @@ class ProductRUDView(RetrieveUpdateDestroyAPIView):
 
 
 class ProducersProductListView(ListAPIView):
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = ProductDetailSerializer
 
     def get_queryset(self, request, *args, **kwargs):
@@ -232,42 +246,118 @@ END OF:
 
 def products_list_view(request):
     queryset = Product.objects.all()
-    sered_data = ProductDetailSerializer(queryset, many=True).data
+
+    new_products = queryset.order_by('-date_addded')
+    sered_new_products = ProductSerializer(new_products, many=True).data
+    new_products_json_string =  json.dumps(sered_new_products)
+
+    best_sellers = Product.objects.filter(label='پرفروش')
+    sered_best_seller_products = ProductSerializer(best_sellers, many=True).data
+    best_sellers_json_string = json.dumps(sered_best_seller_products)
+
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(queryset, 12)
+    number_of_pages = paginator.num_pages
+
+    try:
+        queryset = paginator.page(page)
+    except PageNotAnInteger:
+        queryset = paginator.page(1)
+    except EmptyPage:
+        queryset = paginator.page(paginator.num_pages)
+
+    sered_data = ProductSerializer(queryset, many=True).data
     json_string = json.dumps(sered_data)
-    return render(request, 'views/products.html', {'products': json_string})
 
 
-class ProductDetailView(View):
+
+    page_data = { "current_page" : page , "number_of_pages" : number_of_pages }
+    json_page_data = json.dumps(page_data)
+
+
+
+    context = {
+        'products': json_string,
+        'new_products': new_products_json_string,
+        'best_sellers': best_sellers_json_string,
+        'pagination': json_page_data,
+    }
+
+    return render(request, 'views/products.html', context)
+
+
+class ProductDetailView(View, HitCountMixin):
     form = ProductCommentForm()
+
 
     def get(self, request, slug, *args, **kwargs):
         try:
             form = ProductCommentForm
             queryset = Product.objects.get(slug=slug)
             serialized_q_set = ProductDetailSerializer(queryset).data
+            hit_count = HitCount.objects.get_for_object(queryset)
+            hit_count_response = HitCountMixin.hit_count(request, hit_count)
             json_product = json.dumps(serialized_q_set)
+
+            cat = queryset.category.distinct()[0].title
+            posts = Post.objects.filter(categories__title=cat)
+            sered_posts = PostDetailSerializer(posts, many=True).data
+            json_posts = json.dumps(sered_posts)
+
+            related_products = Product.objects.filter(category__title=cat)
+            sered_related = ProductSerializer(related_products, many=True).data
+            json_related = json.dumps(sered_related)
+
+
+
             context = {
                 'product': json_product,
                 'object' : queryset,
+                'posts' : json_posts,
+                'related_products' : json_related,
             }
             return render(request, 'views/product.html', context)
         except ObjectDoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response({}, status=status.HTTP_404_NOT_FOUND)
 
     def post(self, request, slug, *args, **kwargs):
-        form = ProductCommentForm(request.POST or None)
-        if form.is_valid():
-            product = Product.objects.get(slug=slug)
-            if request.user.is_authenticated():
-                form.instance.user = self.request.user
-            form.instance.product = product
-            form.instance.content = json.loads(request.POST['content'])
-            form.instance.username = json.loads(request.POST['username'])
-            # form.instance.content = request.POST['content']
-            form.save()
-            return redirect(reverse("products:product_detail", kwargs={'slug': slug}))
+        product = Product.objects.get(slug=slug)
+        content = request.POST.get('content', '').strip()
+        username = request.POST.get('username', '').strip()
+        serialized_q_set = ProductDetailSerializer(product).data
+        json_product = json.dumps(serialized_q_set)
+        if username and content:
+            comment = ProductComment.objects.create(
+                product=product,
+                content=content,
+                is_confirmed=False,
+                username=username,
+            )
+            comment.save()
+            message = messages.success(request, '{ "message" : "نظر شما با موفقیت ثبت شد و در انتظار بررسی است"}')
+            return redirect(reverse("products:product_detail",
+                                    kwargs={
+                                        "slug" : slug
+                                    }))
         else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            message = messages.error(request, '{"message" : "نام کاربری و متن نظر برای ثبت آن لازم است" }')
+            return redirect(reverse("products:product_detail",
+                                    kwargs={
+                                        "slug": slug
+                                    }))
+
+        # form = ProductCommentForm(request.POST or None)
+        # if form.is_valid():
+        #     product = Product.objects.get(slug=slug)
+        #     if request.user.is_authenticated():
+        #         form.instance.user = self.request.user
+        #     form.instance.product = product
+        #     form.instance.content = json.loads(request.POST['content'])
+        #     form.instance.username = json.loads(request.POST['username'])
+        #     # form.instance.content = request.POST['content']
+        #     form.save()
+        #     return redirect(reverse("products:product_detail", kwargs={'slug': slug}))
 
 
 def product_detail_view(request, slug):
@@ -292,43 +382,24 @@ def user_panel_view(request):
 
 
 
-def product_paginated(request, page):
-    page_number = page
-    products = Product.objects.all()
-    products_quantity = Product.objects.all().count()
-    products_pages = products_quantity/12
-    first_obj = 12*(page_number-1)
-    last_obj = 12*(page)
-
-    page_products = products[first_obj:last_obj]
-    serialized_products = ProductDetailSerializer(page_products, many=True).data
-    json_products_data = json.dumps(serialized_products)
-    previous_page = page - 1 
-    next_page = page + 1
-    json_page_data = f'[{{ "previous_page" : {previous_page}, "next_page" : {next_page} }}]'
-
-    context = {
-        'products' : json_products_data,
-        'pageData' : json_page_data,
-    }
-    return render(request, 'views/products.html', context)
-
-
-
-
-
-
-
-#create comment with form
-# def post(self, request, slug, *args, **kwargs):
-#         form = ProductCommentForm(request.POST or None)
-#         if form.is_valid():
-#             product = Product.objects.get(slug=slug)
-#             form.instance.user = self.request.user
-#             form.instance.product = product
-#             # form.instance.content = json.loads(request.POST['content'])
-#             form.instance.content = request.POST['content']
-#             form.save()
-#             return redirect(reverse("products:product_detail", kwargs={'slug': slug}))
-#         else:
-#             return Response(status=status.HTTP_400_BAD_REQUEST)
+# def paginated_products(request):
+#
+#     products = Product.objects.all()
+#     products_quantity = products.count()
+#     number_of_pages = products_quantity/12
+#     page = request.GET.get("page","number")
+#     current_page = int(page)
+#     next_page = int(page) + 1
+#     previous_page = int(page) - 1
+#     current_page_products = products[(current_page-1)*12 : current_page*12]
+#     sered_product = ProductDetailSerializer(current_page_products, many=True).data
+#     json_product_string = json.dumps(sered_product)
+#
+#     page_data = { "current_page" : current_page, "number_of_pages" : number_of_pages }
+#     json_page_data = json.dumps(page_data)
+#
+#     context = {
+#         "products" : current_page_products,
+#         "pagination" : json_page_data,
+#     }
+#     return render(request, 'products.html', context)

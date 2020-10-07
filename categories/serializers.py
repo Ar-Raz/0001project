@@ -1,6 +1,55 @@
 from rest_framework import serializers
 from .models import Category, CategoryVariation, Variation, MainCategory
 
+class MainCategoryTitleSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = MainCategory
+        fields = (
+            'id',
+            'title',
+            'slug',
+        )
+
+class CategoryTitleSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Category
+        fields = (
+            'id',
+            'title',
+            'slug',
+        )
+
+class MainCategoryQuickSerializer(serializers.ModelSerializer):
+    categories = serializers.SerializerMethodField()
+
+    class Meta:
+        model = MainCategory
+        fields = (
+            'id',
+            'title',
+            'slug',
+            'categories',
+        )
+
+    def get_categories(self, obj):
+        categories = Category.objects.filter(sub_category_of=obj)
+        return CategoryTitleSerializer(categories, many=True).data
+
+
+class MainCategoryStringSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = MainCategory
+        fields = (
+            'id',
+            'title',
+            'seo_post',
+            'slug',
+        )
+
+
 class MainCategorySerializer(serializers.ModelSerializer):
     subs = serializers.SerializerMethodField()
 
@@ -10,11 +59,24 @@ class MainCategorySerializer(serializers.ModelSerializer):
             'id',
             'title',
             'subs',
+            'seo_post',
+            'slug',
         )
 
     def get_subs(self, obj):
         categories = Category.objects.filter(sub_category_of=obj)
         return CategoryDetailSerializer(categories, many=True).data
+
+class CategoryStringSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Category
+        fields = (
+            'id',
+            'title',
+            'seo_post',
+            'slug',
+        )
 
 class CategorySerializer(serializers.ModelSerializer):
 
@@ -23,6 +85,8 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'title',
+            'seo_post',
+            'slug',
             'sub_category_of',
         )
 
@@ -102,4 +166,24 @@ class CategoryDetailSerializer(serializers.ModelSerializer):
     def get_variation(self, obj):
         return VariationSerializer(obj.variation_set.all(), many=True).data
 
+class MainCategoryQuickSerializer(serializers.ModelSerializer):
+    categories = serializers.SerializerMethodField()
 
+    class Meta:
+        model = MainCategory
+        fields = (
+            'id',
+            'title',
+            'slug',
+            'categories',
+        )
+
+    def get_categories(self, obj):
+        categories = Category.objects.filter(sub_category_of=obj)
+        return CategoryTitleSerializer(categories, many=True).data
+
+class VarationCreatSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Variation
+        fields = "__all__"

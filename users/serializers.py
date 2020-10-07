@@ -29,8 +29,8 @@ class ProducerProfileDetailSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'user',
-            'first_name',
-            'first_name',
+            # 'first_name',
+            # 'last_name',
             'gender',
             'profile_picture',
             'province',
@@ -55,7 +55,7 @@ class ProducerProfileDetailSerializer(serializers.ModelSerializer):
 
 
     def get_category(self, obj):
-        return CategorySerializer(obj.category).data
+        return CategorySerializer(obj.categoty.all(), many=True).data
 
     def get_user(self, obj):
         return UserSerializer(obj.user).data

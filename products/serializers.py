@@ -1,9 +1,59 @@
 from rest_framework import serializers
 
-from .models import Product, ProductVariation, Variation , ProductComment, Rating
+from .models import (
+            Product,
+            ProductVariation,
+            Variation,
+            ProductComment,
+            Rating,
+            ProductDetail,
+            SliderImage,
+            )
 
-from users.serializers import UserSerializer
-from categories.serializers import CategorySerializer
+from users.serializers import UserSerializer,ProducerProfileDetailSerializer
+from categories.serializers import CategorySerializer, VariationDetailSerializer
+
+
+class ProductTechDetailSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ProductDetail
+        fields = (
+            'id',
+            'value',
+            'variation',
+            'products',
+        )
+
+
+class SimpleProductSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Product
+        fields = (
+            'id',
+            'title',
+            'product_image',
+            'orderd_times',
+        )
+
+
+class ProductDetailsSerializer(serializers.ModelSerializer):
+    variation = serializers.SerializerMethodField()
+
+    class Meta:
+        model = ProductDetail
+        fields = (
+            'id',
+            'value',
+            'attachment',
+            'selectable',
+            'yes_or_no',
+            'variation',
+        )
+
+    def get_variation(self, obj):
+        return VariationDetailSerializer(obj.variation).data
 
 class ProductSerializer(serializers.ModelSerializer):
     sample = serializers.SerializerMethodField()
@@ -13,6 +63,7 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = (
             'title',
             'price',
+            'second_price',
             'discount_price',
             'product_image',
             'slug',
@@ -27,59 +78,12 @@ class ProductSerializer(serializers.ModelSerializer):
             'delivery',
             'sample',
             'remarks',
-            'post',
+            'date_addded',
+            'orderd_times',
         )
 
     def get_sample(self, obj):
         return obj.get_samples_display()
-
-class ProductDetailSerializer(serializers.ModelSerializer):
-    sample = serializers.SerializerMethodField()
-    user = serializers.SerializerMethodField()
-    category = serializers.SerializerMethodField()
-    label = serializers.SerializerMethodField()
-
-
-    class Meta:
-        model = Product
-        fields = (
-            'title',
-            'price',
-            'discount_price',
-            'product_image',
-            'slug',
-            'stock',
-            'description',
-            'minimum_order',
-            'payment_type',
-            'packing',
-            'shipping',
-            'origin',
-            'made_in',
-            'delivery',
-            'sample',
-            'remarks',
-            'post',
-            'category',
-            'average_rating',
-            'get_comments',
-            'user',
-            'label',
-        )
-
-    def get_sample(self, obj):
-        return obj.get_samples_display()
-
-    def get_category(self, obj):
-        return CategorySerializer(obj.category.all(), many=True).data
-
-    def get_user(self, obj):
-        return UserSerializer(obj.producer).data
-
-    def get_label(self, obj):
-        return obk.get_label_display()
-
-
 
 class ProductCommentSerializer(serializers.ModelSerializer):
 
@@ -94,6 +98,82 @@ class ProductCommentSerializer(serializers.ModelSerializer):
             'username',
         )
 
+class ProductSliderSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = SliderImage
+        fields = (
+            'id',
+            'image',
+        )
+
+class ProductDetailSerializer(serializers.ModelSerializer):
+    sample = serializers.SerializerMethodField()
+    user = serializers.SerializerMethodField()
+    category = serializers.SerializerMethodField()
+    label = serializers.SerializerMethodField()
+    detail = serializers.SerializerMethodField()
+    comments = serializers.SerializerMethodField()
+    sliders = serializers.SerializerMethodField()
+
+
+    class Meta:
+        model = Product
+        fields = (
+            'title',
+            'price',
+            'second_price',
+            'discount_price',
+            'slug',
+            'stock',
+            'description',
+            'product_image',
+            'minimum_order',
+            'payment_type',
+            'packing',
+            'shipping',
+            'origin',
+            'made_in',
+            'delivery',
+            'sample',
+            'remarks',
+            'category',
+            'average_rating',
+            'comments',
+            'user',
+            'label',
+            'detail',
+            'date_addded',
+            'orderd_times',
+            'sliders',
+        )
+
+    def get_sample(self, obj):
+        return obj.get_samples_display()
+
+    def get_category(self, obj):
+        return CategorySerializer(obj.category.all(), many=True).data
+
+    def get_user(self, obj):
+        return ProducerProfileDetailSerializer(obj.producer).data
+
+    def get_label(self, obj):
+        return obj.get_label_display()
+
+    def get_detail(self, obj):
+        return ProductDetailsSerializer(obj.productdetail_set.all(), many=True).data
+
+    def get_comments(self, obj):
+        return ProductCommentSerializer(obj.get_comments, many=True).data
+
+    def get_sliders(self, obj):
+        return ProductSliderSerializer(obj.get_sliders, many=True).data
+
+
+
+
+
+
 
 class RatingSerializer(serializers.ModelSerializer):
     class Meta:
@@ -102,34 +182,29 @@ class RatingSerializer(serializers.ModelSerializer):
 
 
 
-class ProductDetailSerializer(serializers.ModelSerializer):
-    comments = serializers.SerializerMethodField()
+class ProductTitleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
         fields = (
+            'id',
             'title',
-            'price',
-            'discount_price',
-            'product_image',
-            'slug',
-            'stock',
-            'description',
-            'minimum_order',
-            'payment_type',
-            'packing',
-            'shipping',
-            'origin',
-            'made_in',
-            'delivery',
-            'samples',
-            'remarks',
-            'category',
-            'average_rating',
-            'producer',
-            'comments',
+            'slug'
         )
-        read_only_fields = [ 'producer' ,]
 
-    def get_comments(self, obj):
-        return ProductCommentSerializer(obj.productcomment_set.all(), many=True).data
+class ProductCommentDetailSerializer(serializers.ModelSerializer):
+    item = serializers.SerializerMethodField()
+
+    class Meta:
+        model = ProductComment
+        fields = (
+            'id',
+            'is_confirmed',
+            'content',
+            'user',
+            'username',
+            'item'
+        )
+
+    def get_item(self, obj):
+        return ProductTitleSerializer(obj.product).data

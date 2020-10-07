@@ -1,12 +1,24 @@
 from django.db import models
 from users.models import Profile, ProducerProfile
 from products.models import Product
+from users.validators import validate_phone_number
 
 ADDRESS_CHOICES = (
     ('ارسال','ارسال'),
     ('ساکن', 'ساکن'),
     ('پرداخت', 'پرداخت'),
 )
+
+class MiniOrder(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    email = models.EmailField(blank=True)
+    name = models.CharField(max_length=164)
+    phone_number = models.CharField(max_length=15)
+    extra_discription = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.name} has made a request for {self.product.title}"
+
 
 class OrderItem(models.Model):
     user = models.ForeignKey(Profile,
