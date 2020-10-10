@@ -36,7 +36,7 @@ from products.serializers import (
     ProductDetailSerializer,
     SimpleProductSerializer,
     ProductSerializer,
-    ProduerPageQuickSerializer,
+    ProducerPageQuickSerializer,
 )
 from users.models import User
 from users.serializers import UserSerializer
@@ -575,8 +575,8 @@ class MyProductView(View):
     def get(self, request, *args, **kwargs):
         user = request.user
         profile = ProducerProfile.objects.get(user=user)
-        products = Product.objects.filter(producer=profile)
-        sered_products = ProduerPageQuickSerializer(products, many=True).data
+        products = Product.objects.filter(producer=profile).distinct()
+        sered_products = ProductDetailSerializer(products, many=True).data
         json_products = json.dumps(sered_products)
 
         context = {

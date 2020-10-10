@@ -146,7 +146,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
             'detail',
             'date_addded',
             'orderd_times',
-            'hit_count',
+            # 'hit_count',
             'sliders',
         )
 
@@ -229,7 +229,7 @@ class LabeledProductsSerializer(serializers.ModelSerializer):
         return ProductSerializer(products, many=True).data
 
 
-class ProduerPageQuickSerializer(serializers.ModelSerializer):
+class ProducerPageQuickSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
@@ -238,5 +238,5 @@ class ProduerPageQuickSerializer(serializers.ModelSerializer):
             'title',
             'product_image',
             'description',
-            'hit_count',
+            # 'hit_count',
         )

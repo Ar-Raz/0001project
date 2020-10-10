@@ -14,6 +14,6 @@ urlpatterns = [
     path('tfauth/<phone>/', views.VerifyTF.as_view(), name='verify'),
     path('profile/', views.UserPanelOverView.as_view(), name='profile'),
     path('profile/orders/', views.MiniOrderListDetailView.as_view(), name='profile-orders'),
-    path('profile/my_products/', views.MyProductView.as_view(), name="my_products")
-    path('profile/my_products/<id>/edit/', views.MyProductEditView, name='product_edit')
+    path('profile/my_products/', views.MyProductView.as_view(), name="my_products"),
+    path('profile/my_products/<id>/edit/', views.MyProductEditView.as_view(), name='product_edit'),
 ]
