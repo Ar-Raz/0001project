@@ -36,6 +36,7 @@ from products.serializers import (
     ProductDetailSerializer,
     SimpleProductSerializer,
     ProductSerializer,
+    ProduerPageQuickSerializer,
 )
 from users.models import User
 from users.serializers import UserSerializer
@@ -569,3 +570,110 @@ class MiniOrderListDetailView(View):
 
         return render(request, 'orders.html', context)
 
+class MyProductView(View):
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        profile = ProducerProfile.objects.get(user=user)
+        products = Product.objects.filter(producer=profile)
+        sered_products = ProduerPageQuickSerializer(products, many=True).data
+        json_products = json.dumps(sered_products)
+
+        context = {
+            'products' : json_products
+        }
+        return render(request, 'views/myproducts.html', context)
+
+
+class MyProductEditView(View):
+
+    def get(self, request, id, *args, **kwargs):
+        user = request.user
+        profile = ProducerProfile.objects.get(user=user)
+        product = Product.objects.get(pk=id)
+        sered_product = ProductDetailSerializer(product, many=True).data
+        json_product = json.dumps(sered_product)
+
+        context = {
+            'product' : json_product
+        }
+        return render(request, 'views/userPanel/createProduct.html', context)
+
+    def post(self, request, id , *args, **kwargs):
+        user = request.user
+        profile = ProducerProfile.objects.get(user=user)
+        product = Product.objects.get(pk=id)
+        category = request.POST.get("headCategory") or None
+        cat = Category.objects.get(title=category)
+        variations = Variation.objects.filter(category__title=category)
+
+        product_title = request.POST.get("product-title") or None
+        product_price = request.POST.get("product-price") or None
+        product_price2 = request.POST.get("product-price2") or None
+        product_image = request.FILES['product-image'] or None
+        files = request.FILES.getlist('slider')
+        product_description = request.POST.get("product-description") or None
+        product_made_in = request.POST.get("product-made-in") or None
+        product_packing = request.POST.get("product-packing") or None
+        product_origin = request.POST.get("product-origin") or None
+        product_delivery = request.POST.get("product-delivery") or None
+        product_shipping = request.POST.get("product-shipping") or None
+        product_payment_type = request.POST.get("product-payment-type") or None
+        product_minimum_order = request.POST.get("product-minimum-order") or None
+        product_samples = request.POST.get("product-samples") or None
+        product_short_description = request.POST.get("short-description") or None
+
+
+        product.category = category
+        product.title =  product_title
+        product.price = product_price
+        product.second_price = product_price2
+        product.category = category
+        product.product_image = product_image
+        product.packing = product_packing
+        product.delivery = product_delivery
+        product.shipping = product_shipping
+        product.paymeny_type = product_payment_type
+        product.origin = product_origin
+        product.short_discription = product_short_description
+        product.samples = product_samples
+        product.description = product_description
+        product.minimum_order = product_minimum_order
+        slider_images = SliderImage.objects.filter(product=product)
+        for obj in slider_images:
+            obj.delete()
+        for f in files:
+            qs = SliderImage.objects.filter(
+                product=product,
+                image=f
+            )
+            if qs.exists():
+                pass
+            else:
+                slider = SliderImage.objects.create(
+                    product=product,
+                    image=f
+                )
+
+        for var in variations:
+            value = request.POST.get(f"{var.id}")
+            if value:
+                qs = ProductDetail.objects.filter(
+                    value=value,
+                    variation=var
+                )
+                if qs.exists():
+                    obj = ProductDetail.objects.get(
+                        value=value,
+                        variation=var,
+                    )
+                    obj.products.add(product)
+                else:
+                    obj = ProductDetail.objects.create(
+                        value=value,
+                        variation=var
+                    )
+                    obj.products.add(product)
+
+        message = messages.success(request, '{ "message" : "شما با موفقیت محصول خود را تغییر دادیر" }')
+        return redirect('users:my_products')

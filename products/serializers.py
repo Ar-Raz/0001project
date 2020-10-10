@@ -146,6 +146,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
             'detail',
             'date_addded',
             'orderd_times',
+            'hit_count',
             'sliders',
         )
 
@@ -226,3 +227,16 @@ class LabeledProductsSerializer(serializers.ModelSerializer):
     def get_products(self, obj):
         products = Product.objects.filter(label_try=obj)
         return ProductSerializer(products, many=True).data
+
+
+class ProduerPageQuickSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Product
+        fields = (
+            'id',
+            'title',
+            'product_image',
+            'description',
+            'hit_count',
+        )
