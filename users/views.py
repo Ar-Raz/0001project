@@ -8,10 +8,12 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404, HttpResponse
 from django.views import View
 from django.utils import timezone
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 from website.utils import send_otp_kavenegar
-from website.mixins import GroupRequiredMixin
+from website.mixins import ProducerOnlyMixin, AnonymousMixin
+# from website.decorators import producer_only, anonymous_required
 
 from .models import ProducerProfile, Profile, TokenTFA
 from .forms import ProducerProfileForm, CustomerProfileForm
@@ -126,7 +128,7 @@ END OF:
 ##################################################################
 """
 
-
+# @producer_only
 def complete_prod_profile(request):
     producer = ProducerProfile.objects.get(user=request.user)
     form = ProducerProfileForm(instance=producer)
@@ -157,7 +159,7 @@ def complete_prod_profile(request):
     context = {'form': form}
     return render(request, 'complete_prod_prof.html', context)
 
-
+# @producer_only
 def customer_profile_completion(request):
     try:
         profile = Profile.objects.get(user=request.user)
@@ -175,7 +177,7 @@ def customer_profile_completion(request):
     except ObjectDoesNotExist:
         return Http404("not found")
 
-
+# @anonymous_required
 def login_view(request):
     if request.method == "POST":
         username = request.POST.get('username', '').strip()
@@ -197,7 +199,7 @@ def login_view(request):
             json_message = json.dumps(message)
             return redirect(reverse('users:login', kwargs=json_message))
 
-
+# @anonymous_required
 def register_view(request):
     if request.method == "POST":
         username = request.POST.get('username', '').strip()
@@ -234,7 +236,7 @@ def register_view(request):
 
 # OTP verification
 
-class TwoFactorEntry(View):
+class TwoFactorEntry(AnonymousMixin ,View):
 
     def get(self, request, *args, **kwargs):
 
@@ -275,7 +277,7 @@ class TwoFactorEntry(View):
             return redirect('users:tfentry')
 
 
-class VerifyTF(View):
+class VerifyTF(AnonymousMixin, View):
 
     def get(self, request, phone, *args, **kwargs):
 
@@ -317,7 +319,7 @@ class VerifyTF(View):
 # User Panel Codes
 # Producer
 
-
+# @producer_only
 def create_product_view(request):
     user = request.user
     serialized_user = UserSerializer(user).data
@@ -426,9 +428,9 @@ def create_product_view(request):
         'products': json_products,
         'cats': json_cats,
     }
-    return render(request, 'views/userPanel/createProduct.html', context)
+    return render(request, 'views/userpanel/createProduct.html', context)
 
-class ProductEditView(View):
+class ProductEditView(LoginRequiredMixin ,ProducerOnlyMixin ,View):
 
     def get(self, request, slug, *args, **kwargs):
         product = Product.objects.get(slug=slug)
@@ -438,12 +440,12 @@ class ProductEditView(View):
         context =  {
             'product' : json_product,
         }
-        return render(request, 'views/userPanel/createProduct.html', context)
+        return render(request, 'views/userpanel/createProduct.html', context)
 
     # def post(self, request, slug, *args, **kwargs):
 
 
-class ProfileEditView(View):
+class ProfileEditView(LoginRequiredMixin ,ProducerOnlyMixin ,View):
 
     def get(self, request, *args, **kwargs):
         request.session['message'] = "user panel here"
@@ -530,7 +532,13 @@ class ProfileEditView(View):
         return redirect('users:profile')
 
 
-class UserPanelOverView(View):
+class UserProfile(LoginRequiredMixin, ProducerOnlyMixin, View):
+
+    def get(self, request, *args, **kwargs):
+
+        return render(request, "views/userpanel/index.html.")
+
+class UserPanelOverView(LoginRequiredMixin ,ProducerOnlyMixin , View):
 
     def get(self, request, *args, **kwargs):
         user = request.user
@@ -553,9 +561,9 @@ class UserPanelOverView(View):
             'orders' :  json_orders,
         }
 
-        return render(request, 'path/to/profile/template', context)
+        return render(request, 'views/userpanel/userPanel.html', context)
 
-class MiniOrderListDetailView(View):
+class MiniOrderListDetailView(LoginRequiredMixin ,ProducerOnlyMixin ,View):
 
     def get(self, request, *args, **kwargs):
         user = request.user
@@ -570,7 +578,7 @@ class MiniOrderListDetailView(View):
 
         return render(request, 'orders.html', context)
 
-class MyProductView(View):
+class MyProductView(LoginRequiredMixin ,ProducerOnlyMixin ,View):
 
     def get(self, request, *args, **kwargs):
         user = request.user
@@ -585,7 +593,7 @@ class MyProductView(View):
         return render(request, 'views/myproducts.html', context)
 
 
-class MyProductEditView(View):
+class MyProductEditView(LoginRequiredMixin ,ProducerOnlyMixin ,View):
 
     def get(self, request, id, *args, **kwargs):
         user = request.user
@@ -597,7 +605,7 @@ class MyProductEditView(View):
         context = {
             'product' : json_product
         }
-        return render(request, 'views/userPanel/createProduct.html', context)
+        return render(request, 'views/userpanel/createProduct.html', context)
 
     def post(self, request, id , *args, **kwargs):
         user = request.user

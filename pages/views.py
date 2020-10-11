@@ -92,6 +92,7 @@ class IndexView(View):
                 'posts' : post_ser_json,
                 'new_products' : new_products_json_string,
                 'labeles' : json_labeles,
+                'best_sellers' : best_sellers_json_string,
                 'comments' : json_comments,
             }
             return render(self.request, "views/index.html", context)

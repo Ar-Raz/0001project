@@ -36,17 +36,24 @@
 .cusImgs{
     display:flex;
     flex-wrap:wrap;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 .cusImgs img{
     filter:grayscale(1);
     width:200px;
-    transition:all 0.4s
+    transition:all 0.4s;
+  margin:10px;
 }
 @media (max-width:400px){
     .cusImgs{
         justify-content: center;
     }
+}
+@media (max-width: 425px)
+{
+  .cusImgs{
+    justify-content: center;
+  }
 }
 img:hover{
     filter:grayscale(0)

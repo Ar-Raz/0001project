@@ -97,6 +97,9 @@ img.normal{
                'toggleConsulate'
             ]),
             getDescs(txt){
+              if(txt==undefined){
+                return "بدون توضیحات"
+              }
                 return txt.length>100 ?txt.substring(0,200)+'...' :txt
             },
             adjustConsulateTop(){

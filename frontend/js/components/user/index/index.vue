@@ -20,10 +20,10 @@
     <!-- <expanding-card></expanding-card> 
 
     <extra-sign-up></extra-sign-up>  -->
-     <div class="allCards shouldCollapse maxIs">
+     <div class="allCards shouldCollapse maxIs" v-for="label in JSON.parse(this.labeles)" :key="label.id">
       <card
-        cardTitle="پر فروش ترین ها"
-        :products="JSON.parse(best_sellers)"
+        :cardTitle="label.title"
+        :products="label.products"
         id="mostSell"
       ></card>
     </div>
@@ -36,13 +36,13 @@
       
     </div> -->
 
-    <div class="allCards shouldCollapse maxIs">
-      <card
-        cardTitle="جدید ترین محصولات"
-        :products="JSON.parse(new_products)"
-        id="news"
-      ></card>
-    </div>
+<!--    <div class="allCards shouldCollapse maxIs">-->
+<!--      <card-->
+<!--        cardTitle="جدید ترین محصولات"-->
+<!--        :products="JSON.parse(new_products)"-->
+<!--        id="news"-->
+<!--      ></card>-->
+<!--    </div>-->
 
 
     <div class="maxIs shouldCollapse">
@@ -71,13 +71,11 @@ export default {
   props: [
     "products",
     "main_categories",
-    "posts",
-    "best_sellers",
-    "new_products",
-    "comments"
+    "comments",
+    'labeles'
   ],
   mounted() {
-    console.log("comment",JSON.parse(this.comments));
+    console.log("comment",JSON.parse(this.labeles));
   },
 };
 </script>

@@ -244,28 +244,7 @@ ul.pagination li.active:focus, ul.pagination li.active:focus{
 }
 
 
-.creatProductTitle p{
-	color: #0061af;
-	font-size: 17pt;
-	font-weight: lighter;
-}
 
-.creatProductTitle {
-	width: 100%;
-	display: flex;
-	justify-content: flex-end;
-}
-.createProductTitleWrapper{
-	width: 230px;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
-.creatProductTitle svg{
-	margin-right:10px;
-	height: 50px !important;
-	padding: 10px !important;
-}
 .hiddenAtDisPlay{
 	display: none;
 }
@@ -278,4 +257,9 @@ ul.pagination li.active:focus, ul.pagination li.active:focus{
 
 .imagesInput:first-child .danger{
 	display: none;
+}
+input,textarea{
+	padding: 5px;
+	border:1px solid #b4b4b4;
+	min-width: 100px;
 }

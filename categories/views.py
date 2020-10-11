@@ -132,7 +132,7 @@ class VariationHandling(View):
         main_cats = MainCategory.objects.all()
         sered_mains = MainCategorySerializer(main_cats, many=True).data
         json_mains = json.dumps(sered_mains)
-        return render(request, 'views/addCat.html',  {'main' : json_mains} )
+        return render(request, 'views/userpanel/addCat.html',  {'main' : json_mains} )
 
     def post(self, request, *args, **kwargs):
         main_category_name = request.POST.get('category')

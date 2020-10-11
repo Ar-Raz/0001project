@@ -13,14 +13,14 @@
                 </div>
 
 
-                <div  class="headMenuWrapper" >
-                  <div v-for="(cat,ind) in getCats" class="singleMenu" v-if="ind>=3 && ind<6">
-                    <div class="title">{{cat.title}}</div>
-                      <ul>
-                        <li v-for="(sub,index) in cat.subs" v-if="index<5"><a :href='getHref(sub.title)'>{{sub.title}}</a></li>
-                      </ul>
-                  </div>
-                </div>
+<!--                <div  class="headMenuWrapper" >-->
+<!--                  <div v-for="(cat,ind) in getCats" class="singleMenu" v-if="ind>=3 && ind<6">-->
+<!--                    <div class="title">{{cat.title}}</div>-->
+<!--                      <ul>-->
+<!--                        <li v-for="(sub,index) in cat.subs" v-if="index<5"><a :href='getHref(sub.title)'>{{sub.title}}</a></li>-->
+<!--                      </ul>-->
+<!--                  </div>-->
+<!--                </div>-->
 
 
       </div>

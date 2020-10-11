@@ -2,7 +2,6 @@ from rest_framework import views, response, status, permissions, exceptions
 
 from merchandise.models import MiniOrder
 
-from website.mixins import GroupRequiredMixin
 
 class DeleteMiniOrderAPIView(views.APIView):
     permission_classes = [permissions.IsAuthenticated,]

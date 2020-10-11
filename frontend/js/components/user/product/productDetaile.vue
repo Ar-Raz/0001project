@@ -16,23 +16,26 @@
                     :alt="getAlt(productDet.product_image)"
                 />
               </div>
-              <!--  <div class="productImage"></div> -->
               <div @click="zoomIn()">
                 <img class="zoomSign" src="/images/mag.png" alt=""/>
                 <p>بزرگنمایی</p>
               </div>
 
-              <div class="wrapperForDemo">
-                <div class="glider-contain">
-                  <div class="glider">
-                    <div><img class="sliderImgs" @click="changeImage($event)" :src="productDet.product_image"></div>
-                    <div v-for="img in productDet.sliders"><img :alt="getAlt(img.image) " class="sliderImgs" @click="changeImage($event)" :src="img.image"></div>
-                  </div>
 
-                  <button role="button" aria-label="Previous" class="glider-prev">«</button>
-                  <button role="button" aria-label="Next" class="glider-next">»</button>
-<!--                  <div role="tablist" class="dots"></div>-->
+
+              <div class="swiper-container">
+                <div class="swiper-wrapper">
+                  <!-- Slides -->
+                  <div class="swiper-slide">
+                    <img :alt="getAlt(productDet.product_image) " class="sliderImgs" @click="changeImage($event)" :src="productDet.product_image">
+                  </div>
+                  <div class="swiper-slide"  v-for="(img,index) in productDet.sliders" :key="index">
+                    <img :alt="getAlt(img.image) " class="sliderImgs" @click="changeImage($event)" :src="img.image">
+                  </div>
                 </div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+
               </div>
 
               <!--              <div class="numbers">-->
@@ -51,7 +54,9 @@
                   <p>
                     {{ productDet.price.toLocaleString() }}
                     تا
-                    {{ productDet.second_price.toLocaleString() }}
+                    <template v-if="productDet.second_price!=undefined">
+                      {{productDet.second_price.toLocaleString()}}
+                    </template>
                   </p>
                 </div>
               </div>
@@ -115,14 +120,63 @@ import {adjustElFromTop} from "../../user/mixIns/adjustElFromTop.js";
 export default {
   props: ["productDet"],
   mounted() {
-    new Glider(document.querySelector('.glider'), {
-      slidesToShow: 3,
-      draggable: true,
-      arrows: {
-        prev: '.glider-prev',
-        next: '.glider-next'
+    console.log(this.productDet)
+    var mySwiper = new Swiper('.swiper-container', {
+      // Optional parameters
+      direction: 'horizontal',
+      loop: true,
+      slidesPerView:3,
+
+      // Navigation arrows
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
       },
-      dots: '.dots'
+      keyboard: {
+        enabled: true,
+        onlyInViewport: true,
+      },
+
+      // And if we need scrollbar
+      scrollbar: {
+        el: '.swiper-scrollbar',
+      },
+      breakpoints: {
+        // when window width is >= 320px
+        1200: {
+          slidesPerView: 3,
+          spaceBetween: 20
+        },
+        // // when window width is >= 480px
+        800: {
+          slidesPerView: 2,
+          spaceBetween: 30
+        },
+        // // when window width is >= 640px
+        700: {
+          slidesPerView: 3,
+          spaceBetween: 10
+        },
+        500:{
+          slidesPerView:2
+        },
+        1:{
+          slidesPerView:1
+        }
+      },
+      on:{
+        click(swiper,e){
+          const el=e.target
+          if(el.classList.contains('sliderImgs')){
+            const el = e.target;
+            const img = el.querySelector("img");
+            const src = el.getAttribute("src");
+            const photo = document.querySelector(".photo")
+            photo.setAttribute("src", src);
+          }
+
+        }
+      }
     })
   },
   mixins: [keepStay, adjustElFromTop],
@@ -228,17 +282,6 @@ export default {
   width: 100px !important;
 }
 
-.productConsulate {
-  position: absolute;
-  background: rgba(0, 0, 0, 0.6);
-  height: 100%;
-  width: 100%;
-  top: 0;
-  left: 0;
-  display: none;
-  z-index: 668;
-}
-
 .glider img {
   user-select: inherit;
   pointer-events: all !important;
@@ -253,7 +296,7 @@ export default {
 }
 
 .productImgAndOther {
-  width: 40%;
+  width: 45%;
 }
 
 .writeAbleSignleItemBtns button {
@@ -315,7 +358,7 @@ export default {
 }
 
 .productSingleDetailWrapper {
-  width: 60%;
+  width: 55%;
   display: flex;
   flex-direction: column;
 }
@@ -438,21 +481,22 @@ div#actualImage img {
   height: 350px;
   object-fit: contain;
 }
-.wrapperForDemo{
+.swiper-container{
   width: 100%;
-}
-.glider-prev,.glider-next{
-  opacity: 1 !important;
+  height: 150px;
+  margin-top:20px;
+  margin-bottom: 20px;
 
-
 }
-.glider-next{
-  margin-right: 10px;
+.swiper-slide{
+  width: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 150px;
 }
-.glider-prev{
-  margin-left: 10px;
-}
-.glider{
-  width: 100%;
+.swiper-slide img{
+  width: 200px;
+  height: 150px;
 }
 </style>

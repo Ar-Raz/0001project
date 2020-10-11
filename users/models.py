@@ -81,16 +81,12 @@ class ProducerProfile(Profile):
 def userprofile_receiver(sender, instance, created, *args, **kwargs):
     if created:
         if instance.role == 'فروشنده':
-            group = Group.objects.get(name='producer')
-            instance.groups.add(group)
+            instance.is_producer=True
             userprofile = ProducerProfile.objects.create(user=instance)
         elif instance.role == 'خریدار':
-            group = Group.objects.get(name='customer')
-            instance.groups.add(group)
             userprofile = Profile.objects.create(user=instance)
         elif instance.role == 'هر دو':
-            group = Group.objects.get(name='both')
-            instance.groups.add(group)
+            instance.is_producer=True
             userprofile = ProducerProfile.objects.create(user=instance)
             userprofile_2 = Profile.objects.create(user=instance)
 

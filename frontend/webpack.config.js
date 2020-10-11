@@ -3,7 +3,7 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 module.exports = {
   entry:{
     "userScript":"./js/userApp.js",
-    // "userPanelApp":"./js/userPanelApp.js"
+    "userPanelApp":"./js/userPanelApp.js"
   },
   output:{
       path:path.resolve(__dirname,"public"),
