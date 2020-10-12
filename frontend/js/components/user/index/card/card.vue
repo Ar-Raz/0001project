@@ -60,7 +60,6 @@ export default {
       direction: 'horizontal',
       loop: true,
       slidesPerView:3,
-      slidesPerGroup: 3,
 
       // Navigation arrows
       navigation: {
@@ -109,21 +108,6 @@ export default {
     getSlug(slug) {
       return `/products/product-detial/${slug}`
     },
-    reCalculatePer() {
-      let per = 2
-      let width = window.innerWidth
-      if (width >= 1100) {
-        per = 4
-      } else if (width <= 1099 && width >= 851) {
-        per = 3
-      } else if (width <= 850 && width >= 600) {
-        per = 2
-      } else if (width <= 599) {
-        per = 1
-      }
-      return per
-
-    },
     getUrl(p) {
       return p.url
     },
@@ -171,7 +155,7 @@ img {
 }
 
 .singleSlide {
-  width: 280px;
+  width: 260px;
   padding: 5px;
   margin-top: 10px;
 }
@@ -186,7 +170,7 @@ img {
 }
 
 .singleSlide img {
-  width: 280;
+  width: 260px;
 }
 
 .img {

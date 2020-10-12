@@ -11,7 +11,7 @@ from django.utils import timezone
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-from website.utils import send_otp_kavenegar
+from website.utils import send_otp_kavenegar, make_password, check_password
 from website.mixins import ProducerOnlyMixin, AnonymousMixin
 # from website.decorators import producer_only, anonymous_required
 
@@ -180,58 +180,105 @@ def customer_profile_completion(request):
 # @anonymous_required
 def login_view(request):
     if request.method == "POST":
-        username = request.POST.get('username', '').strip()
-        password = request.POST.get('password', '').strip()
-        if username and password:
-            user = authenticate(username=username, password=password)
-
-            if user is not None:
-                login(request, user)
-                message = {"messages": "شما با موفقیت وارد شدید"}
-                json_message = json.dumps(message)
-                return redirect(reverse('pages:index', kwargs=json_message))
+        username_or_email = request.POST.get('userEmail')
+        password = request.POST.get("userPassword")
+        print(username_or_email, "  ", password)
+        if username_or_email and password:
+            try:
+                user = User.objects.get(username=username_or_email)
+            except ObjectDoesNotExist:
+                try:
+                    user = User.objects.get(email=username_or_email)
+                except ObjectDoesNotExist:
+                    messages.warning(request, '{ "message" : "حسابی با این مشخصات وجود ندارد" }')
+                    return redirect("users:login")
+            dude = authenticate(username=user.username, password=password)
+            if dude is not None:
+                if dude.is_active:
+                    login(request, user)
+                    messages.success(request, '{ "message" : "شما با موفقیت وارد شدید" }')
+                    return redirect("pages:index")
+                else:
+                    messages.warning(request, '{ "message" : "حساب کاربری شما مسدود شده است" }')
+            
             else:
-                message = {"messages": "رمز عبور یا نام کاربری اشتباه است"}
-                json_message = json.dumps(message)
-                return redirect(reverse('users:login', kwargs=json_message))
+                messages.warning(request, "نام کاربری یا کلمه عبور اشتباه است")
+
         else:
-            message = {"messages": "رمز عبور یا نام کاربری اشتباه است"}
-            json_message = json.dumps(message)
-            return redirect(reverse('users:login', kwargs=json_message))
+            messages.warning(request, "نام کاربری یا گذرواژه نمیتواند خالی باشد")
+            return redirect("users:login")
+        
+    return render(request, 'users/login.html', {})
+
 
 # @anonymous_required
 def register_view(request):
     if request.method == "POST":
-        username = request.POST.get('username', '').strip()
-        email = request.POST.get('email', '').strip()
-        password1 = request.POST.get('password1', '').strip()
-        password2 = request.POST.get('password2', '').strip()
-        user_q = User.objects.filter(username=username)
-        email_q = User.objects.filter(email=email)
-        if user_q.exists():
-            message = {"messages": "این نام کاربری قبلا ثبت شده است"}
-            return redirect('../../accounts/signup/')
-        elif email_q.exists():
-            message = {"messages": "این ایمیل قبلا ثبت شده است"}
-            return redirect('../../accounts/signup/')
-        elif password1 != password2:
-            message = {"messages": "پسورد شما همخوانی ندارد"}
-            render
-            return redirect(reverse('../../accounts/signup/'))
+        print(request.POST)
+        username = request.POST.get('username') or None
+        email = request.POST.get('email') or None
+        name = request.POST.get("name") or None
+        password1 = request.POST.get('pass') 
+        password2 = request.POST.get('pass2')
+        phone = request.POST.get('phone')
+        message = { "message" : ['immer wenn sie immer schreit wiess ich gliech das sie nicht mehr bliecht']}
+        error = False
+                    
+        if username:
+            username_qs = User.objects.filter(username=username)
+            if username_qs.exists():
+                message['message'].append("correct the username")
+                error= True
+            else:
+                pass
+        if email:
+            email_qs = User.objects.filter(email=email)
+            if email_qs.exists():
+                 message['message'].append("ایمیل وارد شده از پیش موجود است")
+                 error= True
+            else:
+                pass
+
+        if password2 and password1:
+            if password2 != password1:
+                message['message'].append("گذرواژه مطابقت ندارد")
+                error= True
+            else:
+                password = make_password(password=password1)
         else:
+            message['message'].append("گذرواژه نمیتواند خالی باشد")
+            error= True
+
+
+        if phone:
+            phone_qs = User.objects.filter(phone_number=phone)
+            if phone_qs.exists():
+                message['message'].append("شماره تلفن از قبل ثبت شده است")
+            else:
+                pass
+        else:
+            message['message'].append("شماره تلفن نمیتواند خالی باشد")
+            error= True
+
+        if not error:
             user = User.objects.create(
                 username=username,
+                first_name=name,
+                phone_number=phone,
+                password=password,
                 email=email,
-                password=password1,
-                is_active=True,
-                is_staff=False,
-                is_superuser=False
             )
-            user.save()
-            login(request, user)
-            return redirect('pages:index')
+        else:
+            json_message = json.dumps(message)
+            messages.error(request, json_message)
+            return redirect('users:register')
 
-    return redirect('pages:index')
+
+
+        
+
+
+    return render(request, "users/signup.html", {})
 
 
 # OTP verification
@@ -267,7 +314,7 @@ class TwoFactorEntry(AnonymousMixin ,View):
             params = {
 			        "sender": "1000596446",
 			        'receptor' : phone_number,
-			        'message'  : f"Kavenegar serivice works fine dude you token:{random_num}"
+			        'message'  : f"برای ورود به سایت دمیر از کد شش رقمی زیر استفاده کنید: {random_num}"
 			        }
             # send_otp_kavenegar(params)
             message = messages.success(request, '{ "message" : "کد شش رقمی به شماره همراه شما ارسال شد"}')

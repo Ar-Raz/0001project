@@ -1,5 +1,6 @@
 import random
 import string
+import hashlib
 
 from django.utils.text import slugify
 from django.core.exceptions import ValidationError
@@ -51,3 +52,17 @@ def send_otp_kavenegar(params):
     api = KavenegarAPI('7A684663716F31777A3359794647744C69716E5470784530726E30366D4D6443554E584F5A4832374A57413D')
     api.sms_send(params)
     return None
+
+def make_password(password):
+    assert password
+    password = str(password).encode('utf8')
+    hash = hashlib.md5(password).hexdigest()
+    return hash
+
+def check_password(hash, password):
+    generated_hash = make_password(password)
+    return hash == generated_hash
+
+
+
+

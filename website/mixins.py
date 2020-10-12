@@ -14,7 +14,7 @@ class AnonymousMixin(AccessMixin):
         return redirect("pages:index")
 
     def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             return self.handle_no_permission()
         return super().dispatch(request, *args, **kwargs)
 
