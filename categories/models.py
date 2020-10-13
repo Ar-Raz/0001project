@@ -2,10 +2,11 @@ from django.db import models
 from django.db.models.signals import pre_save, post_save
 
 from website.utils import unique_slug_generator
+from core.models import MetaTagsBase
 
 from ckeditor_uploader.fields import RichTextUploadingField
 
-class MainCategory(models.Model):
+class MainCategory(MetaTagsBase, models.Model):
     title = models.CharField(max_length=64)
     seo_post = RichTextUploadingField()
     slug = models.SlugField(blank=True, null=True, allow_unicode=True)
@@ -16,7 +17,7 @@ class MainCategory(models.Model):
 
 
 
-class Category(models.Model):
+class Category(MetaTagsBase, models.Model):
     title = models.CharField(max_length=64)
     sub_category_of = models.ForeignKey('MainCategory', on_delete=models.CASCADE)
     seo_post = RichTextUploadingField()

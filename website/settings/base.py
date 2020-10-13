@@ -26,13 +26,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
 
+    
     'users.apps.UsersConfig',
     'categories.apps.CategoriesConfig',
     'blog.apps.BlogConfig',
     'merchandise.apps.MerchandiseConfig',
     'products.apps.ProductsConfig',
     'pages.apps.PagesConfig',
-
+    'core.apps.CoreConfig',
 
     'rest_framework',
     'rest_framework.authtoken',

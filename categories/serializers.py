@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from .models import Category, CategoryVariation, Variation, MainCategory
 
+from core.serializers import MetaTagSerializer
+
 class MainCategoryTitleSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -9,7 +11,12 @@ class MainCategoryTitleSerializer(serializers.ModelSerializer):
             'id',
             'title',
             'slug',
+            'meta_author',
+            'meta_keywords',
+            'meta_description',
+            'meta_copyright',
         )
+
 
 class CategoryTitleSerializer(serializers.ModelSerializer):
 
@@ -19,6 +26,10 @@ class CategoryTitleSerializer(serializers.ModelSerializer):
             'id',
             'title',
             'slug',
+            'meta_author',
+            'meta_keywords',
+            'meta_description',
+            'meta_copyright',
         )
 
 class MainCategoryQuickSerializer(serializers.ModelSerializer):
@@ -31,6 +42,10 @@ class MainCategoryQuickSerializer(serializers.ModelSerializer):
             'title',
             'slug',
             'categories',
+            'meta_author',
+            'meta_keywords',
+            'meta_description',
+            'meta_copyright',
         )
 
     def get_categories(self, obj):
@@ -47,6 +62,10 @@ class MainCategoryStringSerializer(serializers.ModelSerializer):
             'title',
             'seo_post',
             'slug',
+            'meta_author',
+            'meta_keywords',
+            'meta_description',
+            'meta_copyright',
         )
 
 
@@ -61,6 +80,10 @@ class MainCategorySerializer(serializers.ModelSerializer):
             'subs',
             'seo_post',
             'slug',
+            'meta_author',
+            'meta_keywords',
+            'meta_description',
+            'meta_copyright',
         )
 
     def get_subs(self, obj):
@@ -76,6 +99,10 @@ class CategoryStringSerializer(serializers.ModelSerializer):
             'title',
             'seo_post',
             'slug',
+            'meta_author',
+            'meta_keywords',
+            'meta_description',
+            'meta_copyright',
         )
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -88,6 +115,10 @@ class CategorySerializer(serializers.ModelSerializer):
             'seo_post',
             'slug',
             'sub_category_of',
+            'meta_author',
+            'meta_keywords',
+            'meta_description',
+            'meta_copyright',
         )
 
 class VariationDetailSerializer(serializers.ModelSerializer):
