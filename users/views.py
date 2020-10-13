@@ -287,7 +287,7 @@ class TwoFactorEntry(AnonymousMixin ,View):
 
     def get(self, request, *args, **kwargs):
 
-        return render(request, 'views/signup.html', {})
+        return render(request, 'entry/index.html', {})
 
     def post(self, request, *args, **kwargs):
         phone_number = request.POST.get('phonenumber')
@@ -328,11 +328,11 @@ class VerifyTF(AnonymousMixin, View):
 
     def get(self, request, phone, *args, **kwargs):
 
-        return render(request, 'views/confirmation.html', {})
+        return render(request, 'entry/verifacation.html', {})
 
     def post(self, request, phone, *args, **kwargs):
+        tokn_number = request.POST.get('token-number')
         try:
-            token_number = request.POST.get('token-number')
             user = User.objects.get(phone_number=phone)
             token = TokenTFA.objects.get(user=user)
             if token_number:
@@ -352,7 +352,7 @@ class VerifyTF(AnonymousMixin, View):
                     return redirect('users:tfentry')
             else:
                 request.session['message'] = 'کد تایید را وارد کنید'
-                return redirect(reverse('user:verify', kwargs={'phone':phone}))
+                return redirect(reverse('users:verify', kwargs={'phone':phone}))
         except ObjectDoesNotExist:
             message = messages.error(request, '{ "message" : "خطای سرور دوباره تلاش کنید"}')
             return redirect('users:tfentry')
