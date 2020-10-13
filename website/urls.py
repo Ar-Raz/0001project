@@ -24,6 +24,7 @@ from pages.views import SearchView
 
 urlpatterns = [
     path('', include('pages.urls', namespace='home')),
+    path('c_admin/', include('c_admin.urls', namespace='dad')),
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('tinymce/', include('tinymce.urls')),

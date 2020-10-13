@@ -69,6 +69,7 @@ class Product(models.Model):
     label_try = models.ManyToManyField('Label')
     hit_count = GenericRelation(HitCount, object_id_field='object_pk',
                                         related_query_name='hit_count_generic_relation')
+    confirmed = models.BooleanField(default=False)
 
 
     def __str__(self):

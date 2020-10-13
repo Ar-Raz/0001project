@@ -1,0 +1,10 @@
+from django import forms
+
+from products.models import Product
+from categories.models import Category, MainCategory
+
+class CategoryForm(forms.ModelForm):
+
+    class Meta:
+        model = Category
+        fields = "__all__"
