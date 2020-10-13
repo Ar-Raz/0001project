@@ -1,8 +1,18 @@
 from django.contrib import admin
-from .models import Product, ProductVariation, Variation, ProductComment, Rating
+from . import models
 
-admin.site.register(Product)
-admin.site.register(Variation)
-admin.site.register(ProductVariation)
-admin.site.register(Rating)
-admin.site.register(ProductComment)
+admin.site.register(models.Variation)
+admin.site.register(models.ProductVariation)
+admin.site.register(models.Rating)
+admin.site.register(models.SliderImage)
+admin.site.register(models.MetaDetail)
+admin.site.register(models.Product)
+admin.site.register(models.Label)
+
+class ProductInline(admin.TabularInline):
+    model = models.ProductDetail.products.through
+
+class ProductDetailAdmin(admin.ModelAdmin):
+    inlines = [ProductInline]
+
+admin.site.register(models.ProductDetail, ProductDetailAdmin)

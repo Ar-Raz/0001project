@@ -1,8 +1,8 @@
 from rest_framework import serializers
 
-from .models import OrderItem, Order
+from .models import OrderItem, Order, MiniOrder
 
-from products.serializers import ProductDetailSerializer
+from products.serializers import ProductDetailSerializer, SimpleProductSerializer
 from users.serializers import UserSerializer, ProducerProfileDetailSerializer
 
 class OrderItemSerializer(serializers.ModelSerializer):
@@ -45,3 +45,57 @@ class OrderSerializer(serializers.ModelSerializer):
         return OrderItemSerializer(obj.items.all(), many=True).data
 
 
+
+class MiniOrderSerializer(serializers.ModelSerializer):
+    # product_name = serializers.CharField()
+
+    class Meta:
+        model = MiniOrder
+        fields = (
+            'id',
+            'email',
+            'name',
+            'extra_discription',
+            'phone_number',
+            # 'product_name',
+            'product',
+        )
+        read_only_fields = ['product']
+
+
+    # def get_product(self, obj):
+    #     return ProductSerailizer(obj.product).data
+
+
+class MiniOrderSimpleSerializer(serializers.ModelSerializer):
+    product = serializers.SerializerMethodField()
+
+    class Meta:
+        model = MiniOrder
+        fields = (
+            'name',
+            'extra_discription',
+            'product'
+        )
+
+    def get_product(self, obj):
+        product = obj.product
+        return SimpleProductSerializer(product).data
+
+class MiniOrderDetailSerializer(serializers.ModelSerializer):
+    product = serializers.SerializerMethodField()
+
+    class Meta:
+        model = MiniOrder
+        fields = (
+            'id',
+            'email',
+            'name',
+            'extra_discription',
+            'phone_number',
+            'product',
+        )
+
+    def get_product(self, obj):
+        product = obj.product
+        return SimpleProductSerializer(product).data

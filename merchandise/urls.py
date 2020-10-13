@@ -2,6 +2,8 @@ from django.urls import path
 
 app_name = 'merchandise'
 
-urlpatterns = [
+from .views import MiniOrderView
 
+urlpatterns = [
+    path('miniorder', MiniOrderView.as_view(), name="miniorder"),
 ]
