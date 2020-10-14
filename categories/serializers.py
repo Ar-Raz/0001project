@@ -1,7 +1,22 @@
 from rest_framework import serializers
-from .models import Category, CategoryVariation, Variation, MainCategory
+from .models import (
+    Category, 
+    CategoryVariation, 
+    Variation, 
+    MainCategory,
+    MotherCategory,
+) 
 
 from core.serializers import MetaTagSerializer
+
+class MainCategoryIdSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = MainCategory
+        fields = (
+            'id',
+            'title',
+        )
 
 class MainCategoryTitleSerializer(serializers.ModelSerializer):
 
@@ -218,3 +233,36 @@ class VarationCreatSerializer(serializers.ModelSerializer):
     class Meta:
         model = Variation
         fields = "__all__"
+
+class CategoryIdSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Category
+        fields = (
+            'id',
+            'title',
+        )
+
+# mother category
+class MotherCategoryQuickSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = MotherCategory
+        fields = (
+            'id',
+            'title',
+        )
+
+class MotherCategorySerializer(serializers.ModelSerializer):
+    main_categories = serializers.SerializerMethodField()
+
+    class Meta:
+        model = MotherCategory
+        fields = (
+            'id',
+            'title',
+            'main_categories',
+        )
+
+    def get_main_categories(self, obj):
+        return MainCategory
