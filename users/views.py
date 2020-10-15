@@ -42,10 +42,11 @@ from products.serializers import (
 )
 from users.models import User
 from users.serializers import UserSerializer
-from categories.models import MainCategory, Category, Variation
+from categories.models import MainCategory, Category, Variation, MotherCategory
 from categories.serializers import (
     CategoryTitleSerializer,
-    MainCategoryTitleSerializer
+    MainCategoryTitleSerializer,
+    MotherCategoryQuickSerializer,
 )
 from merchandise.serializers import MiniOrderSimpleSerializer, MiniOrderDetailSerializer
 from merchandise.models import MiniOrder
@@ -317,10 +318,9 @@ class TwoFactorEntry(AnonymousMixin ,View):
 			        'message'  : f"برای ورود به سایت دمیر از کد شش رقمی زیر استفاده کنید: {random_num}"
 			        }
             # send_otp_kavenegar(params)
-            message = messages.success(request, '{ "message" : "کد شش رقمی به شماره همراه شما ارسال شد"}')
             return redirect(reverse('users:verify', kwargs={ 'phone' : phone_number}))
         else:
-            message = messages.success(request, '{ "message" : "لطفا شناره تلفن خود را وارد کنید"}')
+            message = messages.error(request, '{ "message" : "لطفا شماره تلفن خود را وارد کنید"}')
             return redirect('users:tfentry')
 
 
@@ -383,6 +383,10 @@ def create_product_view(request):
     main_categories = MainCategory.objects.all()
     sered_mains = MainCategoryTitleSerializer(main_categories, many=True).data
     json_mains = json.dumps(sered_mains)
+
+    mother_cat = MotherCategory.objects.all()
+    sered_mother = MotherCategoryQuickSerializer(mother_cat, many=True).data
+    json_mother = json.dumps(sered_mother)
 
     if request.method == "POST":
         category = request.POST.get("headCategory").strip()
@@ -473,7 +477,7 @@ def create_product_view(request):
     context = {
         'user': json_user_profile_data,
         'products': json_products,
-        'cats': json_cats,
+        'cats': json_mother,
     }
     return render(request, 'views/userpanel/createProduct.html', context)
 
