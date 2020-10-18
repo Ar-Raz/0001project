@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'products.apps.ProductsConfig',
     'pages.apps.PagesConfig',
     'core.apps.CoreConfig',
+    'userpanel.apps.UserpanelConfig',
 
     'rest_framework',
     'rest_framework.authtoken',

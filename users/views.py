@@ -4,14 +4,19 @@ import random
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.http import Http404, HttpResponse
 from django.views import View
 from django.utils import timezone
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-from website.utils import send_otp_kavenegar, make_password, check_password
+from website.utils import (
+    send_otp_kavenegar, 
+    make_password, 
+    check_password,
+    validate_phone_number,
+)
 from website.mixins import ProducerOnlyMixin, AnonymousMixin
 # from website.decorators import producer_only, anonymous_required
 
@@ -42,13 +47,15 @@ from products.serializers import (
 )
 from users.models import User
 from users.serializers import UserSerializer
-from categories.models import MainCategory, Category, Variation
+from categories.models import MainCategory, Category, Variation, MotherCategory
 from categories.serializers import (
     CategoryTitleSerializer,
-    MainCategoryTitleSerializer
+    MainCategoryTitleSerializer,
+    MotherCategoryQuickSerializer,
 )
 from merchandise.serializers import MiniOrderSimpleSerializer, MiniOrderDetailSerializer
 from merchandise.models import MiniOrder
+from userpanel.models import ProducerTicket
 
 """
 ################################################################
@@ -287,12 +294,17 @@ class TwoFactorEntry(AnonymousMixin ,View):
 
     def get(self, request, *args, **kwargs):
 
-        return render(request, 'views/signup.html', {})
+        return render(request, 'entry/index.html', {})
 
     def post(self, request, *args, **kwargs):
         phone_number = request.POST.get('phonenumber')
         random_num = random.randint(100000, 999999)
         if phone_number:
+            # try:
+            #     validate_phone_number(phone_number)
+            # except ValidationError:
+            #     messages.error(request, "اطلاعات را درست وارد کنید")
+            #     return redirect("users:tfentry")
             qs = User.objects.filter(phone_number=phone_number)
             if qs.exists():
                 user = User.objects.get(phone_number=phone_number)
@@ -317,10 +329,9 @@ class TwoFactorEntry(AnonymousMixin ,View):
 			        'message'  : f"برای ورود به سایت دمیر از کد شش رقمی زیر استفاده کنید: {random_num}"
 			        }
             # send_otp_kavenegar(params)
-            message = messages.success(request, '{ "message" : "کد شش رقمی به شماره همراه شما ارسال شد"}')
             return redirect(reverse('users:verify', kwargs={ 'phone' : phone_number}))
         else:
-            message = messages.success(request, '{ "message" : "لطفا شناره تلفن خود را وارد کنید"}')
+            message = messages.error(request, '{ "message" : "لطفا شماره تلفن خود را وارد کنید"}')
             return redirect('users:tfentry')
 
 
@@ -328,11 +339,11 @@ class VerifyTF(AnonymousMixin, View):
 
     def get(self, request, phone, *args, **kwargs):
 
-        return render(request, 'views/confirmation.html', {})
+        return render(request, 'entry/verifacation.html', {})
 
     def post(self, request, phone, *args, **kwargs):
+        token_number = request.POST.get('token-number')
         try:
-            token_number = request.POST.get('token-number')
             user = User.objects.get(phone_number=phone)
             token = TokenTFA.objects.get(user=user)
             if token_number:
@@ -352,7 +363,7 @@ class VerifyTF(AnonymousMixin, View):
                     return redirect('users:tfentry')
             else:
                 request.session['message'] = 'کد تایید را وارد کنید'
-                return redirect(reverse('user:verify', kwargs={'phone':phone}))
+                return redirect(reverse('users:verify', kwargs={'phone':phone}))
         except ObjectDoesNotExist:
             message = messages.error(request, '{ "message" : "خطای سرور دوباره تلاش کنید"}')
             return redirect('users:tfentry')
@@ -383,6 +394,10 @@ def create_product_view(request):
     main_categories = MainCategory.objects.all()
     sered_mains = MainCategoryTitleSerializer(main_categories, many=True).data
     json_mains = json.dumps(sered_mains)
+
+    mother_cat = MotherCategory.objects.all()
+    sered_mother = MotherCategoryQuickSerializer(mother_cat, many=True).data
+    json_mother = json.dumps(sered_mother)
 
     if request.method == "POST":
         category = request.POST.get("headCategory").strip()
@@ -473,7 +488,7 @@ def create_product_view(request):
     context = {
         'user': json_user_profile_data,
         'products': json_products,
-        'cats': json_cats,
+        'cats': json_mother,
     }
     return render(request, 'views/userpanel/createProduct.html', context)
 
@@ -582,13 +597,21 @@ class ProfileEditView(LoginRequiredMixin ,ProducerOnlyMixin ,View):
 class UserProfile(LoginRequiredMixin, ProducerOnlyMixin, View):
 
     def get(self, request, *args, **kwargs):
+        user = request.user
+        sered_user = UserSerializer(user).data
+        json_user_string = json.dumps(sered_user)
 
-        return render(request, "views/userpanel/index.html.")
+        
+
+        return render(request, "views/userpanel/index.html")
 
 class UserPanelOverView(LoginRequiredMixin ,ProducerOnlyMixin , View):
 
     def get(self, request, *args, **kwargs):
         user = request.user
+        sered_user = UserSerializer(user).data
+        json_user_string = json.dumps(sered_user)
+
         profile = ProducerProfile.objects.get(user=user)
         sered_profile = ProducerProfileDetailSerializer(profile).data
         json_profile = json.dumps(sered_profile)
@@ -606,9 +629,10 @@ class UserPanelOverView(LoginRequiredMixin ,ProducerOnlyMixin , View):
             'profile' : json_profile,
             'products' : json_products,
             'orders' :  json_orders,
+            'user' : json_user_string,
         }
 
-        return render(request, 'views/userpanel/userPanel.html', context)
+        return render(request, 'views/userpanel/index.html', context)
 
 class MiniOrderListDetailView(LoginRequiredMixin ,ProducerOnlyMixin ,View):
 
@@ -732,3 +756,46 @@ class MyProductEditView(LoginRequiredMixin ,ProducerOnlyMixin ,View):
 
         message = messages.success(request, '{ "message" : "شما با موفقیت محصول خود را تغییر دادیر" }')
         return redirect('users:my_products')
+
+class SendTicketView(View):
+
+    def get(self, request, *args, **kwargs):
+        tickets = ProducerTicket.objects.filter(user=request.user)
+
+
+        return render(request, "views/userpanel/ticket.html", {})
+
+    def post(self, request, *args, **kwargs):
+        ticket_subject = request.POST.get('ticket_subject')
+        ticket_content = request.POST.get('content')
+        ticket_priorty = request.POST.get('priorty') or "پایین"
+
+        if ticket_content and ticket_subject:
+            ticket = ProducerTicket.objects.create(
+                user=request.user,
+                subject=ticket_subject,
+                content=ticket_content,
+                priorty=ticket_priorty,
+                is_fake=False,
+                is_responded=False,
+            )
+            ticket.save()
+            messages.success(request, '{ "message" : "تیکت شما با موفقیت ارسال شد و در انتظار مشاهده است"}')
+        else:
+            messages.error(request, "موضوع و متن تیکت نمیتواند خالی باشد")
+            return redirect('user:send_ticket')
+        
+
+class EditCategoriesView(View):
+
+    def get(self, request, *args, **kwargs):
+
+        main_categories = MainCategory.objects.all()
+        sered_main = MainCategoryTitleSerializer(main_categories, many=True).data
+        json_main_string = json.dumps(sered_main)
+
+        context = {
+            'mains' : json_main_string
+        }
+
+        return render(request, "views/userpanel/editCat.html", context)

@@ -7,6 +7,8 @@ from django.contrib.contenttypes.fields import GenericRelation
 from hitcount.models import HitCountMixin, HitCount
 from django.dispatch import receiver
 
+from core.models import MetaTagsBase
+
 from tinymce.models import HTMLField
 from ckeditor_uploader.fields import RichTextUploadingField
 
@@ -36,7 +38,7 @@ LABEL_CHOICES = (
 
 
 
-class Product(models.Model):
+class Product(MetaTagsBase ,models.Model):
     SAMPLE_CHOICES = (
         ("خیر","خیر"),
         ("رایگان","رایگان"),
@@ -49,6 +51,7 @@ class Product(models.Model):
     category = models.ManyToManyField(Category)
     discount_price = models.FloatField(blank=True, null=True, verbose_name="قیمت تخفیف")
     product_image = models.ImageField(null=True, blank=True)
+    image_alt = models.CharField(max_length=225)
     slug = models.SlugField(null=True, blank=True, allow_unicode=True)
     stock = models.IntegerField(default=1, verbose_name='موجودی')
     description = RichTextUploadingField(verbose_name="توضیحات محصول")
@@ -66,7 +69,7 @@ class Product(models.Model):
     date_addded = models.DateTimeField(auto_now_add=True, null=True)
     orderd_times = models.IntegerField(default=1, null=True)
     short_discription = models.TextField(verbose_name="توضیحات")
-    label_try = models.ManyToManyField('Label')
+    label_try = models.ManyToManyField('Label', blank=True)
     hit_count = GenericRelation(HitCount, object_id_field='object_pk',
                                         related_query_name='hit_count_generic_relation')
 

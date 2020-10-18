@@ -12,9 +12,11 @@ urlpatterns = [
     path('userpanel/', views.ProfileEditView.as_view()),
     path('entry/', views.TwoFactorEntry.as_view(), name="tfentry"),
     path('tfauth/<phone>/', views.VerifyTF.as_view(), name='verify'),
-    path('profile/userpanl/', views.UserProfile.as_view(), name="userpanel"),
+    path('profile/userpanel/', views.UserProfile.as_view(), name="userpanel"),
     path('profile/', views.UserPanelOverView.as_view(), name='profile'),
-    path('profile/orders/', views.MiniOrderListDetailView.as_view(), name='profile-orders'),
+    path('profile/orders/', views.MiniOrderListDetailView.as_view(), name='profile_orders'),
     path('profile/my_products/', views.MyProductView.as_view(), name="my_products"),
     path('profile/my_products/<id>/edit/', views.MyProductEditView.as_view(), name='product_edit'),
+    path('profile/send-ticket/', views.SendTicketView.as_view(), name="send_ticket"),
+    path('profile/edit-cat/', views.EditCategoriesView.as_view(), name="edit_cats"),
 ]

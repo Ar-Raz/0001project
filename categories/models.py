@@ -6,7 +6,16 @@ from core.models import MetaTagsBase
 
 from ckeditor_uploader.fields import RichTextUploadingField
 
+class MotherCategory(MetaTagsBase, models.Model):
+    title = models.CharField(max_length=64)
+    seo_post = RichTextUploadingField()
+    slug = models.SlugField(blank=True, null=True, allow_unicode=True)
+
+    def __str__(self):
+        return self.title
+
 class MainCategory(MetaTagsBase, models.Model):
+    mother_category = models.ForeignKey(MotherCategory, on_delete=models.CASCADE)
     title = models.CharField(max_length=64)
     seo_post = RichTextUploadingField()
     slug = models.SlugField(blank=True, null=True, allow_unicode=True)
