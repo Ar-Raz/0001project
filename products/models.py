@@ -51,6 +51,7 @@ class Product(MetaTagsBase ,models.Model):
     category = models.ManyToManyField(Category)
     discount_price = models.FloatField(blank=True, null=True, verbose_name="قیمت تخفیف")
     product_image = models.ImageField(null=True, blank=True)
+    image_alt = models.CharField(max_length=225)
     slug = models.SlugField(null=True, blank=True, allow_unicode=True)
     stock = models.IntegerField(default=1, verbose_name='موجودی')
     description = RichTextUploadingField(verbose_name="توضیحات محصول")

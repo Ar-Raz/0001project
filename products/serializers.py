@@ -36,6 +36,7 @@ class SimpleProductSerializer(serializers.ModelSerializer):
             'title',
             'product_image',
             'orderd_times',
+            'image_alt',
         )
 
 
@@ -67,6 +68,7 @@ class ProductSerializer(serializers.ModelSerializer):
             'second_price',
             'discount_price',
             'product_image',
+            'orderd_times',
             'slug',
             'stock',
             'description',
@@ -129,6 +131,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
             'stock',
             'description',
             'product_image',
+            'orderd_times',
             'minimum_order',
             'payment_type',
             'packing',
@@ -237,6 +240,7 @@ class ProducerPageQuickSerializer(serializers.ModelSerializer):
             'id',
             'title',
             'product_image',
+            'orderd_times',
             'description',
             # 'hit_count',
         )
