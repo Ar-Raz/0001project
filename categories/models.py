@@ -40,6 +40,7 @@ class Category(MetaTagsBase, models.Model):
 class Variation(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)  # size , round per meter
+    model = models.CharField(max_length=64, blank=True)
 
 
     class Meta:

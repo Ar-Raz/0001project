@@ -13,6 +13,7 @@ from .models import (
 
 from users.serializers import UserSerializer,ProducerProfileDetailSerializer
 from categories.serializers import CategorySerializer, VariationDetailSerializer
+from pages.serializers import HitCountSerializer, HitSerializer
 
 
 class ProductTechDetailSerializer(serializers.ModelSerializer):
@@ -118,6 +119,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
     detail = serializers.SerializerMethodField()
     comments = serializers.SerializerMethodField()
     sliders = serializers.SerializerMethodField()
+    hit_count = serializers.SerializerMethodField()
 
 
     class Meta:
@@ -149,7 +151,8 @@ class ProductDetailSerializer(serializers.ModelSerializer):
             'detail',
             'date_addded',
             'orderd_times',
-            # 'hit_count',
+            'is_confirmed',
+            'hit_count',
             'sliders',
         )
 
@@ -169,10 +172,17 @@ class ProductDetailSerializer(serializers.ModelSerializer):
         return ProductDetailsSerializer(obj.productdetail_set.all(), many=True).data
 
     def get_comments(self, obj):
-        return ProductCommentSerializer(obj.get_comments, many=True).data
+        comments = ProductComment.objects.filter(object_id=obj.id)
+        return ProductCommentSerializer(comments, many=True).data
 
     def get_sliders(self, obj):
-        return ProductSliderSerializer(obj.get_sliders, many=True).data
+        sliders = SliderImage.objects.filter(object_id=obj.id)
+        return ProductSliderSerializer(sliders, many=True).data
+
+    def get_hit_count(self, obj): 
+       hits = obj.hit_count.count()
+       return hits
+
 
 
 

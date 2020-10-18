@@ -2,6 +2,7 @@ from django.db import models
 from users.models import Profile, ProducerProfile
 from products.models import Product
 from users.validators import validate_phone_number
+from users.models import User
 
 ADDRESS_CHOICES = (
     ('ارسال','ارسال'),
@@ -10,6 +11,7 @@ ADDRESS_CHOICES = (
 )
 
 class MiniOrder(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     email = models.EmailField(blank=True)
     name = models.CharField(max_length=164)

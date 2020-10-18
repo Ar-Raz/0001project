@@ -3,7 +3,7 @@ from django.utils.text import slugify
 from django.db.models.signals import pre_save, post_save
 from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import python_2_unicode_compatible
-from django.contrib.contenttypes.fields import GenericRelation
+from django.contrib.contenttypes.fields import GenericRelation, ContentType, GenericForeignKey
 from hitcount.models import HitCountMixin, HitCount
 from django.dispatch import receiver
 
@@ -72,6 +72,9 @@ class Product(MetaTagsBase ,models.Model):
     label_try = models.ManyToManyField('Label', blank=True)
     hit_count = GenericRelation(HitCount, object_id_field='object_pk',
                                         related_query_name='hit_count_generic_relation')
+    is_confirmed = models.BooleanField(default=False)
+    slider_images = GenericRelation('SliderImage')
+    comments = GenericRelation('ProductComment')
 
 
     def __str__(self):
@@ -101,11 +104,17 @@ class Product(MetaTagsBase ,models.Model):
 
 
 class SliderImage(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    # product = models.ForeignKey(Product, on_delete=models.CASCADE)
     image = models.ImageField()
+    content_type = models.ForeignKey(
+        ContentType, on_delete=models.CASCADE,
+        limit_choices_to={'model':'product'}
+    )
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey()
 
     def __str__(self):
-        return f"{self.product.title} slider image"
+        return f"{self.content_object.title} slider image"
 
 
 class Label(models.Model):
@@ -143,17 +152,20 @@ class ProductVariation(models.Model):
 
 
 class ProductComment(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="محصول")
+    # product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="محصول")
     is_confirmed = models.BooleanField(default=False)
     content = models.TextField(verbose_name="متن نظر")
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="کاربر" ,null=True, blank=True)
     username = models.CharField(max_length=132, null=True, blank=True)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey()
 
     def __str__(self):
         if self.user:
-            return f"{self.user.username} comment for {self.product.title}"
+            return f"{self.user.username} comment for {self.content_object.title}"
         else:
-            return f"{self.username}comment for {self.product.title}"
+            return f"{self.username}comment for {self.content_object.title}"
 
 class Rating(models.Model):
   product = models.ForeignKey(Product, on_delete=models.CASCADE)

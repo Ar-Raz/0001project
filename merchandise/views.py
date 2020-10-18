@@ -61,12 +61,18 @@ class MiniOrderCreateAPIView(CreateAPIView):
                     phone_number=phone_number,
                     extra_discription=extra_discription,
                 )
+            if request.user.is_authenticated:
+                mini_order.user=request.user
+                mini_order.save()
+            else:
+                pass
 
 
             return Response({"message" : "درخواست شما با موفقیت ثبت شد"}, status=status.HTTP_201_CREATED)
-        return Response({
-                "message" : "لطفار فرم را تصحیح کنید"
-            }, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({
+                    "message" : "لطفار فرم را تصحیح کنید"
+                }, status=status.HTTP_400_BAD_REQUEST)
 
 
 

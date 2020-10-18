@@ -2,7 +2,19 @@ from rest_framework import serializers
 
 from .models import AboutUs
 
+from hitcount.models import Hit, HitCount
 
+class HitSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Hit
+        fields = ("__all__")
+
+class HitCountSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = HitCount
+        fields = ("__all__")
 
 class AboutUsSerializer(serializers.ModelSerializer):
 

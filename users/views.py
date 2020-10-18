@@ -3,6 +3,7 @@ import random
 
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import authenticate, login
+from django.contrib.contenttypes.models import ContentType
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.http import Http404, HttpResponse
@@ -400,14 +401,13 @@ def create_product_view(request):
     json_mother = json.dumps(sered_mother)
 
     if request.method == "POST":
-        category = request.POST.get("headCategory").strip()
+        category = request.POST.get("endcategory").strip()
         cat = Category.objects.get(title=category)
         variations = Variation.objects.filter(category__title=category)
 
         product_title = request.POST.get("product-title")
         product_price = request.POST.get("product-price") or None
         product_price2 = request.POST.get("product-price2") or None
-        product_image = request.FILES['product-image']
         files = request.FILES.getlist('slider')
         product_description = request.POST.get("product-description") or None
         product_made_in = request.POST.get("product-made-in") or None
@@ -419,14 +419,18 @@ def create_product_view(request):
         product_minimum_order = request.POST.get("product-minimum-order") or None
         product_samples = request.POST.get("product-samples") or None
         product_short_description = request.POST.get("short-description") or None
-        if product_title and category and product_image:
+        product_keyword = request.POST.get("keywords") or None 
+        image_alt = request.POST.get('image-alt') or None 
+        if product_title and category:
             print("got title and category")
             product = Product.objects.create(
+                meta_keywords=product_keyword,
                 producer_id=user.id,
                 title=product_title,
                 price=product_price,
                 second_price=product_price2,
-                product_image=product_image,
+                product_image=files[0],
+                image_alt=image_alt,
                 description=product_description,
                 minimum_order=product_minimum_order,
                 payment_type=product_payment_type,
@@ -441,11 +445,13 @@ def create_product_view(request):
             product.producer = producer
             product.category.add(cat)
             product.save()
+            content_type = ContentType.objects.get(model="product")
 
-            for f in files:
+            for f in files[1:]:
                 slider_image = SliderImage.objects.create(
-                    product=product,
-                    image=f
+                    content_type=content_type,
+                    object_id=product.id,
+                    image=f,
                 )
 
             for var in variations:
@@ -510,8 +516,6 @@ class ProductEditView(LoginRequiredMixin ,ProducerOnlyMixin ,View):
 class ProfileEditView(LoginRequiredMixin ,ProducerOnlyMixin ,View):
 
     def get(self, request, *args, **kwargs):
-        request.session['message'] = "user panel here"
-        request.COOKIES['message'] = 'sfseg'
         try:
             user = request.user
             sered_user = UserSerializer(user).data
@@ -521,11 +525,32 @@ class ProfileEditView(LoginRequiredMixin ,ProducerOnlyMixin ,View):
             sered_profile = ProducerProfileDetailSerializer(profile).data
             json_profile = json.dumps(sered_profile)
 
+            mini_orders = MiniOrder.objects.filter(product__producer=profile)[:2]
+            sered_miniorders = MiniOrderSimpleSerializer(mini_orders, many=True).data
+            json_miniorders = json.dumps(sered_miniorders)
+
+            products = Product.objects.filter(producer=profile)
+            products_count = products.count()
+
+            customers = []
+            for order in mini_orders:
+                if order.phone_number not in customers:
+                    customers.append(order.phone_number)
+
+            
+            
+
+            details = {"products_count" : products_count, "customers_count": len(customers)}
+            json_details = json.dumps(details)
+
             context = {
                 'profile' : json_profile,
+                'orders' : json_miniorders,
+                'details' : json_details,
+
             }
 
-            return render(request, "views/profile.html", context)
+            return render(request, "views/userpanel/profile.html", context)
 
         except ObjectDoesNotExist:
 
@@ -538,8 +563,7 @@ class ProfileEditView(LoginRequiredMixin ,ProducerOnlyMixin ,View):
         user = request.user
 
         username = request.POST.get("username") or None
-        first_name = request.POST.get('firstname') or None
-        last_name = request.POST.get('lastname') or None
+        first_name = request.POST.get('name') or None
         gender = request.POST.get('gender') or None
         profile_picture = request.FILES['profile-picture'] or None
         city = request.POST.get('city') or None
@@ -561,7 +585,6 @@ class ProfileEditView(LoginRequiredMixin ,ProducerOnlyMixin ,View):
 
         user.username = username
         user.first_name = first_name
-        user.last_name = last_name
         user.save()
         # if gender == "آقای":
         #     profile.gender = 'آقای'
@@ -588,8 +611,7 @@ class ProfileEditView(LoginRequiredMixin ,ProducerOnlyMixin ,View):
         profile.postal_code = postal_code
         profile.save()
 
-        request.session['message'] = 'you ahvee asdacanges suc'
-
+        messages.success(request, '{ "message" : "پر.فایل شما با موفقیت تغییر داده شد" }')
         #message
         return redirect('users:profile')
 
@@ -603,7 +625,7 @@ class UserProfile(LoginRequiredMixin, ProducerOnlyMixin, View):
 
         
 
-        return render(request, "views/userpanel/index.html")
+        return render(request, "views/userpanel/profile.html")
 
 class UserPanelOverView(LoginRequiredMixin ,ProducerOnlyMixin , View):
 
@@ -632,7 +654,7 @@ class UserPanelOverView(LoginRequiredMixin ,ProducerOnlyMixin , View):
             'user' : json_user_string,
         }
 
-        return render(request, 'views/userpanel/index.html', context)
+        return render(request, 'views/userpanel/profile.html', context)
 
 class MiniOrderListDetailView(LoginRequiredMixin ,ProducerOnlyMixin ,View):
 
@@ -644,10 +666,10 @@ class MiniOrderListDetailView(LoginRequiredMixin ,ProducerOnlyMixin ,View):
         json_orders = json.dumps(sered_orders)
 
         context = {
-            'orders' : miniorders
+            'orders' : json_orders
         }
 
-        return render(request, 'orders.html', context)
+        return render(request, 'views/userpanel/miniOrders.html', context)
 
 class MyProductView(LoginRequiredMixin ,ProducerOnlyMixin ,View):
 
@@ -661,7 +683,7 @@ class MyProductView(LoginRequiredMixin ,ProducerOnlyMixin ,View):
         context = {
             'products' : json_products
         }
-        return render(request, 'views/myproducts.html', context)
+        return render(request, 'views/userPanel/myprods.html', context)
 
 
 class MyProductEditView(LoginRequiredMixin ,ProducerOnlyMixin ,View):

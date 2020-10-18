@@ -132,11 +132,13 @@ class VariationHandling(View):
         main_cats = MainCategory.objects.all()
         sered_mains = MainCategorySerializer(main_cats, many=True).data
         json_mains = json.dumps(sered_mains)
+        
         return render(request, 'views/userpanel/addCat.html',  {'main' : json_mains} )
 
     def post(self, request, *args, **kwargs):
         main_category_name = request.POST.get('category')
         subcategory = request.POST.get('subcategory')
+        var_type = request.POST.get('type')
         main_cat = MainCategory.objects.get(title=main_category_name)
         var_names = request.POST.getlist('variation')
 
@@ -160,7 +162,7 @@ class VariationHandling(View):
                 else:
                     variation = Variation.objects.create(
                         name=var_name,
-                        category=category
+                        category=category,
                     )
             try:
                 from django.contrib import messages
