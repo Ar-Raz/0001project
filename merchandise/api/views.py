@@ -1,4 +1,4 @@
-from rest_framework import views, response, status, permissions, exceptions
+from rest_framework import views, response, status, permissions, exceptions, generics
 
 from merchandise.models import MiniOrder
 
@@ -15,7 +15,7 @@ class DeleteMiniOrderAPIView(views.APIView):
                 product = order.product.title
                 order.delete()
                 data = {
-                    'message': f' سفارش شما برای محصول{product}  با موفقیت حذف شد',
+                    'message': f' سفارش شما برای محصول {product}  با موفقیت حذف شد',
                 }
                 return response.Response(data,
                                          status=status.HTTP_200_OK)
@@ -29,3 +29,32 @@ class DeleteMiniOrderAPIView(views.APIView):
             return response.Response({'message': 'شما به این صفحه دسترسی ندارید'},
                                      status=status.HTTP_401_UNAUTHORIZED)
 
+class ConfirmMiniOrder(views.APIView):
+
+    def get(self, request, pk, *args, **kwargs):
+        try:
+            order = MiniOrder.objects.get(pk=pk)
+            producer = order.product.producer.user
+            if request.user == producer:
+                order.is_confirmed = True
+                order.save()
+                data = {
+                    'message' : 'سفارش شما با موفقیت تایید شد'
+                }
+                return response.Response(data,
+                            status=status.HTTP_200_OK)
+            else:
+                data = {
+                    'message' : "شما به این سفارش دسترسی ندارید"
+                }
+                return response.Response(
+                    data, status=status.HTTP_401_UNAUTHORIZED
+                )
+        
+        except exceptions.NotAuthenticated:
+            return response.Response(
+                {
+                    'message' : 'شما به این صفحه دسترسی ندارید'
+                },
+                status=status.HTTP_401_UNAUTHORIZED
+            )

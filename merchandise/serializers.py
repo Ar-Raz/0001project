@@ -59,6 +59,7 @@ class MiniOrderSerializer(serializers.ModelSerializer):
             'phone_number',
             # 'product_name',
             'product',
+            'is_confirmed',
         )
         read_only_fields = ['product']
 
@@ -75,7 +76,8 @@ class MiniOrderSimpleSerializer(serializers.ModelSerializer):
         fields = (
             'name',
             'extra_discription',
-            'product'
+            'product',
+            'is_confirmed',
         )
 
     def get_product(self, obj):
@@ -92,6 +94,7 @@ class MiniOrderDetailSerializer(serializers.ModelSerializer):
             'email',
             'name',
             'extra_discription',
+            'is_confirmed',
             'phone_number',
             'product',
         )

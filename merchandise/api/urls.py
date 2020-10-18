@@ -13,4 +13,5 @@ urlpatterns = [
     path('ask_price', MiniOrderCreateAPIView.as_view()),
     path("ask", MiniOrderCreation.as_view()),
     path('order/<pk>/delete/', views.DeleteMiniOrderAPIView.as_view()),
+    path('order/<pk>/confirm/', views.ConfirmMiniOrder.as_view()),
 ]
