@@ -214,3 +214,13 @@ class BuyFromDamir(View):
         sered_content = BuyFromDamirSerializer(content).data
         json_content = json.dumps(sered_content)
         return render(request, 'views/buyFromDamir.html', { 'content' : json_content})
+
+
+class TFunc(View):
+
+    def get(self, request, *args, **kwargs):
+
+
+        context = { 'request' : request}
+
+        return render(request, "test2.html", context)

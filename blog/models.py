@@ -3,6 +3,7 @@ from categories.models import Category
 from users.models import User
 from django.contrib.contenttypes.fields import GenericRelation
 # from django.utils.encoding import python_2_unicode_compatible
+from ckeditor_uploader.fields import RichTextUploadingField
 from hitcount.models import HitCount, HitCountMixin
 from django.template.defaultfilters import slugify
 from django.shortcuts import reverse
@@ -27,9 +28,10 @@ class Comment(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=1024, verbose_name="نام پست")
     short_description = models.TextField(verbose_name="توضیح پیش نمایش")
-    content = HTMLField(verbose_name="متن پست")
-    timestamp = models.DateField(auto_now=True, verbose_name="تاریخ ثبت دست")
+    content = RichTextUploadingField(verbose_name="متن پست")
+    timestamp = models.DateField(auto_now=True, verbose_name="تاریخ ثبت پست")
     thumbnail = models.ImageField(verbose_name="تصویر پست")
+    image_alt = models.CharField(max_length=600, verbose_name="seo image alternatinve")
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     categories = models.ManyToManyField(Category, verbose_name="دسته بندی")
     featured = models.BooleanField(default=False)

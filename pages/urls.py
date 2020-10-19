@@ -14,4 +14,5 @@ urlpatterns = [
     path('privacy_policy/', views.Privacy.as_view(), name='privacy'),
     path('buy/', views.BuyFromDamir.as_view(), name="buy_from_damir"),
     path('sell/', views.SearchView.as_view(), name='sell_in_damir'),
+    path('testet/', views.TFunc.as_view()),
 ]
