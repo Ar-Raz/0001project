@@ -19,30 +19,11 @@ from users.models import ProducerProfile, Profile, User
 from categories.models import Category , CategoryVariation
 
 
-########################################################################################
-"""
-Notes:
-1- adding tinymce for description
-2- Creating the category model in the databasse
-"""
-########################################################################################
-LABEL_CHOICES = (
-    ('برگزیده','برگزیده'),
-    ('تخفیف','تخفیف'),
-    ('پرفروش','پرفروش'),
-    ('تولید داخل','تولید داخل'),
-    ('شب یلدا','شب یلدا'),
-    ('پیشنهاد ویژه','پیشنهاد ویژه'),
-
-)
-
-
-
 class Product(MetaTagsBase ,models.Model):
     SAMPLE_CHOICES = (
-        ("خیر","خیر"),
-        ("رایگان","رایگان"),
-        ("اعمال هزینه","اعمال هزینه"),
+        ("خیر","0"),
+        ("رایگان","1"),
+        ("اعمال هزینه","2 "),
     )
     title = models.CharField(max_length=132, verbose_name='نام محصول')
     producer = models.ForeignKey(ProducerProfile, on_delete=models.CASCADE)
@@ -65,7 +46,6 @@ class Product(MetaTagsBase ,models.Model):
     samples = models.CharField(max_length=24, verbose_name="ارائه نمونه", null=True,
                                 blank=True, choices=SAMPLE_CHOICES)
     remarks = RichTextUploadingField(verbose_name="ملاحظات", null=True, blank=True)
-    label = models.CharField(max_length=32, choices=LABEL_CHOICES, null=True, blank=True)
     date_addded = models.DateTimeField(auto_now_add=True, null=True)
     orderd_times = models.IntegerField(default=1, null=True)
     short_discription = models.TextField(verbose_name="توضیحات")
@@ -84,7 +64,7 @@ class Product(MetaTagsBase ,models.Model):
 
     def average_rating(self):
         sum = 0
-        ratings = Rating.objects.filter(product=self)
+        ratings = Rating.objects.filter(object_id=self.id)
         for rating in ratings:
             sum = sum + rating.stars
         if len(ratings) > 0:
@@ -94,12 +74,12 @@ class Product(MetaTagsBase ,models.Model):
 
     @property
     def get_comments(self):
-        comments = ProductComment.objects.filter(product=self, is_confirmed=True)
+        comments = ProductComment.objects.filter(object_id=self.pk, is_confirmed=True)
         return comments
 
     @property
     def get_sliders(self):
-        sliders = SliderImage.objects.filter(product=self)
+        sliders = SliderImage.objects.filter(object_id=self.pk)
         return sliders
 
 
@@ -168,13 +148,19 @@ class ProductComment(models.Model):
             return f"{self.username}comment for {self.content_object.title}"
 
 class Rating(models.Model):
-  product = models.ForeignKey(Product, on_delete=models.CASCADE)
-  user = models.ForeignKey(User, on_delete=models.CASCADE)
-  stars = IntegerRangeField(min_value=1, max_value=5, verbose_name="امتیاز")
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    stars = IntegerRangeField(min_value=1, max_value=5, verbose_name="امتیاز")
+    content_type = models.ForeignKey(
+        ContentType, on_delete=models.CASCADE,
+        limit_choices_to={'model':'product'}
+    )
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey()
+    
 
-  class Meta:
-    unique_together = (('user', 'product'),)
-    index_together = (('user', 'product'),)
+    class Meta:
+        unique_together = (('user', 'object_id'),)
+        index_together = (('user', 'object_id'),)
 
 # class ProductDetail(models.Model):
 #     products = models.ManyToManyField('Product')

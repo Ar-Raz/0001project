@@ -115,7 +115,6 @@ class ProductDetailSerializer(serializers.ModelSerializer):
     sample = serializers.SerializerMethodField()
     user = serializers.SerializerMethodField()
     category = serializers.SerializerMethodField()
-    label = serializers.SerializerMethodField()
     detail = serializers.SerializerMethodField()
     comments = serializers.SerializerMethodField()
     sliders = serializers.SerializerMethodField()
@@ -147,7 +146,6 @@ class ProductDetailSerializer(serializers.ModelSerializer):
             'average_rating',
             'comments',
             'user',
-            'label',
             'detail',
             'date_addded',
             'orderd_times',
@@ -164,9 +162,6 @@ class ProductDetailSerializer(serializers.ModelSerializer):
 
     def get_user(self, obj):
         return ProducerProfileDetailSerializer(obj.producer).data
-
-    def get_label(self, obj):
-        return obj.get_label_display()
 
     def get_detail(self, obj):
         return ProductDetailsSerializer(obj.productdetail_set.all(), many=True).data

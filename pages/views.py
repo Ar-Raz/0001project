@@ -76,10 +76,6 @@ class IndexView(View):
             sered_new_products = ProductDetailSerializer(new_products, many=True).data
             new_products_json_string =  json.dumps(sered_new_products)
 
-            best_sellers = Product.objects.filter(label='پرفروش')[:20]
-            sered_best_seller_products = ProductDetailSerializer(best_sellers, many=True).data
-            best_sellers_json_string = json.dumps(sered_best_seller_products)
-
             lables = Label.objects.all()
             sered_labeles = LabeledProductsSerializer(lables, many=True).data
             json_labeles = json.dumps(sered_labeles)
@@ -92,12 +88,11 @@ class IndexView(View):
                 'posts' : post_ser_json,
                 'new_products' : new_products_json_string,
                 'labeles' : json_labeles,
-                'best_sellers' : best_sellers_json_string,
                 'comments' : json_comments,
             }
             return render(self.request, "views/index.html", context)
         except ObjectDoesNotExist:
-            message = messages.ERROR("سرور ترکیده")
+            message = messages.error(request, '{ "message" : "سرور ترکیده" }')
             return HttpResponseBadRequest("Object Does Not Exist")
 
 
